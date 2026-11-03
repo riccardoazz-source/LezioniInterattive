@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ export function NotesList() {
   const [notes, setNotes] = useState<Note[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
     getNotesRepository()
@@ -24,7 +26,7 @@ export function NotesList() {
   const create = () => router.push(`/note/${uid()}?new=1`);
 
   const remove = async (n: Note) => {
-    if (!confirm(`Eliminare il quaderno «${n.title || "Senza titolo"}»?`)) return;
+    if (!(await confirmDelete(`Eliminare il quaderno «${n.title || "Senza titolo"}»?`))) return;
     await getNotesRepository().remove(n.id);
     setNotes((list) => (list ? list.filter((x) => x.id !== n.id) : list));
   };
@@ -34,6 +36,7 @@ export function NotesList() {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-3 px-4 pb-8">
+      {deleteDialog}
       <div className="flex items-center justify-between">
         <p className="text-muted">
           {notes.length === 0 ? "Nessun quaderno ancora." : `${notes.length} ${notes.length === 1 ? "quaderno" : "quaderni"}`}

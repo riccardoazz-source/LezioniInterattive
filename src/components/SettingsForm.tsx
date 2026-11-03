@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { LEVELS } from "@/content/subjects";
 import type { Level } from "@/content/types";
 import { useSettings } from "@/lib/settings";
@@ -11,10 +12,12 @@ import { Button } from "@/components/ui/Button";
 
 export function SettingsForm() {
   const [settings, update, ready] = useSettings();
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
   if (!ready) return null;
   return (
     <ParentGate>
       <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-4 pb-8">
+        {deleteDialog}
         <label className="flex flex-col gap-2">
           <span className="font-black">Nome della bambina</span>
           <input
@@ -75,10 +78,8 @@ export function SettingsForm() {
         <Button
           variant="danger"
           size="md"
-          onClick={() => {
-            if (confirm("Cancellare tutte le stelle e i progressi?")) {
-              resetProgress();
-            }
+          onClick={async () => {
+            if (await confirmDelete("Cancellare tutte le stelle e i progressi?")) resetProgress();
           }}
         >
           Azzera i progressi

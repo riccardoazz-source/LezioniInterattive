@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SUBJECTS } from "@/content/subjects";
@@ -36,6 +37,7 @@ export function NoteEditor({ id }: { id: string }) {
   const [maxHeight, setMaxHeight] = useState(800);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
     let cancelled = false;
@@ -98,13 +100,13 @@ export function NoteEditor({ id }: { id: string }) {
     patch({ pages });
     goTo(pageIdx + 1);
   };
-  const deletePage = () => {
-    if (!note || note.pages.length <= 1 || !confirm("Eliminare questa pagina?")) return;
+  const deletePage = async () => {
+    if (!note || note.pages.length <= 1 || !(await confirmDelete("Eliminare questa pagina?"))) return;
     patch({ pages: note.pages.filter((_, i) => i !== pageIdx) });
     goTo(Math.max(0, pageIdx - 1));
   };
   const removeNote = async () => {
-    if (!note || !confirm("Eliminare tutto il quaderno?")) return;
+    if (!note || !(await confirmDelete("Eliminare tutto il quaderno?"))) return;
     if (timer.current) clearTimeout(timer.current);
     await getNotesRepository().remove(note.id);
     router.replace("/note");
@@ -160,6 +162,7 @@ export function NoteEditor({ id }: { id: string }) {
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-2 px-2 pb-3 sm:px-4">
+      {deleteDialog}
       {/* Titolo e materia (compatti, si aprono con un tocco) */}
       <div className="flex items-center gap-2">
         <button type="button" onClick={() => setShowTitle((v) => !v)} className="flex min-w-0 flex-1 items-center gap-2 text-left">

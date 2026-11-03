@@ -13,6 +13,8 @@ Funziona su **PC, iPhone e iPad** (anche come app sulla schermata Home) e suppor
 | 🎨 **Disegni** | Disegno libero su un foglio bianco a tutta pagina con Apple Pencil, e un catalogo di 30 disegni da colorare in 7 categorie (animali, piante, fate magiche, squadra di eroi, amici cartoon, stelle pop, bamboline; personaggi originali in stile cartoon con occhioni, ali, mantelli): si tocca una zona per riempirla di colore, oppure si disegna sopra con la penna. Tutto si salva nella galleria "I miei disegni". |
 | 📓 **Note** | I quaderni delle lezioni di casa: fogli a righe a tutta pagina da sfogliare. Su ogni foglio si scrive direttamente con Apple Pencil (modalità Penna), con la tastiera (modalità Testo) e si mettono foto che si spostano e ridimensionano (modalità Foto). Il pulsante 🔊 legge il testo della pagina. Nessun blocco genitori. |
 
+Ogni eliminazione (quaderni, pagine, disegni, progressi) chiede di scrivere la parola **Elimina** per confermare, così le dita piccole non cancellano nulla per sbaglio.
+
 Le impostazioni (⚙️ in home, protette da un "cancello genitori": una moltiplicazione) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
 
 ## Avvio in locale

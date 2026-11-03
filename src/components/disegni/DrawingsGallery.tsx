@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -13,19 +14,21 @@ import { ColoringSvg } from "@/components/draw/ColoringBoard";
 export function DrawingsHome() {
   const router = useRouter();
   const [drawings, setDrawings] = useState<SavedDrawing[] | null>(null);
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
     listDrawings().then(setDrawings);
   }, []);
 
   const remove = async (d: SavedDrawing) => {
-    if (!confirm("Eliminare questo disegno?")) return;
+    if (!(await confirmDelete("Eliminare questo disegno?"))) return;
     await removeDrawing(d.id);
     setDrawings((list) => list?.filter((x) => x.id !== d.id) ?? null);
   };
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pb-8">
+      {deleteDialog}
       <div className="grid grid-cols-2 gap-4">
         <button type="button" onClick={() => router.push(`/disegni/libero/${uid()}`)} className="no-select text-left">
           <div className="flex min-h-44 flex-col items-center justify-center gap-2 rounded-[var(--radius-bubble)] bg-sky-100 p-5 text-center shadow-md transition active:scale-95">

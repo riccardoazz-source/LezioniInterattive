@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getDrawing, removeDrawing, saveDrawing, type SavedDrawing } from "@/lib/storage/drawings";
@@ -19,6 +20,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
   const [maxHeight, setMaxHeight] = useState(800);
   const [showTitle, setShowTitle] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
     let cancelled = false;
@@ -58,6 +60,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-2 px-2 pb-3 sm:px-4">
+      {deleteDialog}
       <div className="no-select flex flex-wrap items-center justify-center gap-1.5 rounded-2xl bg-white/70 p-2">
         {PEN_COLORS.map((c) => (
           <button
@@ -76,7 +79,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
         ))}
         <IconBtn label="🧽" aria="Gomma" active={tool.erase} onClick={() => setTool({ ...tool, erase: !tool.erase })} />
         <IconBtn label="↩️" aria="Annulla" disabled={drawing.strokes.length === 0} onClick={() => patch({ strokes: drawing.strokes.slice(0, -1) })} />
-        <IconBtn label="🗑️" aria="Cancella tutto" disabled={drawing.strokes.length === 0} onClick={() => confirm("Cancellare tutto il foglio?") && patch({ strokes: [] })} />
+        <IconBtn label="🗑️" aria="Cancella tutto" disabled={drawing.strokes.length === 0} onClick={async () => (await confirmDelete("Cancellare tutto il foglio?")) && patch({ strokes: [] })} />
         <span className="mx-1 h-8 w-px bg-gray-300" />
         <IconBtn label="🏷️" aria="Nome del disegno" active={showTitle} onClick={() => setShowTitle((v) => !v)} />
         <span className="text-xs text-muted">{saved === "saving" ? "Salvo…" : saved === "saved" ? "✓ Salvato" : ""}</span>
@@ -93,7 +96,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
           <button
             type="button"
             onClick={async () => {
-              if (!confirm("Eliminare questo disegno?")) return;
+              if (!(await confirmDelete("Eliminare questo disegno?"))) return;
               if (timer.current) clearTimeout(timer.current);
               await removeDrawing(id);
               router.replace("/disegni");

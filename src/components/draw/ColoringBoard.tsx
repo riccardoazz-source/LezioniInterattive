@@ -1,5 +1,6 @@
 "use client";
 
+import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import { useState } from "react";
 import type { ColoringPage } from "@/content/coloring";
 import { BOARD_H, BOARD_W, type Stroke } from "@/lib/storage/types";
@@ -43,6 +44,7 @@ export function ColoringBoard({ page, fills, strokes, onFills, onStrokes, finger
   const [mode, setMode] = useState<Mode>("fill");
   const [width, setWidth] = useState(PEN_WIDTHS[1]);
   const [fillHistory, setFillHistory] = useState<Record<string, string>[]>([]);
+  const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   const tool: Tool = { color, width, erase: mode === "erase" };
 
@@ -61,8 +63,8 @@ export function ColoringBoard({ page, fills, strokes, onFills, onStrokes, finger
     }
   };
 
-  const clearAll = () => {
-    if (!confirm("Ricominciare da capo questo disegno?")) return;
+  const clearAll = async () => {
+    if (!(await confirmDelete("Ricominciare da capo questo disegno?"))) return;
     setFillHistory([]);
     onFills({});
     onStrokes([]);
@@ -80,6 +82,7 @@ export function ColoringBoard({ page, fills, strokes, onFills, onStrokes, finger
 
   return (
     <div className="flex flex-col gap-2">
+      {deleteDialog}
       <div className="no-select flex flex-wrap items-center justify-center gap-2">
         {modeBtn("fill", "🪣 Riempi")}
         {modeBtn("pen", "✏️ Penna")}
