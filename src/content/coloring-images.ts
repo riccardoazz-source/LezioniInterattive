@@ -19,9 +19,13 @@ export interface ImagePage {
 
 export const IMAGE_PAGES: ImagePage[] = [
   // GENERATO DA scripts/scan-coloring.js — non modificare a mano sotto questa riga
+  {"id":"pop-derpy","title":"Derpy","category":"pop","src":"/colora/pop/derpy.png"},
+  {"id":"pop-huntrix-2","title":"Huntrix 2","category":"pop","src":"/colora/pop/huntrix-2.png"},
   {"id":"pop-huntrix","title":"Huntrix","category":"pop","src":"/colora/pop/huntrix.png"},
   {"id":"pop-mira-2","title":"Mira 2","category":"pop","src":"/colora/pop/mira-2.png"},
   {"id":"pop-mira","title":"Mira","category":"pop","src":"/colora/pop/mira.png"},
+  {"id":"pop-rumi","title":"Rumi","category":"pop","src":"/colora/pop/rumi.png"},
+  {"id":"pop-zoey-2","title":"Zoey 2","category":"pop","src":"/colora/pop/zoey-2.png"},
   {"id":"pop-zoey","title":"Zoey","category":"pop","src":"/colora/pop/zoey.png"},
 ];
 
