@@ -193,8 +193,8 @@ export function dress(k: Kit, opts: { long?: boolean } = {}): Part {
 export function topSkirt(k: Kit): Part {
   const { R, P } = k;
   return part([
-    { id: "top", d: R(-60, 125, 120, 110, 22) },
-    { id: "gonna", d: P([-62, 228], [62, 228], [96, 318], [-96, 318]) },
+    { id: "top", d: R(-64, 125, 128, 110, 22) },
+    { id: "gonna", d: P([-66, 228], [66, 228], [100, 318], [-100, 318]) },
   ], [`M${k.L(-30, 240)}L${k.L(-40, 318)}`, `M${k.L(0, 240)}L${k.L(0, 318)}`, `M${k.L(30, 240)}L${k.L(40, 318)}`]);
 }
 
@@ -222,8 +222,8 @@ export function heroSuit(k: Kit, emblem: "star" | "bolt" | "heart" | "circle" = 
           ? { id: "emblema", d: `M${L(0, 240)}L${L(-34, 206)}A${20 * k.s} ${20 * k.s} 0 1 1 ${L(0, 186)}A${20 * k.s} ${20 * k.s} 0 1 1 ${L(34, 206)}Z` }
           : { id: "emblema", d: C(0, 205, 30) };
   return part([
-    { id: "tuta", d: R(-62, 125, 124, 180, 24) },
-    { id: "cintura", d: R(-62, 272, 124, 22) },
+    { id: "tuta", d: R(-66, 125, 132, 180, 26) },
+    { id: "cintura", d: R(-66, 272, 132, 22) },
     { id: "fibbia", d: R(-14, 268, 28, 30, 6) },
     emblemRegion,
   ]);
@@ -240,8 +240,8 @@ export function arms(k: Kit, opts: { raisedRight?: boolean; raisedLeft?: boolean
       regions.push({ id: `braccio-${n}`, d: R(side * 60 + (side < 0 ? -38 : 0), -60, 38, 200, 19) });
       regions.push({ id: `mano-${n}`, d: C(side * 79, -70, 21) });
     } else {
-      regions.push({ id: `braccio-${n}`, d: R(side * 60 + (side < 0 ? -38 : 0), 135, 38, 150, 19) });
-      regions.push({ id: `mano-${n}`, d: C(side * 79, 292, 21) });
+      regions.push({ id: `braccio-${n}`, d: R(side * 62 + (side < 0 ? -44 : 0), 135, 44, 140, 22) });
+      regions.push({ id: `mano-${n}`, d: C(side * 84, 282, 22) });
     }
     if (opts.gloves) regions.push({ id: `guanto-${n}`, d: R(side * 60 + (side < 0 ? -40 : 0), raised ? -45 : 240, 40, 36, 10) });
   }
@@ -253,13 +253,13 @@ export function legs(k: Kit, opts: { boots?: boolean; top?: number } = {}): Part
   const { R, E } = k;
   const top = opts.top ?? 315;
   const regions: ColoringRegion[] = [
-    { id: "gamba-sx", d: R(-50, top, 44, 160, 14) },
-    { id: "gamba-dx", d: R(6, top, 44, 160, 14) },
+    { id: "gamba-sx", d: R(-54, top, 48, 135, 16) },
+    { id: "gamba-dx", d: R(6, top, 48, 135, 16) },
   ];
   if (opts.boots) {
-    regions.push({ id: "stivale-sx", d: R(-56, 400, 56, 100, 16) }, { id: "stivale-dx", d: R(0, 400, 56, 100, 16) });
+    regions.push({ id: "stivale-sx", d: R(-60, 380, 60, 80, 16) }, { id: "stivale-dx", d: R(0, 380, 60, 80, 16) });
   } else {
-    regions.push({ id: "scarpa-sx", d: E(-28, 480, 38, 18) }, { id: "scarpa-dx", d: E(28, 480, 38, 18) });
+    regions.push({ id: "scarpa-sx", d: E(-30, 455, 40, 18) }, { id: "scarpa-dx", d: E(30, 455, 40, 18) });
   }
   return part(regions);
 }
@@ -348,12 +348,13 @@ export function microphone(k: Kit): Part {
 
 /** Spada luminosa tenuta a destra, punta in alto. */
 export function sword(k: Kit): Part {
-  const { P, R, S } = k;
+  const { P, R, S, C } = k;
   return part([
-    { id: "lama", d: P([70, -230], [96, -200], [96, 60], [70, 60], [44, -200]) },
-    { id: "elsa", d: R(30, 60, 80, 20, 8) },
-    { id: "impugnatura", d: R(60, 80, 20, 60, 8) },
-    { id: "luce-spada", d: S(70, -260, 26, 10, 4) },
+    { id: "lama", d: P([70, -250], [102, -210], [102, 60], [38, 60], [38, -210]) },
+    { id: "elsa", d: R(18, 60, 104, 24, 10) },
+    { id: "impugnatura", d: R(56, 84, 28, 70, 10) },
+    { id: "pomo", d: C(70, 162, 16) },
+    { id: "luce-spada", d: S(70, -282, 30, 12, 4) },
   ]);
 }
 
@@ -363,4 +364,261 @@ export function sparkles(k: Kit, pts: [number, number, number][]): Part {
 
 export function bgStars(pts: [number, number, number][]): Part {
   return part(pts.map(([x, y, r], i) => ({ id: `stella-${i + 1}`, d: star(x, y, r, r * 0.42, 5) })));
+}
+
+// =====================================================================
+//  V2 — stile CHIBI (testa grande, occhioni, abiti da palco)
+// =====================================================================
+
+/**
+ * Proporzioni chibi: la testa resta grande (kit `k`), il corpo è ridotto
+ * (kit `kb`, scala `bs`) ma resta attaccato al mento.
+ */
+export function chibi(x: number, y: number, s: number, bs = 0.82) {
+  return { k: kit(x, y, s), kb: kit(x, y + 112 * s * (1 - bs), s * bs) };
+}
+
+/** Occhioni chibi: iride grande, pupilla grande, due riflessi, ciglia agli angoli. */
+export function eyesChibi(k: Kit, opts: { w?: number; y?: number; dx?: number; wink?: "sx" | "dx" | null; brows?: boolean } = {}): Part {
+  const { w = 33, y = 22, dx = 44, wink = null, brows = true } = opts;
+  const { L, E, C } = k;
+  const h = w * 1.18;
+  const regions: ColoringRegion[] = [];
+  const lines: string[] = [];
+  for (const side of [-1, 1] as const) {
+    const cx = side * dx;
+    const n = side < 0 ? "sx" : "dx";
+    if (brows) lines.push(`M${L(cx - w * 0.8, y - h * 1.55)}Q${L(cx, y - h * 1.85)} ${L(cx + w * 0.8, y - h * 1.5)}`);
+    if (wink === n) {
+      lines.push(`M${L(cx - w, y)}Q${L(cx, y - h * 0.9)} ${L(cx + w, y)}`);
+      lines.push(`M${L(cx + side * w, y - h * 0.3)}L${L(cx + side * (w + 12), y - h * 0.65)}`);
+      continue;
+    }
+    regions.push({ id: `occhio-${n}`, d: E(cx, y, w, h) });
+    regions.push({ id: `iride-${n}`, d: C(cx, y + h * 0.1, w * 0.78) });
+    regions.push({ id: `pupilla-${n}`, d: C(cx, y + h * 0.18, w * 0.5), fill: "#2b2d42", stroke: 0 });
+    regions.push({ id: `riflesso-${n}`, d: C(cx - w * 0.3, y - h * 0.22, w * 0.27), fill: "#ffffff", stroke: 0 });
+    regions.push({ id: `riflessino-${n}`, d: C(cx + w * 0.32, y + h * 0.38, w * 0.12), fill: "#ffffff", stroke: 0 });
+    lines.push(`M${L(cx - w * 1.02, y - h * 0.25)}Q${L(cx, y - h * 1.25)} ${L(cx + w * 1.02, y - h * 0.25)}`);
+    lines.push(`M${L(cx + side * w, y - h * 0.45)}L${L(cx + side * (w + 12), y - h * 0.78)}`);
+  }
+  return part(regions, lines);
+}
+
+/** Viso chibi: naso minuscolo, guance con righette, bocca a scelta. */
+export function faceChibi(k: Kit, opts: { smile?: "small" | "open" | "big" } = {}): Part {
+  const { smile = "small" } = opts;
+  const { L } = k;
+  const regions: ColoringRegion[] = [];
+  const lines: string[] = [
+    `M${L(-2, 50)}Q${L(4, 56)} ${L(-2, 60)}`,
+    // righette delle guance
+    `M${L(-84, 48)}L${L(-74, 60)}`, `M${L(-72, 46)}L${L(-62, 58)}`,
+    `M${L(84, 48)}L${L(74, 60)}`, `M${L(72, 46)}L${L(62, 58)}`,
+  ];
+  if (smile === "small") lines.push(`M${L(-14, 74)}Q${L(0, 86)} ${L(14, 74)}`);
+  if (smile === "big") lines.push(`M${L(-24, 70)}Q${L(0, 96)} ${L(24, 70)}`);
+  if (smile === "open") {
+    regions.push({ id: "bocca", d: `M${L(-20, 70)}Q${L(0, 104)} ${L(20, 70)}Z` });
+    regions.push({ id: "lingua", d: `M${L(-10, 86)}Q${L(0, 98)} ${L(10, 86)}Z` });
+  }
+  return part(regions, lines);
+}
+
+export function ears(k: Kit): Part {
+  return part([{ id: "orecchio-sx", d: k.C(-98, 18, 17) }, { id: "orecchio-dx", d: k.C(98, 18, 17) }]);
+}
+
+export function earrings(k: Kit): Part {
+  return part([{ id: "orecchino-sx", d: k.C(-102, 44, 8) }, { id: "orecchino-dx", d: k.C(102, 44, 8) }]);
+}
+
+/** Frangetta dritta con ciocche verticali. */
+export function bangsStraight(k: Kit, id = "frangia"): Part {
+  const { L } = k;
+  let d = `M${L(-100, -8)}C${L(-100, -80)} ${L(-60, -122)} ${L(0, -122)}C${L(60, -122)} ${L(100, -80)} ${L(100, -8)}`;
+  for (let px = 100; px > -100; px -= 25) d += `Q${L(px - 12.5, 4)} ${L(px - 25, -8)}`;
+  d += "Z";
+  return part([{ id, d }], [-45, 0, 45].map((px) => `M${L(px, -42)}L${L(px - 2, -16)}`));
+}
+
+/** Chignon alto. */
+export function hairBun(k: Kit): Part {
+  const { C, L } = k;
+  return part(
+    [{ id: "chignon", d: C(15, -118, 38) }, { id: "base-chignon", d: k.E(15, -98, 32, 13) }],
+    [`M${L(-8, -130)}Q${L(15, -148)} ${L(38, -130)}`],
+  );
+}
+
+/** Treccia che scende sul lato destro (dietro la testa). */
+export function braidSide(k: Kit): Part {
+  const { C } = k;
+  const pts: [number, number, number][] = [[112, 10, 28], [124, 62, 27], [130, 114, 26], [128, 166, 25], [120, 218, 24], [108, 268, 22], [96, 312, 20]];
+  return part([
+    ...pts.map(([cx, cy, r], i) => ({ id: `treccia-${i + 1}`, d: C(cx, cy, r) })),
+    { id: "elastico-treccia", d: C(88, 342, 11) },
+  ]);
+}
+
+/** Capelli lunghi lisci (dietro la testa). */
+export function hairLongStraightBack(k: Kit, id = "capelli"): Part {
+  const { L } = k;
+  return part([
+    {
+      id,
+      d: `M${L(-108, -20)}C${L(-110, -90)} ${L(-60, -130)} ${L(0, -130)}C${L(60, -130)} ${L(110, -90)} ${L(108, -20)}L${L(124, 330)}Q${L(95, 320)} ${L(62, 335)}L${L(58, 140)}L${L(-58, 140)}L${L(-62, 335)}Q${L(-95, 320)} ${L(-124, 330)}Z`,
+    },
+  ]);
+}
+
+// ---------- abiti da palco (kit del corpo) ----------
+export function torsoSkin(k: Kit): Part {
+  return part([{ id: "busto", d: k.R(-58, 110, 116, 150, 24) }]);
+}
+
+export function cropTop(k: Kit): Part {
+  return part([{ id: "top", d: k.R(-62, 125, 124, 82, 18) }], [`M${k.L(-62, 190)}L${k.L(62, 190)}`]);
+}
+
+export function offShoulderTop(k: Kit): Part {
+  const { R, S } = k;
+  return part([
+    { id: "top", d: R(-66, 150, 132, 62, 18) },
+    { id: "stellina-1", d: S(-34, 181, 11, 5, 5) },
+    { id: "stellina-2", d: S(4, 172, 9, 4, 5) },
+    { id: "stellina-3", d: S(36, 186, 11, 5, 5) },
+  ]);
+}
+
+export function jacketOpen(k: Kit): Part {
+  const { P } = k;
+  return part([
+    { id: "giacca-sx", d: P([-76, 125], [-30, 125], [-24, 300], [-76, 300]) },
+    { id: "giacca-dx", d: P([76, 125], [30, 125], [24, 300], [76, 300]) },
+    { id: "bavero-sx", d: P([-30, 125], [-6, 125], [-34, 180]) },
+    { id: "bavero-dx", d: P([30, 125], [6, 125], [34, 180]) },
+  ], [`M${k.L(-60, 240)}L${k.L(-40, 240)}`, `M${k.L(40, 240)}L${k.L(60, 240)}`]);
+}
+
+export function belt(k: Kit): Part {
+  return part([{ id: "cintura", d: k.R(-66, 244, 132, 20, 6) }, { id: "fibbia", d: k.R(-14, 240, 28, 28, 6) }]);
+}
+
+/** Pantaloni larghi a vita alta. */
+export function pantsWide(k: Kit): Part {
+  const { P, L } = k;
+  return part(
+    [
+      { id: "pantalone-sx", d: P([-68, 262], [-4, 262], [-8, 440], [-88, 440]) },
+      { id: "pantalone-dx", d: P([68, 262], [4, 262], [8, 440], [88, 440]) },
+    ],
+    [`M${L(-46, 300)}Q${L(-62, 370)} ${L(-46, 425)}`, `M${L(46, 300)}Q${L(62, 370)} ${L(46, 425)}`],
+  );
+}
+
+export function shorts(k: Kit): Part {
+  const { R } = k;
+  return part([
+    { id: "pantaloncini", d: R(-70, 262, 140, 72, 12) },
+    { id: "gamba-sx", d: R(-56, 330, 48, 115, 16) },
+    { id: "gamba-dx", d: R(8, 330, 48, 115, 16) },
+  ]);
+}
+
+export function skirtChain(k: Kit): Part {
+  const { P, L, C } = k;
+  return part(
+    [{ id: "gonna", d: P([-64, 262], [64, 262], [92, 345], [-92, 345]) }, { id: "gamba-sx", d: k.R(-54, 345, 46, 100, 16) }, { id: "gamba-dx", d: k.R(8, 345, 46, 100, 16) },
+     { id: "catenina-1", d: C(-28, 300, 6) }, { id: "catenina-2", d: C(0, 312, 6) }, { id: "catenina-3", d: C(28, 300, 6) }],
+    [`M${L(-56, 280)}Q${L(0, 330)} ${L(56, 280)}`],
+  );
+}
+
+/** Nappe che pendono dalla cintura. */
+export function tassels(k: Kit): Part {
+  const { P, L } = k;
+  return part(
+    [{ id: "nappa-sx", d: P([-46, 300], [-32, 300], [-36, 340], [-42, 340]) }, { id: "nappa-dx", d: P([32, 300], [46, 300], [42, 340], [36, 340]) }],
+    [`M${L(-39, 264)}L${L(-39, 300)}`, `M${L(39, 264)}L${L(39, 300)}`],
+  );
+}
+
+export function sneakers(k: Kit): Part {
+  const { E, L } = k;
+  return part(
+    [{ id: "scarpa-sx", d: E(-32, 446, 44, 20) }, { id: "scarpa-dx", d: E(32, 446, 44, 20) }],
+    [`M${L(-70, 446)}Q${L(-32, 458)} ${L(6, 446)}`, `M${L(-6, 446)}Q${L(32, 458)} ${L(70, 446)}`],
+  );
+}
+
+export function boots(k: Kit): Part {
+  const { R } = k;
+  return part([{ id: "stivale-sx", d: R(-60, 380, 60, 80, 16) }, { id: "stivale-dx", d: R(0, 380, 60, 80, 16) }]);
+}
+
+export function choker(k: Kit): Part {
+  return part([{ id: "girocollo", d: k.R(-22, 112, 44, 12, 6) }]);
+}
+
+export function bracelet(k: Kit, side: "sx" | "dx" = "sx", y = 262): Part {
+  const sx = side === "sx" ? -1 : 1;
+  return part([{ id: `braccialetto-${side}`, d: k.R(sx * 79 - 22, y, 44, 14, 7) }]);
+}
+
+export type ArmPose = "down" | "hip" | "up" | "mic" | "wave";
+
+/** Braccia in posa: giù, mano sul fianco, pugno alzato, microfono, saluto. */
+export function armsPose(k: Kit, left: ArmPose, right: ArmPose): Part {
+  const { R, C, P } = k;
+  const regions: ColoringRegion[] = [];
+  const one = (side: -1 | 1, pose: ArmPose) => {
+    const n = side < 0 ? "sx" : "dx";
+    const m = (px: number, py: number): [number, number] => [side * px, py];
+    switch (pose) {
+      case "down":
+        regions.push({ id: `braccio-${n}`, d: R(side * 62 + (side < 0 ? -44 : 0), 135, 44, 135, 22) });
+        regions.push({ id: `mano-${n}`, d: C(side * 84, 282, 22) });
+        break;
+      case "up":
+        regions.push({ id: `braccio-${n}`, d: R(side * 62 + (side < 0 ? -44 : 0), -50, 44, 190, 22) });
+        regions.push({ id: `mano-${n}`, d: C(side * 84, -62, 23) });
+        break;
+      case "hip":
+        regions.push({ id: `braccio-${n}`, d: P(m(62, 135), m(98, 150), m(120, 220), m(88, 232)) });
+        regions.push({ id: `avambraccio-${n}`, d: P(m(88, 232), m(120, 220), m(78, 270), m(56, 250)) });
+        regions.push({ id: `mano-${n}`, d: C(side * 62, 258, 17) });
+        break;
+      case "mic":
+        regions.push({ id: `braccio-${n}`, d: P(m(62, 135), m(98, 150), m(118, 225), m(84, 235)) });
+        regions.push({ id: `avambraccio-${n}`, d: P(m(84, 235), m(118, 225), m(100, 120), m(68, 130)) });
+        regions.push({ id: `mano-${n}`, d: C(side * 84, 118, 19) });
+        regions.push({ id: `asta-microfono-${n}`, d: R(side * 84 - 11, 36, 22, 72, 10) });
+        regions.push({ id: `microfono-${n}`, d: C(side * 84, 30, 26) });
+        break;
+      case "wave":
+        regions.push({ id: `braccio-${n}`, d: P(m(62, 135), m(98, 150), m(130, 210), m(100, 226)) });
+        regions.push({ id: `avambraccio-${n}`, d: P(m(100, 226), m(130, 210), m(150, 110), m(118, 112)) });
+        regions.push({ id: `mano-${n}`, d: C(side * 136, 96, 21) });
+        break;
+    }
+  };
+  one(-1, left);
+  one(1, right);
+  return part(regions);
+}
+
+/** Cornice inclinata sullo sfondo (come una foto). */
+export function frameBg(cx: number, cy: number, w: number, h: number, angleDeg: number, id = "cornice"): Part {
+  const a = (angleDeg * Math.PI) / 180;
+  const pts: [number, number][] = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]].map(([px, py]) => [
+    cx + px * Math.cos(a) - py * Math.sin(a),
+    cy + px * Math.sin(a) + py * Math.cos(a),
+  ]);
+  return part([{ id, d: poly(...pts) }]);
+}
+
+/** Scintille a 4 punte in coordinate di pagina. */
+export function sparklesBg(pts: [number, number, number][]): Part {
+  return part(pts.map(([x, y, r], i) => ({ id: `scintilla-${i + 1}`, d: star(x, y, r, r * 0.35, 4) })));
 }

@@ -98,14 +98,16 @@ I giochi generano round casuali in `src/components/games/rounds.tsx`; ogni gener
 
 Il catalogo è in `src/content/coloring.ts` (animali e piante, fatti con forme semplici) e `src/content/coloring-characters.ts` (personaggi). Ogni disegno è una lista di **zone** (path SVG chiusi, in uno spazio 1000 × 700) che si riempiono con un tocco, più alcune **linee** decorative. Ordine delle zone = ordine di disegno (le ultime stanno sopra).
 
-I personaggi si costruiscono con il **kit** in `src/content/coloring-kit.ts`: testa, occhioni con riflesso, viso, capelli (lunghi, caschetto, codini, coda, a punte, frangia), collo, vestito, top e gonna, giacca, tuta da eroe con emblema, braccia (anche alzate), gambe con stivali, ali da fata, mantello, cappuccio, maschera, tiara, fiore tra i capelli, cuffie, microfono, spada, scintille. Un personaggio nuovo si compone in 10 righe:
+I personaggi si costruiscono con il **kit** in `src/content/coloring-kit.ts` in stile **chibi** (testa grande, corpo piccolo e cicciotto): `chibi(x, y, scala)` restituisce due kit, `k` per la testa e `kb` per il corpo, già attaccati al mento. Parti disponibili: testa, occhioni chibi con pupilla nera e riflessi (anche con occhiolino), viso con guance, orecchie e orecchini, capelli (lunghi mossi o lisci, caschetto, codini, coda alta, chignon, treccia laterale, a punte), frange (a ciocche, laterale, dritta), collo, vestito, top e gonna, crop top, top con stelle, giacca aperta, tuta da eroe con emblema, cintura con nappe, pantaloni larghi, pantaloncini, gonna con catenina, gambe con stivali o sneakers, braccia in posa (giù, mano sul fianco, pugno alzato, microfono, saluto), ali da fata, mantello, cappuccio, maschera, tiara, fiore tra i capelli, cuffie, girocollo, braccialetto, spada, scintille, cornici inclinate sullo sfondo. Un personaggio nuovo si compone in una decina di righe:
 
 ```ts
-const k = kit(500, 178, 0.95);            // posizione e scala
+const { k, kb } = chibi(500, 185, 1.22);          // posizione e scala
 page("fata-vento", "fate", "Fata del Vento", "🌬️",
-  fairyWings(k), hairLongBack(k), neck(k), legs(k, { boots: true }), topSkirt(k), arms(k),
-  head(k), bangsSide(k), eyes(k), face(k, { smile: "big" }), tiara(k));
+  fairyWings(k), hairLongBack(k), neck(kb), legs(kb, { boots: true }), topSkirt(kb), armsPose(kb, "hip", "up"),
+  head(k), bangsSide(k), eyesChibi(k), faceChibi(k, { smile: "big" }), tiara(k));
 ```
+
+Le zone possono avere un colore iniziale (`fill`, usato per le pupille nere) e un contorno diverso (`stroke: 0` per i riflessi bianchi).
 
 Per vedere subito il risultato senza avviare l'app: lo script usato durante lo sviluppo compila i file dei contenuti e genera un'immagine con tutte le pagine (vedi README, sezione "Anteprima dei disegni da colorare").
 

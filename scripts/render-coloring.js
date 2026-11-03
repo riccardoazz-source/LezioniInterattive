@@ -18,7 +18,7 @@ const only = process.argv[2] ? process.argv[2].split(",") : null;
 const pages = COLORING_PAGES.filter((p) => !only || only.includes(p.id));
 const svg = (p) =>
   `<svg viewBox="0 0 1000 700" width="330" height="231" style="background:#fff;border:1px solid #ccc;border-radius:8px">${p.regions
-    .map((r) => `<path d="${r.d}" fill="#fff" stroke="#2b2d42" stroke-width="${r.id === "sfondo" ? 0 : 5}" stroke-linejoin="round"/>`)
+    .map((r) => `<path d="${r.d}" fill="${r.fill || "#fff"}" stroke="#2b2d42" stroke-width="${r.stroke ?? (r.id === "sfondo" ? 0 : 5)}" stroke-linejoin="round"/>`)
     .join("")}${(p.lines || []).map((d) => `<path d="${d}" fill="none" stroke="#2b2d42" stroke-width="5" stroke-linecap="round"/>`).join("")}</svg>`;
 const html = `<html><body style="margin:10px;font-family:sans-serif;display:flex;flex-wrap:wrap;gap:10px;width:1060px">${pages
   .map((p) => `<div style="text-align:center;font-size:13px">${svg(p)}<div>${p.id}</div></div>`)

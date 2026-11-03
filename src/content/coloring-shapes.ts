@@ -5,6 +5,10 @@ export type ColoringCategoryId = "animali" | "piante" | "bamboline" | "fate" | "
 export interface ColoringRegion {
   id: string;
   d: string;
+  /** colore iniziale (es. pupille nere); si può comunque ricolorare */
+  fill?: string;
+  /** spessore del contorno (0 = nessuno); default 5 */
+  stroke?: number;
 }
 
 export interface ColoringPage {

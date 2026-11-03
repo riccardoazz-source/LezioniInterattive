@@ -155,9 +155,9 @@ export function ColoringSvg({ page, fills, onRegion, interactive = false, classN
         <path
           key={r.id}
           d={r.d}
-          fill={fills[r.id] ?? "#ffffff"}
+          fill={fills[r.id] ?? r.fill ?? "#ffffff"}
           stroke="#2b2d42"
-          strokeWidth={r.id === "sfondo" ? 0 : 5}
+          strokeWidth={r.stroke ?? (r.id === "sfondo" ? 0 : 5)}
           strokeLinejoin="round"
           onPointerDown={interactive && onRegion ? () => onRegion(r.id) : undefined}
           style={interactive ? { cursor: "pointer" } : undefined}
