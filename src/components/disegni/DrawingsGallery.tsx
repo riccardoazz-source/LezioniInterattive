@@ -1,0 +1,79 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { COLORING_MAP } from "@/content/coloring";
+import { listDrawings, removeDrawing, type SavedDrawing } from "@/lib/storage/drawings";
+import { uid } from "@/lib/random";
+import { Tile } from "@/components/ui/Tile";
+import { DrawingPreview } from "@/components/draw/DrawingCanvas";
+import { ColoringSvg } from "@/components/draw/ColoringBoard";
+
+export function DrawingsHome() {
+  const router = useRouter();
+  const [drawings, setDrawings] = useState<SavedDrawing[] | null>(null);
+
+  useEffect(() => {
+    listDrawings().then(setDrawings);
+  }, []);
+
+  const remove = async (d: SavedDrawing) => {
+    if (!confirm("Eliminare questo disegno?")) return;
+    await removeDrawing(d.id);
+    setDrawings((list) => list?.filter((x) => x.id !== d.id) ?? null);
+  };
+
+  return (
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pb-8">
+      <div className="grid grid-cols-2 gap-4">
+        <button type="button" onClick={() => router.push(`/disegni/libero/${uid()}`)} className="no-select text-left">
+          <div className="flex min-h-44 flex-col items-center justify-center gap-2 rounded-[var(--radius-bubble)] bg-sky-100 p-5 text-center shadow-md transition active:scale-95">
+            <span className="text-7xl">🖌️</span>
+            <span className="text-2xl font-black">Disegno libero</span>
+            <span className="text-sm font-semibold text-muted">Foglio bianco e Apple Pencil</span>
+          </div>
+        </button>
+        <Tile href="/disegni/colora" emoji="🖍️" title="Da colorare" subtitle="Scegli un disegno" colorClass="bg-amber-100" size="lg" />
+      </div>
+
+      <section>
+        <h2 className="mb-2 text-lg font-black">🖼️ I miei disegni</h2>
+        {drawings === null ? (
+          <p className="text-muted">Carico…</p>
+        ) : drawings.length === 0 ? (
+          <p className="rounded-3xl bg-white p-6 text-center text-muted shadow-sm">Nessun disegno ancora. Inizia da un foglio bianco o da un disegno da colorare!</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {drawings.map((d) => {
+              const page = d.kind === "coloring" && d.pageId ? COLORING_MAP[d.pageId] : null;
+              const href = page ? `/disegni/colora/${page.id}` : `/disegni/libero/${d.id}`;
+              return (
+                <div key={d.id} className="relative overflow-hidden rounded-3xl bg-white shadow-md">
+                  <Link href={href} className="block">
+                    <div className="aspect-[10/7] w-full bg-white">
+                      {page ? (
+                        <ColoringSvg page={page} fills={d.fills} strokes={d.strokes} className="h-full w-full" />
+                      ) : (
+                        <DrawingPreview strokes={d.strokes} className="h-full w-full" />
+                      )}
+                    </div>
+                    <div className="truncate px-3 py-2 text-sm font-bold">{d.title || (page ? page.title : "Disegno")}</div>
+                  </Link>
+                  <button
+                    type="button"
+                    aria-label="Elimina"
+                    onClick={() => remove(d)}
+                    className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-base shadow"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

@@ -1,11 +1,11 @@
 -- Schema per Neon (Postgres). Eseguilo una volta nella SQL Editor di Neon.
 
+-- Una nota è un quaderno: `pages` contiene le pagine (testo, foto in base64, tratti della lavagna).
 create table if not exists notes (
   id          text primary key,
   title       text not null default '',
   subject     text,
-  body        text not null default '',
-  drawing     jsonb not null default '[]'::jsonb,
+  pages       jsonb not null default '[]'::jsonb,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );

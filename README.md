@@ -4,15 +4,16 @@ App per imparare, giocare e rileggere le lezioni di casa. Pensata per una bambin
 
 Funziona su **PC, iPhone e iPad** (anche come app sulla schermata Home) e supporta **Apple Pencil** con pressione e rifiuto del palmo.
 
-## Le tre aree
+## Le quattro aree
 
 | Area | Cosa c'è |
 | --- | --- |
 | 📚 **Impara** | Lezioni per materia (Italiano, Matematica, Scienze, Inglese, Il mondo, Arte). Ogni lezione è una sequenza di attività: spiegazione letta ad alta voce, card da toccare, domande a scelta, conta gli oggetti, ricalca lettere e numeri con la penna, disegno libero, abbinamenti. Alla fine si guadagnano stelle. |
 | 🎮 **Gioca** | 10 giochi con round casuali e difficoltà legata al livello: Conta!, Calcoli, Più grande?, Cosa viene dopo?, Forme e colori, Che ore sono?, Prima lettera, Costruisci la parola, Memory, English words. |
-| ✏️ **Note** | Le lezioni che scrivi tu: titolo, materia, testo e una lavagna per Apple Pencil. La bambina le rilegge (anche ascoltandole); per modificarle c'è un "cancello genitori" (una moltiplicazione). |
+| 🎨 **Disegni** | Disegno libero su foglio bianco con Apple Pencil, e un catalogo di 18 disegni da colorare (animali, piante, bamboline, eroi e cartoni originali): si tocca una zona per riempirla di colore, oppure si disegna sopra con la penna. I disegni si salvano nella galleria "I miei disegni". |
+| 📓 **Note** | I quaderni delle lezioni di casa. Ogni quaderno ha più pagine e ogni pagina ha testo, foto (dalla fotocamera o dal rullino) e una lavagna per Apple Pencil. La bambina sfoglia le pagine e può farsele leggere. Niente blocco: la matita in alto apre la modifica. |
 
-Le impostazioni (⚙️ in home, protette dal cancello genitori) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
+Le impostazioni (⚙️ in home, protette da un "cancello genitori": una moltiplicazione) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
 
 ## Avvio in locale
 
@@ -31,7 +32,7 @@ Controlli: `npm run typecheck`, `npm run lint`, `npm run build`.
 2. Su [vercel.com](https://vercel.com) → **Add New Project** → importa il repository. Vercel riconosce Next.js da solo: nessuna configurazione necessaria.
 3. Deploy. Da iPhone/iPad apri l'URL in Safari → **Condividi → Aggiungi alla schermata Home**: l'app si apre a schermo intero.
 
-Senza database, le note e i progressi restano salvati **nel browser del dispositivo** (localStorage). Funziona tutto, ma le note non si vedono da un altro dispositivo.
+Senza database, note, disegni e progressi restano salvati **nel browser del dispositivo** (IndexedDB e localStorage). Funziona tutto, ma le note non si vedono da un altro dispositivo.
 
 ## Aggiungere il server (Neon)
 
@@ -59,19 +60,23 @@ src/
   app/                 pagine (Next.js App Router)
     impara/            materie → lezioni → lezione
     gioca/             giochi
-    note/              note del genitore
+    disegni/           disegno libero e da colorare
+    note/              quaderni del genitore
     impostazioni/      impostazioni
     api/               API per Neon (notes, health)
-  content/             CONTENUTI: lezioni, materie, giochi (solo dati)
+  content/             CONTENUTI: lezioni, materie, giochi, disegni da colorare (solo dati)
   components/
     lesson/            motore delle lezioni (un renderer per tipo di attività)
     games/             motore dei giochi + generatori di round
-    draw/              lavagna Apple Pencil (canvas, strumenti, anteprima)
-    notes/             lista e editor note
+    draw/              lavagna Apple Pencil (canvas, strumenti, anteprima) e tavola da colorare
+    disegni/           galleria, disegno libero, catalogo e colorazione
+    notes/             lista e editor dei quaderni
     ui/                pulsanti, header, stelle, coriandoli, cancello genitori
   lib/                 impostazioni, progressi, voce, storage (locale/API), db
 db/schema.sql          schema Postgres per Neon
 ```
+
+> Le foto nei quaderni vengono ridotte a 1280 px e salvate come JPEG dentro la nota (circa 100-250 KB l'una). Con Neon finiscono nel campo `pages` (jsonb): va bene per decine di foto per quaderno; per centinaia conviene passare a Vercel Blob.
 
 ## Stack
 

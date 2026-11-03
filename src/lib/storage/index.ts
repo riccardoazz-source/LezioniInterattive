@@ -2,14 +2,14 @@ import { ApiNotesRepository } from "./api";
 import { LocalNotesRepository } from "./local";
 import type { NotesRepository } from "./types";
 
-export type { Note, Stroke, StrokePoint, NotesRepository } from "./types";
-export { BOARD_W, BOARD_H } from "./types";
+export type { Note, NotePage, NoteImage, Stroke, StrokePoint, NotesRepository } from "./types";
+export { BOARD_W, BOARD_H, newPage, normalizeNote, noteText } from "./types";
 
 let repo: NotesRepository | null = null;
 
 /**
  * Scelta del backend:
- *  - default → localStorage (nessun server);
+ *  - default → IndexedDB nel browser (nessun server);
  *  - NEXT_PUBLIC_DATA_BACKEND=api → /api/notes su Neon.
  */
 export function getNotesRepository(): NotesRepository {

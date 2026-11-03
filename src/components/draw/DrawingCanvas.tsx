@@ -44,6 +44,10 @@ interface CanvasProps {
   /** contenuto mostrato dietro la lavagna (es. lettera da ricalcare) */
   guide?: React.ReactNode;
   className?: string;
+  /** senza sfondo bianco: per sovrapporre la lavagna a un disegno */
+  transparent?: boolean;
+  /** riempie il contenitore assoluto invece di avere un proprio aspect ratio */
+  fill?: boolean;
 }
 
 function strokeWidth(stroke: Stroke, p: number, pen: boolean): number {
@@ -105,6 +109,8 @@ export function DrawingCanvas({
   readOnly = false,
   guide,
   className = "",
+  transparent = false,
+  fill = false,
 }: CanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -224,8 +230,10 @@ export function DrawingCanvas({
   return (
     <div
       ref={containerRef}
-      className={`draw-surface relative w-full overflow-hidden rounded-3xl bg-white shadow-inner ${className}`}
-      style={{ aspectRatio: `${BOARD_W} / ${BOARD_H}` }}
+      className={`draw-surface overflow-hidden rounded-3xl ${fill ? "absolute inset-0" : "relative w-full"} ${
+        transparent ? "" : "bg-white shadow-inner"
+      } ${className}`}
+      style={fill ? undefined : { aspectRatio: `${BOARD_W} / ${BOARD_H}` }}
     >
       {guide && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>

@@ -9,7 +9,7 @@ export default async function NotaPage({ params }: PageProps<"/note/[id]">) {
   const { id } = await params;
   return (
     <main className="flex flex-1 flex-col">
-      <AppHeader title="Nota" emoji="✏️" backHref="/note" />
+      <AppHeader title="Quaderno" emoji="📓" backHref="/note" />
       <NoteEditor id={id} />
     </main>
   );

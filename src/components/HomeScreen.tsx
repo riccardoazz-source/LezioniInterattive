@@ -37,10 +37,11 @@ export function HomeScreen() {
         </div>
       )}
 
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid grid-cols-2 gap-4">
         <Tile href="/impara" emoji="📚" title="Impara" subtitle="Le lezioni" colorClass="bg-sky-100" size="lg" />
         <Tile href="/gioca" emoji="🎮" title="Gioca" subtitle="I giochi" colorClass="bg-amber-100" size="lg" />
-        <Tile href="/note" emoji="✏️" title="Note" subtitle="Le lezioni di casa" colorClass="bg-pink-100" size="lg" />
+        <Tile href="/disegni" emoji="🎨" title="Disegni" subtitle="Disegna e colora" colorClass="bg-emerald-100" size="lg" />
+        <Tile href="/note" emoji="📓" title="Note" subtitle="I quaderni di casa" colorClass="bg-pink-100" size="lg" />
       </div>
     </main>
   );

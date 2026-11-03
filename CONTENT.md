@@ -94,7 +94,11 @@ Lo spazio **Note** è anche un modo per sperimentare: scrivi lì la lezione che 
 
 I giochi generano round casuali in `src/components/games/rounds.tsx`; ogni generatore riceve il `level` e adatta numeri, parole e opzioni. Per aggiungere un gioco: aggiungi la definizione in `src/content/games.ts`, un generatore in `rounds.tsx` (per giochi "domanda + risposte") o un componente dedicato (come Memory e Sillabe), e collegalo in `GamePlayer.tsx`. Le parole di `lettere`, `sillabe` e `inglese` sono liste in cima ai file: aggiungere parole è il modo più semplice per rinfrescare i giochi.
 
-## 5. Idee per il futuro
+## 5. Disegni da colorare
+
+Il catalogo è in `src/content/coloring.ts`. Ogni disegno è una lista di **zone** (path SVG chiusi, in uno spazio 1000 × 700) che si riempiono con un tocco, più alcune **linee** decorative. Ci sono helper per cerchi, ellissi, rettangoli, poligoni e stelle: un nuovo disegno si scrive in 20-30 righe. Ordine delle zone = ordine di disegno (le ultime stanno sopra). Tutti i personaggi devono essere originali: non si possono copiare personaggi protetti da copyright (Teen Titans, Winx, Gumball, ecc.), ma si possono fare personaggi "nello stesso stile" (supereroi, fatine, gattini cartoon, pop star).
+
+## 6. Idee per il futuro
 
 - Audio registrato dal genitore per le lezioni (al posto o insieme alla voce sintetica).
 - Sincronizzazione progressi su Neon (tabella `progress` già nello schema).
