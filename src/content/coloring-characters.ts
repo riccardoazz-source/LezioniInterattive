@@ -32,7 +32,7 @@ function wand(kb: Kit): Part {
 }
 
 /** Personaggio singolo in piedi al centro. */
-const std = () => chibi(500, 185, 1.22);
+const std = () => chibi(500, 192, 1.22);
 
 // ====================== STELLE POP ======================
 const stellaPop = (() => {
@@ -68,7 +68,7 @@ const novaPop = (() => {
 
 const guerrieraPop = (() => {
   const { k, kb } = std();
-  const ks = kit(500 + 62 * kb.s, 185 + 112 * 1.22 * (1 - 0.82) + 130 * kb.s, kb.s);
+  const ks = kit(500 + 62 * kb.s, 192 + 112 * 1.22 * (1 - 0.82) + 130 * kb.s, kb.s);
   return page("guerriera-pop", "pop", "Guerriera Pop", "⚔️",
     bgStars([[100, 100, 26], [900, 90, 22], [880, 580, 20]]),
     sparklesBg([[200, 220, 16], [820, 300, 14], [160, 520, 14]]),
