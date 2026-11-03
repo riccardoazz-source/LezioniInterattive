@@ -19,6 +19,10 @@ export interface ImagePage {
 
 export const IMAGE_PAGES: ImagePage[] = [
   // GENERATO DA scripts/scan-coloring.js — non modificare a mano sotto questa riga
+  {"id":"pop-huntrix","title":"Huntrix","category":"pop","src":"/colora/pop/huntrix.png"},
+  {"id":"pop-mira-2","title":"Mira 2","category":"pop","src":"/colora/pop/mira-2.png"},
+  {"id":"pop-mira","title":"Mira","category":"pop","src":"/colora/pop/mira.png"},
+  {"id":"pop-zoey","title":"Zoey","category":"pop","src":"/colora/pop/zoey.png"},
 ];
 
 export const IMAGE_PAGE_MAP: Record<string, ImagePage> = Object.fromEntries(IMAGE_PAGES.map((p) => [p.id, p]));
