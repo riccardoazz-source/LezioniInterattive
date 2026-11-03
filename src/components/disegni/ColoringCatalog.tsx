@@ -11,8 +11,16 @@ import { ColoringSvg } from "@/components/draw/ColoringBoard";
 import { Button } from "@/components/ui/Button";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
-const EXTRA_CATEGORIES = [{ id: "principesse", name: "Principesse", emoji: "👑", color: "bg-pink-100" }, { id: "altro", name: "Altro", emoji: "🎨", color: "bg-amber-100" }];
-const ALL_CATEGORIES = [...COLORING_CATEGORIES, ...EXTRA_CATEGORIES];
+const EXTRA_CATEGORIES = [
+  { id: "cuccioli", name: "Cuccioli", emoji: "🐶", color: "bg-orange-100" },
+  { id: "principesse", name: "Principesse", emoji: "👑", color: "bg-pink-100" },
+  { id: "alfabeto", name: "Alfabeto", emoji: "🔤", color: "bg-rose-100" },
+  { id: "numeri", name: "Numeri", emoji: "🔢", color: "bg-sky-100" },
+  { id: "altro", name: "Altro", emoji: "🎨", color: "bg-amber-100" },
+];
+/** Ordine di visualizzazione nel catalogo. */
+const ORDER = ["pop", "cuccioli", "animali", "fate", "eroi", "principesse", "cartoni", "alfabeto", "numeri", "piante", "bamboline", "altro"];
+const ALL_CATEGORIES = [...COLORING_CATEGORIES, ...EXTRA_CATEGORIES].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 const catInfo = (id: string) =>
   ALL_CATEGORIES.find((c) => c.id === id) ?? { id, name: id.charAt(0).toUpperCase() + id.slice(1), emoji: "🖍️", color: "bg-white" };
 
@@ -75,7 +83,10 @@ export function ColoringCatalog() {
     ...IMAGE_PAGES.map((p) => ({ id: p.id, title: p.title, category: p.category, src: p.src, custom: false })),
     ...custom.map((p) => ({ id: p.id, title: p.title, category: p.category, src: p.dataUrl, custom: true })),
   ];
-  const imageCats = Array.from(new Set(images.map((i) => i.category)));
+  const imageCats = Array.from(new Set(images.map((i) => i.category))).sort((a, b) => {
+    const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pb-8">
