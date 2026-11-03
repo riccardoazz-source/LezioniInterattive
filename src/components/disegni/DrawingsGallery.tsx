@@ -50,12 +50,19 @@ export function DrawingsHome() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {drawings.map((d) => {
               const page = d.kind === "coloring" && d.pageId ? COLORING_MAP[d.pageId] : null;
-              const href = page ? `/disegni/colora/${page.id}` : `/disegni/libero/${d.id}`;
+              const href = d.kind === "image" && d.pageId ? `/disegni/colora/immagine/${d.pageId}` : page ? `/disegni/colora/${page.id}` : `/disegni/libero/${d.id}`;
               return (
                 <div key={d.id} className="relative overflow-hidden rounded-3xl bg-white shadow-md">
                   <Link href={href} className="block">
                     <div className="flex aspect-[10/7] w-full items-center justify-center bg-gray-100">
-                      {page ? (
+                      {d.kind === "image" ? (
+                        d.thumbnail ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={d.thumbnail} alt="" className="h-full w-full object-contain bg-white" />
+                        ) : (
+                          <span className="text-4xl">🖍️</span>
+                        )
+                      ) : page ? (
                         <ColoringSvg page={page} fills={d.fills} strokes={d.strokes} className="h-full w-full bg-white" />
                       ) : (
                         <svg viewBox={`0 0 ${PAGE_W} ${PAGE_H}`} className="h-full bg-white shadow" aria-hidden>

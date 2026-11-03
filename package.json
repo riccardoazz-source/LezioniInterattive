@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "colora:scan": "node scripts/scan-coloring.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",

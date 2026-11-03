@@ -1,7 +1,7 @@
-/** Piccolo wrapper su IndexedDB: due "tabelle", note e disegni. */
+/** Piccolo wrapper su IndexedDB: note, disegni e disegni da colorare importati. */
 const DB_NAME = "lezioni-interattive";
-const VERSION = 2;
-export const STORES = { notes: "notes", drawings: "drawings" } as const;
+const VERSION = 3;
+export const STORES = { notes: "notes", drawings: "drawings", pages: "pages" } as const;
 export type StoreName = (typeof STORES)[keyof typeof STORES];
 
 function openDb(): Promise<IDBDatabase> {

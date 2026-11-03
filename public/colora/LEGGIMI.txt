@@ -1,0 +1,8 @@
+Metti qui i disegni da colorare, una cartella per categoria:
+
+  public/colora/pop/stella-pop.png
+  public/colora/fate/fata-del-fuoco.png
+  public/colora/eroi/capitan-fulmine.png
+
+Formato: PNG o JPG, linee nere su sfondo bianco, circa 1000-1500 px di lato.
+Poi lancia:  npm run colora:scan
