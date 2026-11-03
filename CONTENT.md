@@ -96,22 +96,7 @@ I giochi generano round casuali in `src/components/games/rounds.tsx`; ogni gener
 
 ## 5. Disegni da colorare
 
-Il catalogo è in `src/content/coloring.ts` (animali e piante, fatti con forme semplici) e `src/content/coloring-characters.ts` (personaggi). Ogni disegno è una lista di **zone** (path SVG chiusi, in uno spazio 1000 × 700) che si riempiono con un tocco, più alcune **linee** decorative. Ordine delle zone = ordine di disegno (le ultime stanno sopra).
-
-I personaggi si costruiscono con il **kit** in `src/content/coloring-kit.ts` in stile **chibi** (testa grande, corpo piccolo e cicciotto): `chibi(x, y, scala)` restituisce due kit, `k` per la testa e `kb` per il corpo, già attaccati al mento. Parti disponibili: testa, occhioni chibi con pupilla nera e riflessi (anche con occhiolino), viso con guance, orecchie e orecchini, capelli (lunghi mossi o lisci, caschetto, codini, coda alta, chignon, treccia laterale, a punte), frange (a ciocche, laterale, dritta), collo, vestito, top e gonna, crop top, top con stelle, giacca aperta, tuta da eroe con emblema, cintura con nappe, pantaloni larghi, pantaloncini, gonna con catenina, gambe con stivali o sneakers, braccia in posa (giù, mano sul fianco, pugno alzato, microfono, saluto), ali da fata, mantello, cappuccio, maschera, tiara, fiore tra i capelli, cuffie, girocollo, braccialetto, spada, scintille, cornici inclinate sullo sfondo. Un personaggio nuovo si compone in una decina di righe:
-
-```ts
-const { k, kb } = chibi(500, 185, 1.22);          // posizione e scala
-page("fata-vento", "fate", "Fata del Vento", "🌬️",
-  fairyWings(k), hairLongBack(k), neck(kb), legs(kb, { boots: true }), topSkirt(kb), armsPose(kb, "hip", "up"),
-  head(k), bangsSide(k), eyesChibi(k), faceChibi(k, { smile: "big" }), tiara(k));
-```
-
-Le zone possono avere un colore iniziale (`fill`, usato per le pupille nere) e un contorno diverso (`stroke: 0` per i riflessi bianchi).
-
-Per vedere subito il risultato senza avviare l'app: lo script usato durante lo sviluppo compila i file dei contenuti e genera un'immagine con tutte le pagine (vedi README, sezione "Anteprima dei disegni da colorare").
-
-Tutti i personaggi devono essere originali: non si possono copiare personaggi protetti da copyright (Teen Titans, Winx, Gumball, K-pop Demon Hunters, ecc.), ma si possono fare personaggi "nello stesso stile": fatine con ali e occhioni, squadre di giovani eroi, animali cartoon, pop star con microfono e spada.
+Sono immagini (PNG/JPG con linee nere) in `public/colora/<categoria>/`, elencate in `src/content/coloring-images.ts` da `npm run colora:scan`. Le categorie (nome, emoji, colore, ordine) sono in `src/content/coloring-categories.ts`. Il riempimento a secchiello lavora sui pixel: linee nette e chiuse danno il risultato migliore. Vedi il README per come preparare le immagini da PDF.
 
 ## 6. Idee per il futuro
 

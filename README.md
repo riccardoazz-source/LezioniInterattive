@@ -10,7 +10,7 @@ Funziona su **PC, iPhone e iPad** (anche come app sulla schermata Home) e suppor
 | --- | --- |
 | 📚 **Impara** | Lezioni per materia (Italiano, Matematica, Scienze, Inglese, Il mondo, Arte). Ogni lezione è una sequenza di attività: spiegazione letta ad alta voce, card da toccare, domande a scelta, conta gli oggetti, ricalca lettere e numeri con la penna, disegno libero, abbinamenti. Alla fine si guadagnano stelle. |
 | 🎮 **Gioca** | 10 giochi con round casuali e difficoltà legata al livello: Conta!, Calcoli, Più grande?, Cosa viene dopo?, Forme e colori, Che ore sono?, Prima lettera, Costruisci la parola, Memory, English words. |
-| 🎨 **Disegni** | Disegno libero su un foglio bianco a tutta pagina con Apple Pencil, e i disegni da colorare: **immagini vere** (PNG/JPG con linee nere) con riempimento a secchiello sui pixel, fermato dalle linee, più la penna sopra. Il catalogo contiene già oltre 100 disegni (stelle pop, cuccioli, animali selvatici e della fattoria, alfabeto, numeri); altri si aggiungono dall'app (dal rullino) o dalla cartella `public/colora/`. In fondo restano i "disegni semplici" fatti con forme base. Tutto si salva nella galleria "I miei disegni". |
+| 🎨 **Disegni** | Disegno libero su un foglio bianco a tutta pagina con Apple Pencil, e i disegni da colorare: **immagini vere** (PNG/JPG con linee nere) con riempimento a secchiello sui pixel, fermato dalle linee, più la penna sopra. Il catalogo contiene già oltre 450 disegni in 17 categorie (stelle pop, fate, principesse, cuccioli, gattini, coniglietti, animali, uccelli, angeli, unicorni, natura, fiori, Natale, moda, viaggi nel mondo, alfabeto, numeri); altri si aggiungono dall'app (dal rullino) o dalla cartella `public/colora/`. Tutto si salva nella galleria "I miei disegni". |
 | 📓 **Note** | I quaderni delle lezioni di casa: fogli a righe a tutta pagina da sfogliare. Su ogni foglio si scrive direttamente con Apple Pencil (modalità Penna), con la tastiera (modalità Testo) e si mettono foto che si spostano e ridimensionano (modalità Foto). Il pulsante 🔊 legge il testo della pagina. Nessun blocco genitori. |
 
 Ogni eliminazione (quaderni, pagine, disegni, progressi) chiede di scrivere la parola **Elimina** per confermare, così le dita piccole non cancellano nulla per sbaglio.
@@ -60,21 +60,13 @@ Vedi [`CONTENT.md`](CONTENT.md): spiega la struttura delle lezioni, i tipi di at
 Due modi:
 
 1. **Dall'app** (il più comodo su iPad): Disegni → Da colorare → "Aggiungi un disegno" → scegli le immagini dal rullino, dai un titolo e una categoria. Restano salvate nel dispositivo.
-2. **Nel repository** (per averle su tutti i dispositivi): metti i file in `public/colora/<categoria>/nome-del-disegno.png` e lancia `npm run colora:scan`, che aggiorna `src/content/coloring-images.ts`. Poi commit e deploy.
+2. **Nel repository** (per averle su tutti i dispositivi): metti i file in `public/colora/<categoria>/nome-del-disegno.png`, genera le miniature con `bash scripts/make-thumbs.sh` (serve ImageMagick) e lancia `npm run colora:scan`, che aggiorna `src/content/coloring-images.ts`. Poi commit e deploy. Le categorie (nome, emoji, ordine) sono in `src/content/coloring-categories.ts`.
 
 Per i PDF (molti libri da colorare gratuiti sono PDF): converti le pagine in PNG, per esempio con `pdftoppm -png -r 165 libro.pdf pagina`, ritaglia intestazioni e loghi, e metti i file nella cartella della categoria.
 
 Requisiti dell'immagine: linee nere nette su sfondo bianco, senza ombreggiature, 1000-1500 px di lato. Il secchiello riempie la zona chiara toccata fino alle linee: se una linea è interrotta il colore "esce", come con i pennarelli veri.
 
 Dove trovarle: un generatore di immagini (ChatGPT, Gemini, Copilot…) con un prompt tipo *"coloring page for kids, thick clean black outlines, white background, no shading, chibi fairy with wings"*; oppure disegni da colorare gratuiti per uso personale. Attenzione ai personaggi protetti da copyright: per uso in famiglia va bene, ma non pubblicarli nel repository se è pubblico.
-
-## Anteprima dei disegni semplici
-
-```bash
-node scripts/render-coloring.js
-```
-
-Genera `coloring-preview.png` con tutte le pagine (serve Playwright: `npm i -D playwright && npx playwright install chromium`). Utile quando si aggiungono personaggi.
 
 ## Struttura del progetto
 
@@ -87,11 +79,11 @@ src/
     note/              quaderni del genitore
     impostazioni/      impostazioni
     api/               API per Neon (notes, health)
-  content/             CONTENUTI: lezioni, materie, giochi, disegni da colorare (solo dati)
+  content/             CONTENUTI: lezioni, materie, giochi, catalogo dei disegni (solo dati)
   components/
     lesson/            motore delle lezioni (un renderer per tipo di attività)
     games/             motore dei giochi + generatori di round
-    draw/              lavagna Apple Pencil (canvas, strumenti, anteprima) e tavola da colorare
+    draw/              lavagna Apple Pencil (canvas, strumenti) e tavola da colorare (immagini)
     disegni/           galleria, disegno libero, catalogo e colorazione
     notes/             lista e editor dei quaderni
     ui/                pulsanti, header, stelle, coriandoli, cancello genitori

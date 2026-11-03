@@ -5,7 +5,7 @@ import type { PaintOp } from "@/lib/storage/drawings";
 import type { Stroke } from "@/lib/storage/types";
 import { buildLineMask, floodFill } from "@/lib/floodfill";
 import { DrawingCanvas, PEN_WIDTHS, type Tool } from "./DrawingCanvas";
-import { COLORING_PALETTE } from "./ColoringBoard";
+import { COLORING_PALETTE } from "@/content/coloring-categories";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
 const MAX_SIDE = 1400;

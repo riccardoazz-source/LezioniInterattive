@@ -4,12 +4,10 @@ import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { COLORING_MAP } from "@/content/coloring";
 import { listDrawings, removeDrawing, type SavedDrawing } from "@/lib/storage/drawings";
 import { uid } from "@/lib/random";
 import { Tile } from "@/components/ui/Tile";
 import { PAGE_H, PAGE_W } from "@/lib/storage";
-import { ColoringSvg } from "@/components/draw/ColoringBoard";
 
 export function DrawingsHome() {
   const router = useRouter();
@@ -17,7 +15,7 @@ export function DrawingsHome() {
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
-    listDrawings().then(setDrawings);
+    listDrawings().then((all) => setDrawings(all.filter((d) => d.kind !== "coloring")));
   }, []);
 
   const remove = async (d: SavedDrawing) => {
@@ -49,8 +47,7 @@ export function DrawingsHome() {
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {drawings.map((d) => {
-              const page = d.kind === "coloring" && d.pageId ? COLORING_MAP[d.pageId] : null;
-              const href = d.kind === "image" && d.pageId ? `/disegni/colora/immagine/${d.pageId}` : page ? `/disegni/colora/${page.id}` : `/disegni/libero/${d.id}`;
+              const href = d.kind === "image" && d.pageId ? `/disegni/colora/immagine/${d.pageId}` : `/disegni/libero/${d.id}`;
               return (
                 <div key={d.id} className="relative overflow-hidden rounded-3xl bg-white shadow-md">
                   <Link href={href} className="block">
@@ -62,8 +59,6 @@ export function DrawingsHome() {
                         ) : (
                           <span className="text-4xl">🖍️</span>
                         )
-                      ) : page ? (
-                        <ColoringSvg page={page} fills={d.fills} strokes={d.strokes} className="h-full w-full bg-white" />
                       ) : (
                         <svg viewBox={`0 0 ${PAGE_W} ${PAGE_H}`} className="h-full bg-white shadow" aria-hidden>
                           {d.strokes.map((st, i) => (
@@ -72,7 +67,7 @@ export function DrawingsHome() {
                         </svg>
                       )}
                     </div>
-                    <div className="truncate px-3 py-2 text-sm font-bold">{d.title || (page ? page.title : "Disegno")}</div>
+                    <div className="truncate px-3 py-2 text-sm font-bold">{d.title || "Disegno"}</div>
                   </Link>
                   <button
                     type="button"

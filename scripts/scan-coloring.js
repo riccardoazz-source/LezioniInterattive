@@ -1,5 +1,6 @@
 /**
  * Aggiorna src/content/coloring-images.ts con i file in public/colora/<categoria>/*.png|jpg
+ * (e le miniature in public/colora-thumbs, se presenti: vedi scripts/make-thumbs.sh)
  * Uso: npm run colora:scan
  */
 const fs = require("fs");
@@ -15,7 +16,10 @@ if (fs.existsSync(root)) {
       const base = f.replace(/\.[^.]+$/, "");
       const id = `${cat.name}-${base}`.toLowerCase().replace(/[^a-z0-9-]+/g, "-");
       const title = base.replace(/[-_]+/g, " ").replace(/^\w/, (c) => c.toUpperCase());
-      entries.push({ id, title, category: cat.name, src: `/colora/${cat.name}/${f}` });
+      const entry = { id, title, category: cat.name, src: `/colora/${cat.name}/${f}` };
+      const thumb = path.join(__dirname, "..", "public", "colora-thumbs", cat.name, `${base}.jpg`);
+      if (fs.existsSync(thumb)) entry.thumb = `/colora-thumbs/${cat.name}/${base}.jpg`;
+      entries.push(entry);
     }
   }
 }

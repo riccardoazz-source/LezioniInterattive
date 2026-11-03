@@ -2,38 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { COLORING_CATEGORIES, COLORING_PAGES } from "@/content/coloring";
+import { COLORING_CATEGORIES, categoryInfo, categoryOrder } from "@/content/coloring-categories";
 import { IMAGE_PAGES } from "@/content/coloring-images";
 import { listCustomPages, listDrawings, removeCustomPage, removeDrawing, saveCustomPage, type CustomPage, type SavedDrawing } from "@/lib/storage/drawings";
 import { compressImage } from "@/lib/image";
 import { uid } from "@/lib/random";
-import { ColoringSvg } from "@/components/draw/ColoringBoard";
 import { Button } from "@/components/ui/Button";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
-const EXTRA_CATEGORIES = [
-  { id: "cuccioli", name: "Cuccioli", emoji: "🐶", color: "bg-orange-100" },
-  { id: "gattini", name: "Gattini", emoji: "🐱", color: "bg-yellow-100" },
-  { id: "uccelli", name: "Uccelli", emoji: "🐦", color: "bg-cyan-100" },
-  { id: "coniglietti", name: "Coniglietti", emoji: "🐰", color: "bg-pink-100" },
-  { id: "natura", name: "Natura e paesaggi", emoji: "🌳", color: "bg-lime-100" },
-  { id: "angeli", name: "Angeli", emoji: "👼", color: "bg-indigo-100" },
-  { id: "principesse", name: "Principesse", emoji: "👑", color: "bg-pink-100" },
-  { id: "alfabeto", name: "Alfabeto", emoji: "🔤", color: "bg-rose-100" },
-  { id: "numeri", name: "Numeri", emoji: "🔢", color: "bg-sky-100" },
-  { id: "altro", name: "Altro", emoji: "🎨", color: "bg-amber-100" },
-];
-/** Ordine di visualizzazione nel catalogo. */
-const ORDER = ["pop", "fate", "cuccioli", "gattini", "coniglietti", "animali", "uccelli", "angeli", "natura", "eroi", "principesse", "cartoni", "alfabeto", "numeri", "piante", "bamboline", "altro"];
-const ALL_CATEGORIES = [...COLORING_CATEGORIES, ...EXTRA_CATEGORIES].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
-const catInfo = (id: string) =>
-  ALL_CATEGORIES.find((c) => c.id === id) ?? { id, name: id.charAt(0).toUpperCase() + id.slice(1), emoji: "🖍️", color: "bg-white" };
+const ALL_CATEGORIES = COLORING_CATEGORIES;
+const catInfo = categoryInfo;
 
 interface ImgItem {
   id: string;
   title: string;
   category: string;
   src: string;
+  thumb?: string;
   custom: boolean;
 }
 
@@ -50,7 +35,7 @@ export function ColoringCatalog() {
   useEffect(() => {
     listDrawings().then((all) => {
       const map: Record<string, SavedDrawing> = {};
-      for (const d of all) if ((d.kind === "coloring" || d.kind === "image") && d.pageId) map[d.pageId] = d;
+      for (const d of all) if (d.kind === "image" && d.pageId) map[d.pageId] = d;
       setSaved(map);
     });
     listCustomPages().then(setCustom);
@@ -85,13 +70,10 @@ export function ColoringCatalog() {
   };
 
   const images: ImgItem[] = [
-    ...IMAGE_PAGES.map((p) => ({ id: p.id, title: p.title, category: p.category, src: p.src, custom: false })),
+    ...IMAGE_PAGES.map((p) => ({ id: p.id, title: p.title, category: p.category, src: p.src, thumb: p.thumb, custom: false })),
     ...custom.map((p) => ({ id: p.id, title: p.title, category: p.category, src: p.dataUrl, custom: true })),
   ];
-  const imageCats = Array.from(new Set(images.map((i) => i.category))).sort((a, b) => {
-    const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b);
-    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-  });
+  const imageCats = Array.from(new Set(images.map((i) => i.category))).sort((a, b) => categoryOrder(a) - categoryOrder(b));
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pb-8">
@@ -152,7 +134,7 @@ export function ColoringCatalog() {
                       <Link href={`/disegni/colora/immagine/${p.id}`} className="no-select block transition active:scale-95">
                         <div className="m-2 flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-white">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={s?.thumbnail ?? p.src} alt={p.title} className="h-full w-full object-contain" loading="lazy" />
+                          <img src={s?.thumbnail ?? p.thumb ?? p.src} alt={p.title} className="h-full w-full object-contain" loading="lazy" decoding="async" />
                         </div>
                         <div className="flex items-center justify-between px-3 pb-2">
                           <span className="truncate font-black">{p.title}</span>
@@ -178,37 +160,6 @@ export function ColoringCatalog() {
         </p>
       )}
 
-      {/* Disegni semplici (SVG) */}
-      <details className="rounded-3xl bg-white/60 p-3">
-        <summary className="cursor-pointer text-lg font-black">✏️ Disegni semplici (forme base)</summary>
-        <div className="mt-3 flex flex-col gap-6">
-          {COLORING_CATEGORIES.map((cat) => (
-            <section key={cat.id}>
-              <h3 className="mb-2 font-black">
-                {cat.emoji} {cat.name}
-              </h3>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {COLORING_PAGES.filter((p) => p.category === cat.id).map((p) => {
-                  const s = saved[p.id];
-                  return (
-                    <Link key={p.id} href={`/disegni/colora/${p.id}`} className={`no-select overflow-hidden rounded-3xl ${cat.color} shadow-md transition active:scale-95`}>
-                      <div className="m-2 aspect-[10/7] overflow-hidden rounded-2xl bg-white">
-                        <ColoringSvg page={p} fills={s?.fills ?? {}} strokes={s?.strokes} className="h-full w-full" />
-                      </div>
-                      <div className="flex items-center justify-between px-3 pb-2">
-                        <span className="font-black">
-                          {p.emoji} {p.title}
-                        </span>
-                        {s && Object.keys(s.fills).length > 0 && <span className="text-xs font-bold text-muted">iniziato</span>}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-        </div>
-      </details>
     </div>
   );
 }
