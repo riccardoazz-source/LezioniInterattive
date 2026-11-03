@@ -15,13 +15,16 @@ const EXTRA_CATEGORIES = [
   { id: "cuccioli", name: "Cuccioli", emoji: "🐶", color: "bg-orange-100" },
   { id: "gattini", name: "Gattini", emoji: "🐱", color: "bg-yellow-100" },
   { id: "uccelli", name: "Uccelli", emoji: "🐦", color: "bg-cyan-100" },
+  { id: "coniglietti", name: "Coniglietti", emoji: "🐰", color: "bg-pink-100" },
+  { id: "natura", name: "Natura e paesaggi", emoji: "🌳", color: "bg-lime-100" },
+  { id: "angeli", name: "Angeli", emoji: "👼", color: "bg-indigo-100" },
   { id: "principesse", name: "Principesse", emoji: "👑", color: "bg-pink-100" },
   { id: "alfabeto", name: "Alfabeto", emoji: "🔤", color: "bg-rose-100" },
   { id: "numeri", name: "Numeri", emoji: "🔢", color: "bg-sky-100" },
   { id: "altro", name: "Altro", emoji: "🎨", color: "bg-amber-100" },
 ];
 /** Ordine di visualizzazione nel catalogo. */
-const ORDER = ["pop", "cuccioli", "gattini", "animali", "uccelli", "fate", "eroi", "principesse", "cartoni", "alfabeto", "numeri", "piante", "bamboline", "altro"];
+const ORDER = ["pop", "fate", "cuccioli", "gattini", "coniglietti", "animali", "uccelli", "angeli", "natura", "eroi", "principesse", "cartoni", "alfabeto", "numeri", "piante", "bamboline", "altro"];
 const ALL_CATEGORIES = [...COLORING_CATEGORIES, ...EXTRA_CATEGORIES].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 const catInfo = (id: string) =>
   ALL_CATEGORIES.find((c) => c.id === id) ?? { id, name: id.charAt(0).toUpperCase() + id.slice(1), emoji: "🖍️", color: "bg-white" };
