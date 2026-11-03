@@ -23,7 +23,7 @@ interface ImgItem {
 }
 
 export function ColoringCatalog() {
-  const [saved, setSaved] = useState<Record<string, SavedDrawing>>({});
+  const [saved, setSaved] = useState<Record<string, SavedDrawing[]>>({});
   const [custom, setCustom] = useState<CustomPage[]>([]);
   const [importing, setImporting] = useState(false);
   const [showImport, setShowImport] = useState(false);
@@ -34,8 +34,8 @@ export function ColoringCatalog() {
 
   useEffect(() => {
     listDrawings().then((all) => {
-      const map: Record<string, SavedDrawing> = {};
-      for (const d of all) if (d.kind === "image" && d.pageId) map[d.pageId] = d;
+      const map: Record<string, SavedDrawing[]> = {};
+      for (const d of all) if (d.kind === "image" && d.pageId) (map[d.pageId] ??= []).push(d);
       setSaved(map);
     });
     listCustomPages().then(setCustom);
@@ -65,7 +65,7 @@ export function ColoringCatalog() {
   const removeCustom = async (p: CustomPage) => {
     if (!(await confirmDelete(`Eliminare il disegno «${p.title}»?`))) return;
     await removeCustomPage(p.id);
-    await removeDrawing(`img-${p.id}`).catch(() => {});
+    for (const w of saved[p.id] ?? []) await removeDrawing(w.id).catch(() => {});
     setCustom((c) => c.filter((x) => x.id !== p.id));
   };
 
@@ -128,7 +128,9 @@ export function ColoringCatalog() {
               {images
                 .filter((p) => p.category === catId)
                 .map((p) => {
-                  const s = saved[p.id];
+                  const ws = saved[p.id] ?? [];
+                  const s = ws[0];
+                  const done = ws.filter((w) => w.completed).length;
                   return (
                     <div key={p.id} className={`relative overflow-hidden rounded-3xl ${cat.color} shadow-md`}>
                       <Link href={`/disegni/colora/immagine/${p.id}`} className="no-select block transition active:scale-95">
@@ -138,7 +140,12 @@ export function ColoringCatalog() {
                         </div>
                         <div className="flex items-center justify-between px-3 pb-2">
                           <span className="truncate font-black">{p.title}</span>
-                          {s && (s.paintOps?.length || s.strokes.length) ? <span className="text-xs font-bold text-muted">iniziato</span> : null}
+                          {ws.length > 0 && (
+                            <span className="shrink-0 text-xs font-bold text-muted">
+                              {done > 0 ? `✅ ${done}` : ""}
+                              {ws.length - done > 0 ? ` ✏️ ${ws.length - done}` : ""}
+                            </span>
+                          )}
                         </div>
                       </Link>
                       {p.custom && (

@@ -75,7 +75,7 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
       c.height = th;
       c.getContext("2d")!.drawImage(display, 0, 0, tw, th);
       onThumbnail(c.toDataURL("image/jpeg", 0.7));
-    }, 800);
+    }, 150);
   }, [onThumbnail]);
 
   const replay = useCallback((ops: PaintOp[]) => {

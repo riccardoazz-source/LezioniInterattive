@@ -47,7 +47,7 @@ export function DrawingsHome() {
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {drawings.map((d) => {
-              const href = d.kind === "image" && d.pageId ? `/disegni/colora/immagine/${d.pageId}` : `/disegni/libero/${d.id}`;
+              const href = d.kind === "image" ? `/disegni/lavoro/${d.id}` : `/disegni/libero/${d.id}`;
               return (
                 <div key={d.id} className="relative overflow-hidden rounded-3xl bg-white shadow-md">
                   <Link href={href} className="block">
@@ -67,7 +67,7 @@ export function DrawingsHome() {
                         </svg>
                       )}
                     </div>
-                    <div className="truncate px-3 py-2 text-sm font-bold">{d.title || "Disegno"}</div>
+                    <div className="truncate px-3 py-2 text-sm font-bold">{d.completed ? "✅ " : ""}{d.title || "Disegno"}</div>
                   </Link>
                   <button
                     type="button"

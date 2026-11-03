@@ -22,8 +22,16 @@ export interface SavedDrawing {
   paintOps?: PaintOp[];
   /** miniatura JPEG (solo image) per la galleria */
   thumbnail?: string;
+  /** segnato come finito dalla bambina */
+  completed?: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+/** Tutte le versioni colorate di una pagina, dalla più recente. */
+export async function listWorksForPage(pageId: string): Promise<SavedDrawing[]> {
+  const all = await listDrawings();
+  return all.filter((d) => d.kind === "image" && d.pageId === pageId);
 }
 
 /** Un disegno da colorare importato dall'utente (immagine). */

@@ -1,7 +1,7 @@
-import { ImageColoringEditor } from "@/components/disegni/ImageColoringEditor";
+import { PageWorks } from "@/components/disegni/PageWorks";
 
-/** Disegni-immagine: dal catalogo o importati (risolti lato client). */
+/** Disegno-immagine: elenco delle versioni colorate, o avvio di una nuova. */
 export default async function ColoraImmaginePage({ params }: PageProps<"/disegni/colora/immagine/[id]">) {
   const { id } = await params;
-  return <ImageColoringEditor pageId={id} />;
+  return <PageWorks pageId={id} />;
 }
