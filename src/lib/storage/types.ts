@@ -19,11 +19,18 @@ export interface Stroke {
 export const BOARD_W = 1000;
 export const BOARD_H = 700;
 
+/** Dimensione logica di una pagina del quaderno (foglio verticale). */
+export const PAGE_W = 1000;
+export const PAGE_H = 1400;
+
 export interface NoteImage {
   id: string;
   /** immagine compressa (JPEG) come data URL */
   dataUrl: string;
-  caption?: string;
+  /** posizione e larghezza sul foglio, in unità logiche (PAGE_W × PAGE_H) */
+  x: number;
+  y: number;
+  w: number;
 }
 
 /** Una pagina del quaderno: testo, foto e lavagna. */
@@ -67,7 +74,15 @@ export function normalizeNote(raw: unknown): Note | null {
     ? r.pages.map((p, i) => ({
         id: typeof p?.id === "string" ? p.id : `p${i}`,
         text: typeof p?.text === "string" ? p.text : "",
-        images: Array.isArray(p?.images) ? p.images : [],
+        images: Array.isArray(p?.images)
+          ? p.images.map((im: Partial<NoteImage>, j: number) => ({
+              id: im.id ?? `img${j}`,
+              dataUrl: im.dataUrl ?? "",
+              x: typeof im.x === "number" ? im.x : 150,
+              y: typeof im.y === "number" ? im.y : 150 + j * 60,
+              w: typeof im.w === "number" ? im.w : 700,
+            }))
+          : [],
         drawing: Array.isArray(p?.drawing) ? p.drawing : [],
       }))
     : [{ id: "p0", text: r.body ?? "", images: [], drawing: r.drawing ?? [] }];

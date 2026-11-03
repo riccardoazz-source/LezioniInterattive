@@ -3,7 +3,7 @@ import { LocalNotesRepository } from "./local";
 import type { NotesRepository } from "./types";
 
 export type { Note, NotePage, NoteImage, Stroke, StrokePoint, NotesRepository } from "./types";
-export { BOARD_W, BOARD_H, newPage, normalizeNote, noteText } from "./types";
+export { BOARD_W, BOARD_H, PAGE_W, PAGE_H, newPage, normalizeNote, noteText } from "./types";
 
 let repo: NotesRepository | null = null;
 

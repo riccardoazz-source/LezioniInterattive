@@ -10,8 +10,8 @@ Funziona su **PC, iPhone e iPad** (anche come app sulla schermata Home) e suppor
 | --- | --- |
 | 📚 **Impara** | Lezioni per materia (Italiano, Matematica, Scienze, Inglese, Il mondo, Arte). Ogni lezione è una sequenza di attività: spiegazione letta ad alta voce, card da toccare, domande a scelta, conta gli oggetti, ricalca lettere e numeri con la penna, disegno libero, abbinamenti. Alla fine si guadagnano stelle. |
 | 🎮 **Gioca** | 10 giochi con round casuali e difficoltà legata al livello: Conta!, Calcoli, Più grande?, Cosa viene dopo?, Forme e colori, Che ore sono?, Prima lettera, Costruisci la parola, Memory, English words. |
-| 🎨 **Disegni** | Disegno libero su foglio bianco con Apple Pencil, e un catalogo di 18 disegni da colorare (animali, piante, bamboline, eroi e cartoni originali): si tocca una zona per riempirla di colore, oppure si disegna sopra con la penna. I disegni si salvano nella galleria "I miei disegni". |
-| 📓 **Note** | I quaderni delle lezioni di casa. Ogni quaderno ha più pagine e ogni pagina ha testo, foto (dalla fotocamera o dal rullino) e una lavagna per Apple Pencil. La bambina sfoglia le pagine e può farsele leggere. Niente blocco: la matita in alto apre la modifica. |
+| 🎨 **Disegni** | Disegno libero su un foglio bianco a tutta pagina con Apple Pencil, e un catalogo di 30 disegni da colorare in 7 categorie (animali, piante, fate magiche, squadra di eroi, amici cartoon, stelle pop, bamboline; personaggi originali in stile cartoon con occhioni, ali, mantelli): si tocca una zona per riempirla di colore, oppure si disegna sopra con la penna. Tutto si salva nella galleria "I miei disegni". |
+| 📓 **Note** | I quaderni delle lezioni di casa: fogli a righe a tutta pagina da sfogliare. Su ogni foglio si scrive direttamente con Apple Pencil (modalità Penna), con la tastiera (modalità Testo) e si mettono foto che si spostano e ridimensionano (modalità Foto). Il pulsante 🔊 legge il testo della pagina. Nessun blocco genitori. |
 
 Le impostazioni (⚙️ in home, protette da un "cancello genitori": una moltiplicazione) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
 
@@ -52,6 +52,14 @@ Il codice è già pronto: `src/lib/storage/` contiene due implementazioni della 
 ## Come crescono i contenuti
 
 Vedi [`CONTENT.md`](CONTENT.md): spiega la struttura delle lezioni, i tipi di attività, il programma per livello e come generare nuove lezioni (anche con l'aiuto di un'IA) mantenendo la qualità.
+
+## Anteprima dei disegni da colorare
+
+```bash
+node scripts/render-coloring.js
+```
+
+Genera `coloring-preview.png` con tutte le pagine (serve Playwright: `npm i -D playwright && npx playwright install chromium`). Utile quando si aggiungono personaggi.
 
 ## Struttura del progetto
 

@@ -96,7 +96,20 @@ I giochi generano round casuali in `src/components/games/rounds.tsx`; ogni gener
 
 ## 5. Disegni da colorare
 
-Il catalogo è in `src/content/coloring.ts`. Ogni disegno è una lista di **zone** (path SVG chiusi, in uno spazio 1000 × 700) che si riempiono con un tocco, più alcune **linee** decorative. Ci sono helper per cerchi, ellissi, rettangoli, poligoni e stelle: un nuovo disegno si scrive in 20-30 righe. Ordine delle zone = ordine di disegno (le ultime stanno sopra). Tutti i personaggi devono essere originali: non si possono copiare personaggi protetti da copyright (Teen Titans, Winx, Gumball, ecc.), ma si possono fare personaggi "nello stesso stile" (supereroi, fatine, gattini cartoon, pop star).
+Il catalogo è in `src/content/coloring.ts` (animali e piante, fatti con forme semplici) e `src/content/coloring-characters.ts` (personaggi). Ogni disegno è una lista di **zone** (path SVG chiusi, in uno spazio 1000 × 700) che si riempiono con un tocco, più alcune **linee** decorative. Ordine delle zone = ordine di disegno (le ultime stanno sopra).
+
+I personaggi si costruiscono con il **kit** in `src/content/coloring-kit.ts`: testa, occhioni con riflesso, viso, capelli (lunghi, caschetto, codini, coda, a punte, frangia), collo, vestito, top e gonna, giacca, tuta da eroe con emblema, braccia (anche alzate), gambe con stivali, ali da fata, mantello, cappuccio, maschera, tiara, fiore tra i capelli, cuffie, microfono, spada, scintille. Un personaggio nuovo si compone in 10 righe:
+
+```ts
+const k = kit(500, 178, 0.95);            // posizione e scala
+page("fata-vento", "fate", "Fata del Vento", "🌬️",
+  fairyWings(k), hairLongBack(k), neck(k), legs(k, { boots: true }), topSkirt(k), arms(k),
+  head(k), bangsSide(k), eyes(k), face(k, { smile: "big" }), tiara(k));
+```
+
+Per vedere subito il risultato senza avviare l'app: lo script usato durante lo sviluppo compila i file dei contenuti e genera un'immagine con tutte le pagine (vedi README, sezione "Anteprima dei disegni da colorare").
+
+Tutti i personaggi devono essere originali: non si possono copiare personaggi protetti da copyright (Teen Titans, Winx, Gumball, K-pop Demon Hunters, ecc.), ma si possono fare personaggi "nello stesso stile": fatine con ali e occhioni, squadre di giovani eroi, animali cartoon, pop star con microfono e spada.
 
 ## 6. Idee per il futuro
 

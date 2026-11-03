@@ -48,6 +48,9 @@ interface CanvasProps {
   transparent?: boolean;
   /** riempie il contenitore assoluto invece di avere un proprio aspect ratio */
   fill?: boolean;
+  /** dimensione logica (default: lavagna 1000 × 700) */
+  logicalW?: number;
+  logicalH?: number;
 }
 
 function strokeWidth(stroke: Stroke, p: number, pen: boolean): number {
@@ -111,6 +114,8 @@ export function DrawingCanvas({
   className = "",
   transparent = false,
   fill = false,
+  logicalW = BOARD_W,
+  logicalH = BOARD_H,
 }: CanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -141,14 +146,14 @@ export function DrawingCanvas({
       canvas.height = Math.round(rect.height * dpr);
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
-      scaleRef.current = rect.width / BOARD_W;
+      scaleRef.current = rect.width / logicalW;
       redraw();
     };
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(container);
     return () => ro.disconnect();
-  }, [redraw]);
+  }, [redraw, logicalW]);
 
   useEffect(() => {
     strokesRef.current = strokes;
@@ -233,7 +238,7 @@ export function DrawingCanvas({
       className={`draw-surface overflow-hidden rounded-3xl ${fill ? "absolute inset-0" : "relative w-full"} ${
         transparent ? "" : "bg-white shadow-inner"
       } ${className}`}
-      style={fill ? undefined : { aspectRatio: `${BOARD_W} / ${BOARD_H}` }}
+      style={fill ? undefined : { aspectRatio: `${logicalW} / ${logicalH}` }}
     >
       {guide && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>

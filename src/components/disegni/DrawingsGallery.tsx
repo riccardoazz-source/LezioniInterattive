@@ -7,7 +7,7 @@ import { COLORING_MAP } from "@/content/coloring";
 import { listDrawings, removeDrawing, type SavedDrawing } from "@/lib/storage/drawings";
 import { uid } from "@/lib/random";
 import { Tile } from "@/components/ui/Tile";
-import { DrawingPreview } from "@/components/draw/DrawingCanvas";
+import { PAGE_H, PAGE_W } from "@/lib/storage";
 import { ColoringSvg } from "@/components/draw/ColoringBoard";
 
 export function DrawingsHome() {
@@ -51,11 +51,15 @@ export function DrawingsHome() {
               return (
                 <div key={d.id} className="relative overflow-hidden rounded-3xl bg-white shadow-md">
                   <Link href={href} className="block">
-                    <div className="aspect-[10/7] w-full bg-white">
+                    <div className="flex aspect-[10/7] w-full items-center justify-center bg-gray-100">
                       {page ? (
-                        <ColoringSvg page={page} fills={d.fills} strokes={d.strokes} className="h-full w-full" />
+                        <ColoringSvg page={page} fills={d.fills} strokes={d.strokes} className="h-full w-full bg-white" />
                       ) : (
-                        <DrawingPreview strokes={d.strokes} className="h-full w-full" />
+                        <svg viewBox={`0 0 ${PAGE_W} ${PAGE_H}`} className="h-full bg-white shadow" aria-hidden>
+                          {d.strokes.map((st, i) => (
+                            <polyline key={i} points={st.points.map((p) => `${p.x},${p.y}`).join(" ")} fill="none" stroke={st.erase ? "#fff" : st.color} strokeWidth={(st.erase ? st.width * 3 : st.width) * 2} strokeLinecap="round" strokeLinejoin="round" />
+                          ))}
+                        </svg>
                       )}
                     </div>
                     <div className="truncate px-3 py-2 text-sm font-bold">{d.title || (page ? page.title : "Disegno")}</div>

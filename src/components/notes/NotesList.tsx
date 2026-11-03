@@ -7,7 +7,7 @@ import { SUBJECT_MAP } from "@/content/subjects";
 import { getNotesRepository, noteText, type Note } from "@/lib/storage";
 import { uid } from "@/lib/random";
 import { Button } from "@/components/ui/Button";
-import { DrawingPreview } from "@/components/draw/DrawingCanvas";
+import { PAGE_H, PAGE_W } from "@/lib/storage";
 
 export function NotesList() {
   const [notes, setNotes] = useState<Note[] | null>(null);
@@ -44,21 +44,14 @@ export function NotesList() {
       </div>
       {notes.map((n) => {
         const s = n.subject ? SUBJECT_MAP[n.subject] : null;
-        const firstDrawing = n.pages.find((p) => p.drawing.length > 0)?.drawing;
-        const firstImage = n.pages.find((p) => p.images.length > 0)?.images[0];
+        const first = n.pages[0];
         const text = noteText(n);
         return (
           <div key={n.id} className={`flex items-center gap-3 rounded-3xl ${s?.color ?? "bg-white"} p-3 shadow-md`}>
             <Link href={`/note/${n.id}`} className="no-select flex min-w-0 flex-1 items-center gap-4 active:scale-[0.98]">
-              <span className="flex h-20 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white text-3xl shadow-sm">
-                {firstImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={firstImage.dataUrl} alt="" className="h-full w-full object-cover" />
-                ) : firstDrawing ? (
-                  <DrawingPreview strokes={firstDrawing} className="h-full w-full" />
-                ) : (
-                  (s?.emoji ?? "📓")
-                )}
+              <span className="relative flex h-24 w-[4.3rem] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white text-2xl shadow-sm">
+                <PagePreview page={first} />
+                {!first.text && first.drawing.length === 0 && first.images.length === 0 && <span className="absolute">{s?.emoji ?? "📓"}</span>}
               </span>
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate text-xl font-black">{n.title || "Senza titolo"}</span>
@@ -91,5 +84,24 @@ export function NotesList() {
         </div>
       )}
     </div>
+  );
+}
+
+/** Miniatura della prima pagina: foto, tratti e un accenno del testo. */
+function PagePreview({ page }: { page: Note["pages"][number] }) {
+  return (
+    <svg viewBox={`0 0 ${PAGE_W} ${PAGE_H}`} className="h-full w-full" aria-hidden>
+      {page.images.map((im) => (
+        <image key={im.id} href={im.dataUrl} x={im.x} y={im.y} width={im.w} preserveAspectRatio="xMidYMin meet" />
+      ))}
+      {page.text && (
+        <text x={110} y={80} fontSize={60} fontWeight={700} fill="#1b2a4a">
+          {page.text.slice(0, 18)}
+        </text>
+      )}
+      {page.drawing.map((st, i) => (
+        <polyline key={i} points={st.points.map((p) => `${p.x},${p.y}`).join(" ")} fill="none" stroke={st.erase ? "#fff" : st.color} strokeWidth={(st.erase ? st.width * 3 : st.width) * 2} strokeLinecap="round" strokeLinejoin="round" />
+      ))}
+    </svg>
   );
 }
