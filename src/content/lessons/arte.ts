@@ -1,0 +1,135 @@
+import type { Lesson } from "../types";
+
+export const arte: Lesson[] = [
+  {
+    id: "arte-colori",
+    subject: "arte",
+    level: 1,
+    title: "I colori",
+    emoji: "🎨",
+    description: "Colori primari e mescolanze",
+    activities: [
+      {
+        type: "intro",
+        emoji: "🎨",
+        title: "I colori primari",
+        text: "Rosso, giallo e blu sono i colori primari: non si possono creare mescolando altri colori. Ma mescolandoli tra loro nascono tutti gli altri!",
+      },
+      {
+        type: "cards",
+        title: "Mescoliamo",
+        cards: [
+          { emoji: "🔴+🟡", label: "Arancione", say: "Rosso più giallo fa arancione", note: "🟠" },
+          { emoji: "🟡+🔵", label: "Verde", say: "Giallo più blu fa verde", note: "🟢" },
+          { emoji: "🔴+🔵", label: "Viola", say: "Rosso più blu fa viola", note: "🟣" },
+        ],
+      },
+      {
+        type: "choice",
+        emoji: "🔴+🟡",
+        question: "Rosso più giallo fa...",
+        options: ["Verde", "Arancione", "Viola"],
+        answer: 1,
+      },
+      {
+        type: "choice",
+        emoji: "🟡+🔵",
+        question: "Giallo più blu fa...",
+        options: ["Verde", "Rosa", "Marrone"],
+        answer: 0,
+      },
+      {
+        type: "choice",
+        question: "Quale di questi è un colore primario?",
+        options: ["Verde", "Blu", "Arancione"],
+        answer: 1,
+      },
+      {
+        type: "draw",
+        title: "Un arcobaleno",
+        text: "Disegna un arcobaleno usando tutti i colori che vuoi!",
+      },
+    ],
+  },
+  {
+    id: "arte-linee",
+    subject: "arte",
+    level: 1,
+    title: "Linee e tratti",
+    emoji: "✏️",
+    description: "Esercizi con la penna",
+    activities: [
+      {
+        type: "intro",
+        emoji: "✏️",
+        title: "Prima di scrivere",
+        text: "Per scrivere bene bisogna allenare la mano. Facciamo linee dritte, curve e zigzag con la penna!",
+      },
+      { type: "trace", title: "Una linea dritta", glyph: "—", say: "Fai una linea dritta da sinistra a destra" },
+      { type: "trace", title: "Una linea in giù", glyph: "|", say: "Fai una linea dall'alto in basso" },
+      { type: "trace", title: "Un'onda", glyph: "~", say: "Fai un'onda come il mare" },
+      { type: "trace", title: "Uno zigzag", glyph: "W", say: "Fai uno zigzag" },
+      { type: "trace", title: "Una spirale", glyph: "@", say: "Fai una spirale, come una chiocciola" },
+      {
+        type: "draw",
+        title: "Disegno libero",
+        text: "Ora disegna quello che vuoi!",
+      },
+    ],
+  },
+  {
+    id: "arte-musica",
+    subject: "arte",
+    level: 1,
+    title: "Suoni e musica",
+    emoji: "🎵",
+    description: "Forte, piano, veloce, lento",
+    activities: [
+      {
+        type: "intro",
+        emoji: "🎵",
+        title: "La musica",
+        text: "I suoni possono essere forti o piani, veloci o lenti, alti o bassi. Gli strumenti musicali fanno suoni diversi.",
+      },
+      {
+        type: "cards",
+        title: "Gli strumenti",
+        cards: [
+          { emoji: "🥁", label: "Tamburo", note: "si suona battendo" },
+          { emoji: "🎸", label: "Chitarra", note: "si suona con le corde" },
+          { emoji: "🎹", label: "Pianoforte", note: "si suona con i tasti" },
+          { emoji: "🎺", label: "Tromba", note: "si suona soffiando" },
+          { emoji: "🎻", label: "Violino", note: "si suona con l'archetto" },
+        ],
+      },
+      {
+        type: "choice",
+        emoji: "🥁",
+        question: "Come si suona il tamburo?",
+        options: ["Soffiando", "Battendo", "Con i tasti"],
+        answer: 1,
+      },
+      {
+        type: "choice",
+        emoji: "🎺",
+        question: "Come si suona la tromba?",
+        options: ["Soffiando", "Battendo", "Con le corde"],
+        answer: 0,
+      },
+      {
+        type: "choice",
+        emoji: "🦁",
+        question: "Il ruggito del leone è un suono...",
+        options: ["Forte", "Piano"],
+        answer: 0,
+      },
+      {
+        type: "choice",
+        emoji: "🐭",
+        question: "Il topolino fa un suono...",
+        options: ["Forte", "Piano"],
+        answer: 1,
+      },
+    ],
+  },
+];
