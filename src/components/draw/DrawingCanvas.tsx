@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BOARD_H, BOARD_W, type Stroke, type StrokePoint } from "@/lib/storage/types";
+import { BOARD_H, BOARD_W, type BrushKind, type Stroke, type StrokePoint } from "@/lib/storage/types";
 
 /**
  * Lavagna per Apple Pencil, dito e mouse.
@@ -33,7 +33,25 @@ export interface Tool {
   color: string;
   width: number;
   erase: boolean;
+  kind?: BrushKind;
 }
+
+export const BRUSHES: { kind: BrushKind; name: string; emoji: string }[] = [
+  { kind: "pen", name: "Penna", emoji: "🖊️" },
+  { kind: "pencil", name: "Matita", emoji: "✏️" },
+  { kind: "marker", name: "Pennarello", emoji: "🖍️" },
+  { kind: "watercolor", name: "Acquerello", emoji: "💧" },
+  { kind: "brush", name: "Pennello", emoji: "🖌️" },
+];
+
+/** Caratteristiche di ogni strumento. */
+const BRUSH_STYLE: Record<BrushKind, { widthMul: number; alpha: number; cap: CanvasLineCap; pressure: [number, number]; blur: number; jitter: number }> = {
+  pen: { widthMul: 1, alpha: 1, cap: "round", pressure: [0.35, 1.3], blur: 0, jitter: 0 },
+  pencil: { widthMul: 0.6, alpha: 0.75, cap: "round", pressure: [0.5, 1.0], blur: 0, jitter: 0.6 },
+  marker: { widthMul: 2.2, alpha: 0.55, cap: "square", pressure: [0.9, 0.2], blur: 0, jitter: 0 },
+  watercolor: { widthMul: 3, alpha: 0.22, cap: "round", pressure: [0.6, 0.8], blur: 1, jitter: 0 },
+  brush: { widthMul: 1.6, alpha: 0.9, cap: "round", pressure: [0.15, 1.8], blur: 0, jitter: 0 },
+};
 
 interface CanvasProps {
   strokes: Stroke[];
@@ -54,8 +72,35 @@ interface CanvasProps {
 }
 
 function strokeWidth(stroke: Stroke, p: number, pen: boolean): number {
-  const base = stroke.erase ? stroke.width * 3 : stroke.width;
-  return pen ? base * (0.35 + 1.3 * p) : base;
+  if (stroke.erase) return stroke.width * 3;
+  const st = BRUSH_STYLE[stroke.kind ?? "pen"];
+  const base = stroke.width * st.widthMul;
+  return pen ? base * (st.pressure[0] + st.pressure[1] * p) : base;
+}
+
+/** Imposta trasparenza, sfumatura e composizione per il tratto. */
+function applyStyle(ctx: CanvasRenderingContext2D, stroke: Stroke, scale: number) {
+  if (stroke.erase) {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = ctx.fillStyle = "#000";
+    return;
+  }
+  const st = BRUSH_STYLE[stroke.kind ?? "pen"];
+  ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = st.alpha;
+  ctx.shadowBlur = st.blur * stroke.width * scale;
+  ctx.shadowColor = st.blur ? stroke.color : "transparent";
+  ctx.strokeStyle = ctx.fillStyle = stroke.color;
+}
+
+/** Piccolo tremolio deterministico per la matita. */
+function jitter(stroke: Stroke, i: number): number {
+  const st = BRUSH_STYLE[stroke.kind ?? "pen"];
+  if (!st.jitter || stroke.erase) return 0;
+  const x = Math.sin(i * 12.9898 + stroke.points.length * 78.233) * 43758.5453;
+  return (x - Math.floor(x) - 0.5) * st.jitter;
 }
 
 function drawSegment(
@@ -66,23 +111,54 @@ function drawSegment(
   scale: number,
   pen: boolean,
 ) {
-  ctx.globalCompositeOperation = stroke.erase ? "destination-out" : "source-over";
-  ctx.strokeStyle = stroke.erase ? "#000" : stroke.color;
-  ctx.lineCap = "round";
+  applyStyle(ctx, stroke, scale);
+  const st = BRUSH_STYLE[stroke.kind ?? "pen"];
+  ctx.lineCap = stroke.erase ? "round" : st.cap;
   ctx.lineJoin = "round";
   ctx.lineWidth = strokeWidth(stroke, (a.p + b.p) / 2, pen) * scale;
+  const j = jitter(stroke, Math.round(b.x + b.y));
   ctx.beginPath();
   ctx.moveTo(a.x * scale, a.y * scale);
-  ctx.lineTo(b.x * scale, b.y * scale);
+  ctx.lineTo((b.x + j) * scale, (b.y + j) * scale);
   ctx.stroke();
 }
 
 function drawDot(ctx: CanvasRenderingContext2D, stroke: Stroke, a: StrokePoint, scale: number, pen: boolean) {
-  ctx.globalCompositeOperation = stroke.erase ? "destination-out" : "source-over";
-  ctx.fillStyle = stroke.erase ? "#000" : stroke.color;
+  applyStyle(ctx, stroke, scale);
   ctx.beginPath();
   ctx.arc(a.x * scale, a.y * scale, (strokeWidth(stroke, a.p, pen) * scale) / 2, 0, Math.PI * 2);
   ctx.fill();
+}
+
+/**
+ * Un tratto intero in un colpo solo: così la trasparenza di pennarello e
+ * acquerello è uniforme (non si scurisce dove i segmenti si sovrappongono).
+ */
+function drawWholeStroke(ctx: CanvasRenderingContext2D, s: Stroke, scale: number) {
+  const pen = isPenStroke(s);
+  if (s.points.length === 1) {
+    drawDot(ctx, s, s.points[0], scale, pen);
+    return;
+  }
+  const st = BRUSH_STYLE[s.kind ?? "pen"];
+  const variable = pen && !s.erase && st.pressure[1] > 0.5;
+  if (variable) {
+    // spessore variabile: segmenti, ma con trasparenza piena (la penna/pennello è opaco)
+    for (let i = 1; i < s.points.length; i++) drawSegment(ctx, s, s.points[i - 1], s.points[i], scale, pen);
+    return;
+  }
+  applyStyle(ctx, s, scale);
+  ctx.lineCap = s.erase ? "round" : st.cap;
+  ctx.lineJoin = "round";
+  const avgP = s.points.reduce((acc, p) => acc + p.p, 0) / s.points.length;
+  ctx.lineWidth = strokeWidth(s, avgP, pen) * scale;
+  ctx.beginPath();
+  ctx.moveTo(s.points[0].x * scale, s.points[0].y * scale);
+  for (let i = 1; i < s.points.length; i++) {
+    const j = jitter(s, i);
+    ctx.lineTo((s.points[i].x + j) * scale, (s.points[i].y + j) * scale);
+  }
+  ctx.stroke();
 }
 
 /** Un tratto con pressione variabile viene disegnato "a tratti con penna". */
@@ -91,17 +167,10 @@ function isPenStroke(s: Stroke): boolean {
 }
 
 export function renderStrokes(ctx: CanvasRenderingContext2D, strokes: Stroke[], scale: number) {
-  for (const s of strokes) {
-    const pen = isPenStroke(s);
-    if (s.points.length === 1) {
-      drawDot(ctx, s, s.points[0], scale, pen);
-      continue;
-    }
-    for (let i = 1; i < s.points.length; i++) {
-      drawSegment(ctx, s, s.points[i - 1], s.points[i], scale, pen);
-    }
-  }
+  for (const s of strokes) drawWholeStroke(ctx, s, scale);
   ctx.globalCompositeOperation = "source-over";
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
 }
 
 export function DrawingCanvas({
@@ -120,7 +189,8 @@ export function DrawingCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scaleRef = useRef(1); // pixel CSS per unità logica
-  const activeRef = useRef<{ id: number; stroke: Stroke; pen: boolean } | null>(null);
+  const activeRef = useRef<{ id: number; stroke: Stroke; pen: boolean; live: boolean } | null>(null);
+  const scratchRef = useRef<HTMLCanvasElement>(null);
   const penActiveUntil = useRef(0);
   const strokesRef = useRef(strokes);
 
@@ -142,10 +212,13 @@ export function DrawingCanvas({
     const resize = () => {
       const rect = container.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
+      for (const c of [canvas, scratchRef.current]) {
+        if (!c) continue;
+        c.width = Math.round(rect.width * dpr);
+        c.height = Math.round(rect.height * dpr);
+        c.style.width = `${rect.width}px`;
+        c.style.height = `${rect.height}px`;
+      }
       scaleRef.current = rect.width / logicalW;
       redraw();
     };
@@ -193,16 +266,26 @@ export function DrawingCanvas({
     if (pen) penActiveUntil.current = Number.MAX_SAFE_INTEGER;
     e.currentTarget.setPointerCapture(e.pointerId);
     const point = toPoint(e, pen);
-    const stroke: Stroke = { color: tool.color, width: tool.width, erase: tool.erase || undefined, points: [point] };
-    activeRef.current = { id: e.pointerId, stroke, pen };
-    const ctx = canvasRef.current?.getContext("2d");
-    if (ctx) drawDot(ctx, stroke, point, scaleRef.current, pen);
+    const stroke: Stroke = { color: tool.color, width: tool.width, erase: tool.erase || undefined, kind: tool.erase ? undefined : tool.kind, points: [point] };
+    // Tratti trasparenti (pennarello, acquerello, matita): anteprima su un livello separato
+    const st = BRUSH_STYLE[stroke.kind ?? "pen"];
+    const live = !stroke.erase && st.alpha < 1;
+    activeRef.current = { id: e.pointerId, stroke, pen, live };
+    const ctx = (live ? scratchRef.current : canvasRef.current)?.getContext("2d");
+    if (ctx) {
+      if (live) {
+        const dpr = window.devicePixelRatio || 1;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, scratchRef.current!.width / dpr, scratchRef.current!.height / dpr);
+      }
+      drawDot(ctx, stroke, point, scaleRef.current, pen);
+    }
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const active = activeRef.current;
     if (!active || active.id !== e.pointerId) return;
-    const ctx = canvasRef.current?.getContext("2d");
+    const ctx = (active.live ? scratchRef.current : canvasRef.current)?.getContext("2d");
     if (!ctx) return;
     const native = e.nativeEvent;
     const events: PointerEvent[] =
@@ -229,6 +312,12 @@ export function DrawingCanvas({
     } catch {
       /* già rilasciato */
     }
+    if (active.live && scratchRef.current) {
+      const sctx = scratchRef.current.getContext("2d");
+      sctx?.clearRect(0, 0, scratchRef.current.width, scratchRef.current.height);
+      const ctx = canvasRef.current?.getContext("2d");
+      if (ctx) drawWholeStroke(ctx, active.stroke, scaleRef.current);
+    }
     onChange([...strokesRef.current, active.stroke]);
   };
 
@@ -245,6 +334,7 @@ export function DrawingCanvas({
           {guide}
         </div>
       )}
+      <canvas ref={scratchRef} className="pointer-events-none absolute inset-0 block" aria-hidden />
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block"
@@ -272,6 +362,19 @@ interface ToolbarProps {
 export function DrawToolbar({ tool, onTool, onUndo, onClear, canUndo, compact }: ToolbarProps) {
   return (
     <div className="no-select flex flex-wrap items-center justify-center gap-2 py-2">
+      {BRUSHES.map((b) => (
+        <button
+          key={b.kind}
+          type="button"
+          aria-label={b.name}
+          title={b.name}
+          onClick={() => onTool({ ...tool, kind: b.kind, erase: false })}
+          className={`flex h-10 w-10 items-center justify-center rounded-full text-xl shadow ${!tool.erase && (tool.kind ?? "pen") === b.kind ? "bg-foreground text-white" : "bg-white"}`}
+        >
+          {b.emoji}
+        </button>
+      ))}
+      <span className="mx-1 h-8 w-px bg-gray-300" />
       {PEN_COLORS.map((c) => (
         <button
           key={c.value}

@@ -2,15 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { PaintOp } from "@/lib/storage/drawings";
-import type { Stroke } from "@/lib/storage/types";
+import type { BrushKind, Stroke } from "@/lib/storage/types";
 import { buildLineMask, floodFill } from "@/lib/floodfill";
-import { DrawingCanvas, PEN_WIDTHS, type Tool } from "./DrawingCanvas";
-import { COLORING_PALETTE } from "@/content/coloring-categories";
+import { BRUSHES, DrawingCanvas, PEN_WIDTHS, renderStrokes, type Tool } from "./DrawingCanvas";
+import { PalettePicker } from "./PalettePicker";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
 const MAX_SIDE = 1400;
 
-type Mode = "fill" | "pen" | "erase";
+type Mode = "fill" | BrushKind | "erase";
 
 interface Props {
   src: string;
@@ -18,23 +18,22 @@ interface Props {
   strokes: Stroke[];
   onPaintOps: (ops: PaintOp[]) => void;
   onStrokes: (s: Stroke[]) => void;
-  /** miniatura JPEG del risultato, aggiornata dopo ogni modifica */
   onThumbnail?: (dataUrl: string) => void;
   fingerAllowed?: boolean;
 }
 
 /**
- * Colora un'IMMAGINE (disegno con linee nere): tocca una zona per riempirla
- * con il secchiello (riempimento sui pixel, fermato dalle linee), oppure
- * disegna sopra con la penna.
+ * Colora un'IMMAGINE (disegno con linee nere).
+ * Livelli, dal basso: bianco + riempimenti (canvas) → tratti (penna, matita,
+ * pennarello, acquerello, pennello) → le LINEE del disegno in "multiply",
+ * così restano sempre nere anche colorandoci sopra.
  */
 export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrokes, onThumbnail, fingerAllowed }: Props) {
-  const [color, setColor] = useState(COLORING_PALETTE[2]);
+  const [color, setColor] = useState("#ef476f");
   const [mode, setMode] = useState<Mode>("fill");
-  const [width, setWidth] = useState(PEN_WIDTHS[1]);
+  const [widthIdx, setWidthIdx] = useState(1);
   const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   const displayRef = useRef<HTMLCanvasElement>(null);
@@ -42,24 +41,24 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
   const paintRef = useRef<ImageData | null>(null);
   const maskRef = useRef<Uint8Array | null>(null);
   const opsRef = useRef<PaintOp[]>(paintOps);
+  const strokesRef = useRef<Stroke[]>(strokes);
+  useEffect(() => {
+    strokesRef.current = strokes;
+  }, [strokes]);
   const thumbTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const tool: Tool = { color, width, erase: mode === "erase" };
+  const width = PEN_WIDTHS[widthIdx];
+  const tool: Tool = { color, width, erase: mode === "erase", kind: mode !== "fill" && mode !== "erase" ? mode : "pen" };
 
-  // Composizione: bianco + colori + linee (in multiply, così il bianco sparisce)
   const compose = useCallback(() => {
     const display = displayRef.current;
-    const line = lineRef.current;
     const paint = paintRef.current;
-    if (!display || !line || !paint) return;
+    if (!display || !paint) return;
     const ctx = display.getContext("2d")!;
     ctx.globalCompositeOperation = "source-over";
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, display.width, display.height);
     ctx.putImageData(paint, 0, 0);
-    ctx.globalCompositeOperation = "multiply";
-    ctx.drawImage(line, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
   }, []);
 
   const scheduleThumbnail = useCallback(() => {
@@ -67,27 +66,35 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
     if (thumbTimer.current) clearTimeout(thumbTimer.current);
     thumbTimer.current = setTimeout(() => {
       const display = displayRef.current;
-      if (!display) return;
+      const line = lineRef.current;
+      if (!display || !line) return;
       const tw = 320;
       const th = Math.round((display.height / display.width) * tw);
       const c = document.createElement("canvas");
       c.width = tw;
       c.height = th;
-      c.getContext("2d")!.drawImage(display, 0, 0, tw, th);
+      const ctx = c.getContext("2d")!;
+      ctx.drawImage(display, 0, 0, tw, th);
+      renderStrokes(ctx, strokesRef.current, tw / display.width);
+      ctx.globalCompositeOperation = "multiply";
+      ctx.drawImage(line, 0, 0, tw, th);
+      ctx.globalCompositeOperation = "source-over";
       onThumbnail(c.toDataURL("image/jpeg", 0.7));
     }, 150);
   }, [onThumbnail]);
 
-  const replay = useCallback((ops: PaintOp[]) => {
-    const paint = paintRef.current;
-    const mask = maskRef.current;
-    if (!paint || !mask) return;
-    paint.data.fill(0);
-    for (const op of ops) floodFill(mask, paint.width, paint.height, op.x, op.y, paint.data, op.color);
-    compose();
-  }, [compose]);
+  const replay = useCallback(
+    (ops: PaintOp[]) => {
+      const paint = paintRef.current;
+      const mask = maskRef.current;
+      if (!paint || !mask) return;
+      paint.data.fill(0);
+      for (const op of ops) floodFill(mask, paint.width, paint.height, op.x, op.y, paint.data, op.color);
+      compose();
+    },
+    [compose],
+  );
 
-  // Carica l'immagine e prepara i layer.
   useEffect(() => {
     let cancelled = false;
     const img = new Image();
@@ -115,7 +122,6 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
     };
   }, [src]);
 
-  // Quando il canvas è montato (dims noti) ridisegna i riempimenti salvati.
   useEffect(() => {
     if (!dims) return;
     const display = displayRef.current;
@@ -127,7 +133,6 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dims]);
 
-  // Se le operazioni cambiano dall'esterno (annulla), ridisegna.
   useEffect(() => {
     if (opsRef.current !== paintOps) {
       opsRef.current = paintOps;
@@ -137,17 +142,15 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
   }, [paintOps, replay, scheduleThumbnail]);
 
   const onTap = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (mode !== "fill" || !dims || busy) return;
+    if (mode !== "fill" || !dims) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * dims.w;
     const y = ((e.clientY - rect.top) / rect.height) * dims.h;
     const paint = paintRef.current;
     const mask = maskRef.current;
     if (!paint || !mask) return;
-    setBusy(true);
     const n = floodFill(mask, dims.w, dims.h, x, y, paint.data, color);
-    setBusy(false);
-    if (n === 0) return; // toccata una linea
+    if (n === 0) return;
     compose();
     const ops = [...opsRef.current, { x: Math.round(x), y: Math.round(y), color }];
     opsRef.current = ops;
@@ -161,8 +164,11 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
       scheduleThumbnail();
       return;
     }
-    if (opsRef.current.length) onPaintOps(opsRef.current.slice(0, -1));
-    else if (strokes.length) onStrokes(strokes.slice(0, -1));
+    if (paintOps.length) onPaintOps(paintOps.slice(0, -1));
+    else if (strokes.length) {
+      onStrokes(strokes.slice(0, -1));
+      scheduleThumbnail();
+    }
   };
 
   const clearAll = async () => {
@@ -171,53 +177,44 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
     onStrokes([]);
   };
 
-  const modeBtn = (m: Mode, label: string) => (
-    <button type="button" onClick={() => setMode(m)} className={`rounded-full px-4 py-2 text-base font-black shadow ${mode === m ? "bg-foreground text-white" : "bg-white"}`}>
-      {label}
-    </button>
-  );
+  const empty = strokes.length === 0 && paintOps.length === 0;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       {deleteDialog}
-      <div className="no-select flex flex-wrap items-center justify-center gap-2">
-        {modeBtn("fill", "🪣 Riempi")}
-        {modeBtn("pen", "✏️ Penna")}
-        {modeBtn("erase", "🧽 Gomma")}
-        <span className="mx-1 h-8 w-px bg-gray-300" />
-        {mode !== "fill" &&
-          PEN_WIDTHS.map((w) => (
-            <button key={w} type="button" aria-label={`Spessore ${w}`} onClick={() => setWidth(w)} className={`flex h-10 w-10 items-center justify-center rounded-full bg-white shadow ${width === w ? "ring-4 ring-primary" : ""}`}>
-              <span className="rounded-full bg-foreground" style={{ width: w + 4, height: w + 4 }} />
-            </button>
-          ))}
-        <button type="button" aria-label="Annulla" onClick={undo} className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl shadow">
-          ↩️
-        </button>
-        <button type="button" aria-label="Ricomincia" onClick={clearAll} className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl shadow">
-          🗑️
-        </button>
-      </div>
-      <div className="no-select flex flex-wrap items-center justify-center gap-2">
-        {COLORING_PALETTE.map((c) => (
-          <button
-            key={c}
-            type="button"
-            aria-label={c}
-            onClick={() => {
-              setColor(c);
-              if (mode === "erase") setMode("pen");
-            }}
-            className={`h-11 w-11 rounded-full border-4 transition active:scale-90 ${color === c && mode !== "erase" ? "scale-110 border-foreground" : "border-white"}`}
-            style={{ background: c, boxShadow: "0 1px 3px rgba(0,0,0,.25)" }}
-          />
+      {/* Strumenti: una riga compatta */}
+      <div className="no-select flex items-center gap-1 overflow-x-auto py-0.5" style={{ scrollbarWidth: "none" }}>
+        <ToolBtn label="🪣" aria="Riempi" active={mode === "fill"} onClick={() => setMode("fill")} />
+        {BRUSHES.map((b) => (
+          <ToolBtn key={b.kind} label={b.emoji} aria={b.name} active={mode === b.kind} onClick={() => setMode(b.kind)} />
         ))}
+        <ToolBtn label="🧽" aria="Gomma" active={mode === "erase"} onClick={() => setMode("erase")} />
+        <span className="mx-0.5 h-7 w-px shrink-0 bg-gray-300" />
+        <button
+          type="button"
+          aria-label="Spessore"
+          title="Spessore"
+          onClick={() => setWidthIdx((i) => (i + 1) % PEN_WIDTHS.length)}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white shadow"
+        >
+          <span className="rounded-full bg-foreground" style={{ width: width + 3, height: width + 3 }} />
+        </button>
+        <ToolBtn label="↩️" aria="Annulla" disabled={empty} onClick={undo} />
+        <ToolBtn label="🗑️" aria="Ricomincia" disabled={empty} onClick={clearAll} />
       </div>
+      <PalettePicker
+        color={color}
+        active={mode !== "erase"}
+        onColor={(c) => {
+          setColor(c);
+          if (mode === "erase") setMode("pen");
+        }}
+      />
       {error && <p className="text-center font-bold text-danger">{error}</p>}
       <div className="flex w-full justify-center">
         <div
-          className="relative overflow-hidden rounded-3xl bg-white shadow-inner"
-          style={{ width: "100%", maxWidth: dims ? `calc((100dvh - 290px) * ${dims.w / dims.h})` : undefined, aspectRatio: dims ? `${dims.w} / ${dims.h}` : "1 / 1" }}
+          className="relative overflow-hidden rounded-2xl bg-white shadow-inner"
+          style={{ width: "100%", maxWidth: dims ? `calc((100dvh - 215px) * ${dims.w / dims.h})` : undefined, aspectRatio: dims ? `${dims.w} / ${dims.h}` : "1 / 1" }}
         >
           {!dims && !error && <p className="absolute inset-0 flex items-center justify-center text-muted">Carico il disegno…</p>}
           <canvas
@@ -240,11 +237,29 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
               fill
               logicalW={dims.w}
               logicalH={dims.h}
-              className={mode === "fill" ? "pointer-events-none" : ""}
+              className={`rounded-2xl ${mode === "fill" ? "pointer-events-none" : ""}`}
             />
           )}
+          {/* Le linee del disegno: sempre sopra, sempre nere */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" draggable={false} className="pointer-events-none absolute inset-0 h-full w-full select-none" style={{ mixBlendMode: "multiply" }} />
         </div>
       </div>
     </div>
+  );
+}
+
+function ToolBtn({ label, aria, onClick, active, disabled }: { label: string; aria: string; onClick: () => void; active?: boolean; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-label={aria}
+      title={aria}
+      onClick={onClick}
+      disabled={disabled}
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg shadow transition active:scale-90 disabled:opacity-30 ${active ? "bg-foreground text-white" : "bg-white"}`}
+    >
+      {label}
+    </button>
   );
 }

@@ -15,7 +15,7 @@ Funziona su **PC, iPhone e iPad** (anche come app sulla schermata Home) e suppor
 
 Ogni eliminazione (quaderni, pagine, disegni, progressi) chiede di scrivere la parola **Elimina** per confermare, così le dita piccole non cancellano nulla per sbaglio.
 
-Le impostazioni (⚙️ in home, protette da un "cancello genitori": una moltiplicazione) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
+Le impostazioni (⚙️ in home) permettono di scegliere nome, livello, lettura ad alta voce e se consentire il disegno col dito.
 
 ## Avvio in locale
 

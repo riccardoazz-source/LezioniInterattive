@@ -15,7 +15,7 @@ export function DrawingsHome() {
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
   useEffect(() => {
-    listDrawings().then((all) => setDrawings(all.filter((d) => d.kind !== "coloring")));
+    listDrawings().then((all) => setDrawings(all.filter((d) => d.kind !== "coloring" && (d.strokes.length > 0 || (d.paintOps?.length ?? 0) > 0))));
   }, []);
 
   const remove = async (d: SavedDrawing) => {

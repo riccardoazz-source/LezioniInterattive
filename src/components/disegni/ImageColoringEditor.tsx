@@ -49,8 +49,8 @@ export function ImageColoringEditor({ workId }: { workId: string }) {
           return;
         }
         const now = new Date().toISOString();
+        // Non si salva finché non si colora qualcosa: un disegno solo aperto non va in galleria.
         d = { id: workId, kind: "image", pageId, title: p.title, strokes: [], fills: {}, paintOps: [], createdAt: now, updatedAt: now };
-        await saveDrawing(d);
         if (!cancelled) {
           setPage(p);
           setDrawing(d);
@@ -118,7 +118,7 @@ export function ImageColoringEditor({ workId }: { workId: string }) {
       <AppHeader title={page.title} emoji="🖍️" backHref={backHref} />
       {celebrate && <Confetti />}
       {drawing && (
-        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-3 px-4 pb-8">
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-2 px-2 pb-4 sm:px-4">
           <ImageColoringBoard
             src={page.src}
             paintOps={drawing.paintOps ?? []}

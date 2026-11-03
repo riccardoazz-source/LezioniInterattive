@@ -7,11 +7,16 @@ export interface StrokePoint {
   p: number;
 }
 
+/** Strumenti: penna (netta), matita (sottile e leggera), pennarello (largo, piatto), acquerello (morbido, trasparente), pennello (a pressione). */
+export type BrushKind = "pen" | "pencil" | "marker" | "watercolor" | "brush";
+
 export interface Stroke {
   color: string;
   width: number;
   /** true = gomma */
   erase?: boolean;
+  /** strumento (default: penna) */
+  kind?: BrushKind;
   points: StrokePoint[];
 }
 

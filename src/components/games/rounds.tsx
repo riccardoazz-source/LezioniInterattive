@@ -31,6 +31,19 @@ export function contaRound(level: Level): ChoiceRound {
   };
 }
 
+/** Pallini in righe da 5, che vanno a capo senza sovrapporsi. */
+function Dots({ n, emoji }: { n: number; emoji: string }) {
+  return (
+    <span className="flex max-w-48 flex-wrap justify-center gap-0.5 rounded-2xl bg-white p-2 shadow">
+      {Array.from({ length: n }, (_, i) => (
+        <span key={i} className={i % 5 === 4 ? "mr-1.5" : ""}>
+          {emoji}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function calcoliRound(level: Level): ChoiceRound {
   const max = level === 1 ? 10 : level === 2 ? 20 : level === 3 ? 100 : 1000;
   const ops: ("+" | "-" | "×")[] = level === 1 ? ["+", "+", "-"] : level === 2 ? ["+", "-"] : ["+", "-", "×"];
@@ -54,10 +67,10 @@ export function calcoliRound(level: Level): ChoiceRound {
     prompt: `${a} ${op === "-" ? "−" : op} ${b} = ?`,
     say: `${a} ${op === "+" ? "più" : op === "-" ? "meno" : "per"} ${b}?`,
     visual: showDots ? (
-      <div className="flex items-center justify-center gap-3 text-3xl">
-        <span className="max-w-40 rounded-2xl bg-white p-2 shadow">{"🔵".repeat(a)}</span>
-        <span className="font-black">{op === "-" ? "−" : "+"}</span>
-        <span className="max-w-40 rounded-2xl bg-white p-2 shadow">{(op === "-" ? "⚪" : "🟢").repeat(b)}</span>
+      <div className="mx-auto flex max-w-md flex-wrap items-center justify-center gap-3 text-2xl">
+        <Dots n={a} emoji="🔵" />
+        <span className="text-3xl font-black">{op === "-" ? "−" : "+"}</span>
+        <Dots n={b} emoji={op === "-" ? "⚪" : "🟢"} />
       </div>
     ) : undefined,
     options: numOptions(result, 0, Math.max(result + 4, 10)),

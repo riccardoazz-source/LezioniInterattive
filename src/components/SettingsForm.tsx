@@ -7,7 +7,6 @@ import { useSettings } from "@/lib/settings";
 import { resetProgress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
 import { storageBackendName } from "@/lib/storage";
-import { ParentGate } from "@/components/ui/ParentGate";
 import { Button } from "@/components/ui/Button";
 
 export function SettingsForm() {
@@ -15,7 +14,7 @@ export function SettingsForm() {
   const [confirmDelete, deleteDialog] = useConfirmDelete();
   if (!ready) return null;
   return (
-    <ParentGate>
+    <>
       <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-4 pb-8">
         {deleteDialog}
         <label className="flex flex-col gap-2">
@@ -85,7 +84,7 @@ export function SettingsForm() {
           Azzera i progressi
         </Button>
       </div>
-    </ParentGate>
+    </>
   );
 }
 
