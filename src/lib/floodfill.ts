@@ -4,8 +4,13 @@
  * contigua chiara toccata.
  */
 
-/** Maschera dei pixel "linea": 1 = confine (scuro e opaco), 0 = colorabile. */
-export function buildLineMask(img: ImageData, threshold = 150): Uint8Array {
+/**
+ * Maschera dei pixel "linea": 1 = confine (scuro e opaco), 0 = colorabile.
+ * Le linee vengono "ingrossate" di `grow` pixel solo nella maschera (non nel
+ * disegno): così le piccole interruzioni delle linee non fanno scappare il
+ * colore e il riempimento si ferma un filo prima del tratto.
+ */
+export function buildLineMask(img: ImageData, threshold = 160, grow = 2): Uint8Array {
   const { data, width, height } = img;
   const mask = new Uint8Array(width * height);
   for (let i = 0, p = 0; i < mask.length; i++, p += 4) {
@@ -14,7 +19,31 @@ export function buildLineMask(img: ImageData, threshold = 150): Uint8Array {
     const lum = 0.299 * data[p] + 0.587 * data[p + 1] + 0.114 * data[p + 2];
     if (lum < threshold) mask[i] = 1;
   }
-  return mask;
+  return grow > 0 ? dilate(mask, width, height, grow) : mask;
+}
+
+/** Dilatazione separabile (orizzontale + verticale) di raggio r. */
+function dilate(mask: Uint8Array, width: number, height: number, r: number): Uint8Array {
+  const tmp = new Uint8Array(mask.length);
+  for (let y = 0; y < height; y++) {
+    const row = y * width;
+    for (let x = 0; x < width; x++) {
+      if (!mask[row + x]) continue;
+      const x0 = Math.max(0, x - r);
+      const x1 = Math.min(width - 1, x + r);
+      for (let k = x0; k <= x1; k++) tmp[row + k] = 1;
+    }
+  }
+  const out = new Uint8Array(mask.length);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (!tmp[y * width + x]) continue;
+      const y0 = Math.max(0, y - r);
+      const y1 = Math.min(height - 1, y + r);
+      for (let k = y0; k <= y1; k++) out[k * width + x] = 1;
+    }
+  }
+  return out;
 }
 
 function hexToRgb(hex: string): [number, number, number] {
