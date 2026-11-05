@@ -45,12 +45,12 @@ export const BRUSHES: { kind: BrushKind; name: string; emoji: string }[] = [
 ];
 
 /** Caratteristiche di ogni strumento. */
-const BRUSH_STYLE: Record<BrushKind, { widthMul: number; alpha: number; cap: CanvasLineCap; pressure: [number, number]; blur: number; jitter: number }> = {
-  pen: { widthMul: 1, alpha: 1, cap: "round", pressure: [0.35, 1.3], blur: 0, jitter: 0 },
-  pencil: { widthMul: 0.6, alpha: 0.75, cap: "round", pressure: [0.5, 1.0], blur: 0, jitter: 0.6 },
-  marker: { widthMul: 2.2, alpha: 0.55, cap: "square", pressure: [0.9, 0.2], blur: 0, jitter: 0 },
-  watercolor: { widthMul: 3, alpha: 0.22, cap: "round", pressure: [0.6, 0.8], blur: 1, jitter: 0 },
-  brush: { widthMul: 1.6, alpha: 0.9, cap: "round", pressure: [0.15, 1.8], blur: 0, jitter: 0 },
+const BRUSH_STYLE: Record<BrushKind, { widthMul: number; alpha: number; cap: CanvasLineCap; pressure: [number, number]; blur: number; jitter: number; taper: boolean }> = {
+  pen: { widthMul: 1, alpha: 1, cap: "round", pressure: [0.35, 1.3], blur: 0, jitter: 0, taper: false },
+  pencil: { widthMul: 0.45, alpha: 0.85, cap: "round", pressure: [0.6, 0.8], blur: 0, jitter: 1.2, taper: false },
+  marker: { widthMul: 2.8, alpha: 0.45, cap: "butt", pressure: [1, 0], blur: 0, jitter: 0, taper: false },
+  watercolor: { widthMul: 4, alpha: 0.16, cap: "round", pressure: [0.7, 0.6], blur: 1.2, jitter: 0, taper: false },
+  brush: { widthMul: 2.2, alpha: 1, cap: "round", pressure: [0.2, 1.6], blur: 0, jitter: 0, taper: true },
 };
 
 interface CanvasProps {
@@ -71,10 +71,15 @@ interface CanvasProps {
   logicalH?: number;
 }
 
-function strokeWidth(stroke: Stroke, p: number, pen: boolean): number {
+function strokeWidth(stroke: Stroke, p: number, pen: boolean, t = 0.5): number {
   if (stroke.erase) return stroke.width * 3;
   const st = BRUSH_STYLE[stroke.kind ?? "pen"];
-  const base = stroke.width * st.widthMul;
+  let base = stroke.width * st.widthMul;
+  if (st.taper) {
+    // pennello: sottile all'inizio e alla fine, pieno al centro (t = posizione 0..1 nel tratto)
+    const prof = Math.sin(Math.min(1, Math.max(0, t)) * Math.PI);
+    base *= 0.25 + 0.75 * Math.pow(prof, 0.6);
+  }
   return pen ? base * (st.pressure[0] + st.pressure[1] * p) : base;
 }
 
@@ -115,12 +120,23 @@ function drawSegment(
   const st = BRUSH_STYLE[stroke.kind ?? "pen"];
   ctx.lineCap = stroke.erase ? "round" : st.cap;
   ctx.lineJoin = "round";
-  ctx.lineWidth = strokeWidth(stroke, (a.p + b.p) / 2, pen) * scale;
+  const idx = stroke.points.indexOf(b);
+  const t = stroke.points.length > 1 ? idx / (stroke.points.length - 1) : 0.5;
+  ctx.lineWidth = strokeWidth(stroke, (a.p + b.p) / 2, pen, t) * scale;
   const j = jitter(stroke, Math.round(b.x + b.y));
   ctx.beginPath();
   ctx.moveTo(a.x * scale, a.y * scale);
   ctx.lineTo((b.x + j) * scale, (b.y + j) * scale);
   ctx.stroke();
+  if (st.jitter) {
+    // matita: seconda linea sottile leggermente spostata = grana
+    ctx.globalAlpha = 0.35;
+    ctx.lineWidth = Math.max(1, ctx.lineWidth * 0.5);
+    ctx.beginPath();
+    ctx.moveTo((a.x + j * 1.5) * scale, (a.y - j) * scale);
+    ctx.lineTo((b.x - j) * scale, (b.y + j * 1.5) * scale);
+    ctx.stroke();
+  }
 }
 
 function drawDot(ctx: CanvasRenderingContext2D, stroke: Stroke, a: StrokePoint, scale: number, pen: boolean) {
@@ -141,7 +157,7 @@ function drawWholeStroke(ctx: CanvasRenderingContext2D, s: Stroke, scale: number
     return;
   }
   const st = BRUSH_STYLE[s.kind ?? "pen"];
-  const variable = pen && !s.erase && st.pressure[1] > 0.5;
+  const variable = !s.erase && (st.taper || st.jitter > 0 || (pen && st.pressure[1] > 0.5));
   if (variable) {
     // spessore variabile: segmenti, ma con trasparenza piena (la penna/pennello è opaco)
     for (let i = 1; i < s.points.length; i++) drawSegment(ctx, s, s.points[i - 1], s.points[i], scale, pen);
@@ -152,13 +168,24 @@ function drawWholeStroke(ctx: CanvasRenderingContext2D, s: Stroke, scale: number
   ctx.lineJoin = "round";
   const avgP = s.points.reduce((acc, p) => acc + p.p, 0) / s.points.length;
   ctx.lineWidth = strokeWidth(s, avgP, pen) * scale;
-  ctx.beginPath();
-  ctx.moveTo(s.points[0].x * scale, s.points[0].y * scale);
-  for (let i = 1; i < s.points.length; i++) {
-    const j = jitter(s, i);
-    ctx.lineTo((s.points[i].x + j) * scale, (s.points[i].y + j) * scale);
-  }
+  const tracePath = () => {
+    ctx.beginPath();
+    ctx.moveTo(s.points[0].x * scale, s.points[0].y * scale);
+    for (let i = 1; i < s.points.length; i++) {
+      const j = jitter(s, i);
+      ctx.lineTo((s.points[i].x + j) * scale, (s.points[i].y + j) * scale);
+    }
+  };
+  tracePath();
   ctx.stroke();
+  if (s.kind === "watercolor") {
+    // centro più "bagnato" e bordi che restano chiari
+    ctx.lineWidth *= 0.55;
+    ctx.globalAlpha = 0.14;
+    ctx.shadowBlur = 0;
+    tracePath();
+    ctx.stroke();
+  }
 }
 
 /** Un tratto con pressione variabile viene disegnato "a tratti con penna". */

@@ -10,7 +10,7 @@ import { compressImage } from "@/lib/image";
 import { uid } from "@/lib/random";
 import { useSettings } from "@/lib/settings";
 import { speak, stopSpeaking } from "@/lib/speech";
-import { PEN_COLORS, PEN_WIDTHS, type Tool } from "@/components/draw/DrawingCanvas";
+import { BRUSHES, PEN_COLORS, PEN_WIDTHS, type Tool } from "@/components/draw/DrawingCanvas";
 import { NotebookSheet, type SheetMode } from "./NotebookSheet";
 
 function emptyNote(id: string): Note {
@@ -211,6 +211,10 @@ export function NoteEditor({ id }: { id: string }) {
         <span className="mx-1 h-8 w-px bg-gray-300" />
         {mode === "pen" && (
           <>
+            {BRUSHES.map((b) => (
+              <IconBtn key={b.kind} label={b.emoji} aria={b.name} active={!tool.erase && (tool.kind ?? "pen") === b.kind} onClick={() => setTool({ ...tool, kind: b.kind, erase: false })} />
+            ))}
+            <span className="mx-1 h-8 w-px bg-gray-300" />
             {[{ name: "Blu penna", value: "#1b2a4a" }, ...PEN_COLORS.filter((c) => c.value !== "#2b2d42")].map((c) => (
               <button
                 key={c.value}

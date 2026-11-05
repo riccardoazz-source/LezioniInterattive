@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getDrawing, removeDrawing, saveDrawing, type SavedDrawing } from "@/lib/storage/drawings";
 import { newPage, type Stroke } from "@/lib/storage";
 import { useSettings } from "@/lib/settings";
-import { PEN_COLORS, PEN_WIDTHS, type Tool } from "@/components/draw/DrawingCanvas";
+import { BRUSHES, PEN_COLORS, PEN_WIDTHS, type Tool } from "@/components/draw/DrawingCanvas";
 import { NotebookSheet } from "@/components/notes/NotebookSheet";
 import { IconBtn } from "@/components/notes/NoteEditor";
 
@@ -62,6 +62,10 @@ export function FreeDrawingEditor({ id }: { id: string }) {
     <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-2 px-2 pb-3 sm:px-4">
       {deleteDialog}
       <div className="no-select flex flex-wrap items-center justify-center gap-1.5 rounded-2xl bg-white/70 p-2">
+        {BRUSHES.map((b) => (
+          <IconBtn key={b.kind} label={b.emoji} aria={b.name} active={!tool.erase && (tool.kind ?? "pen") === b.kind} onClick={() => setTool({ ...tool, kind: b.kind, erase: false })} />
+        ))}
+        <span className="mx-1 h-8 w-px bg-gray-300" />
         {PEN_COLORS.map((c) => (
           <button
             key={c.value}
