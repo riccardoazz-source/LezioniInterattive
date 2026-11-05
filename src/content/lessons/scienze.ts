@@ -425,4 +425,115 @@ export const scienze: Lesson[] = [
       { type: "draw", title: "Il tempo di oggi", text: "Guarda fuori dalla finestra e disegna che tempo fa oggi!" },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "sci-corpo", subject: "scienze", level: 2, title: "Il corpo umano", emoji: "🫀", description: "Ossa, muscoli, cuore e polmoni",
+    activities: [
+      { type: "intro", emoji: "🫀", title: "Dentro di noi", text: "Lo scheletro ci sostiene: ha più di 200 ossa! I muscoli ci fanno muovere. Il cuore pompa il sangue in tutto il corpo. I polmoni ci fanno respirare." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🦴", label: "Ossa", note: "sostengono il corpo" }, { emoji: "💪", label: "Muscoli", note: "ci fanno muovere" }, { emoji: "🫀", label: "Cuore", note: "pompa il sangue" },
+        { emoji: "🫁", label: "Polmoni", note: "respirano" }, { emoji: "🧠", label: "Cervello", note: "pensa e comanda" }, { emoji: "🍽️", label: "Stomaco", note: "digerisce il cibo" } ] },
+      { type: "choice", question: "Quale organo pompa il sangue?", options: ["Il cuore", "Lo stomaco", "I polmoni"], answer: 0 },
+      { type: "choice", question: "Cosa ci fa respirare?", options: ["Le ossa", "I polmoni", "Il cervello"], answer: 1 },
+      { type: "choice", question: "Chi comanda tutto il corpo?", options: ["Il cervello", "I muscoli", "Lo stomaco"], answer: 0 },
+      { type: "choice", question: "Quando corro, il cuore batte...", options: ["Più piano", "Più forte", "Uguale"], answer: 1 },
+      { type: "match", title: "Abbina", pairs: [ { left: "🦴 Ossa", right: "Sostengono" }, { left: "💪 Muscoli", right: "Muovono" }, { left: "🫁 Polmoni", right: "Respirano" }, { left: "🍽️ Stomaco", right: "Digerisce" } ] },
+    ],
+  },
+  {
+    id: "sci-materiali", subject: "scienze", level: 2, title: "I materiali", emoji: "🧱", description: "Legno, vetro, metallo, plastica",
+    activities: [
+      { type: "intro", emoji: "🧱", title: "Di cosa sono fatte le cose", text: "Ogni oggetto è fatto di un materiale: il tavolo di legno, la finestra di vetro, il cucchiaio di metallo, la bottiglia di plastica. Ogni materiale ha le sue qualità: duro, morbido, trasparente, leggero." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🪵", label: "Legno", note: "viene dagli alberi" }, { emoji: "🪟", label: "Vetro", note: "trasparente, si rompe" }, { emoji: "🔩", label: "Metallo", note: "duro e freddo" },
+        { emoji: "🧴", label: "Plastica", note: "leggera, non si rompe" }, { emoji: "🧶", label: "Lana", note: "morbida e calda" }, { emoji: "📄", label: "Carta", note: "viene dal legno" } ] },
+      { type: "choice", emoji: "🪟", question: "Di che materiale è una finestra?", options: ["Vetro", "Lana", "Legno"], answer: 0 },
+      { type: "choice", emoji: "🧣", question: "Quale materiale tiene caldo?", options: ["Metallo", "Lana", "Vetro"], answer: 1 },
+      { type: "choice", question: "Quale materiale è trasparente?", options: ["Legno", "Vetro", "Carta"], answer: 1 },
+      { type: "choice", question: "Quale materiale galleggia sull'acqua?", options: ["Il legno", "Il ferro", "Il sasso"], answer: 0 },
+      { type: "match", title: "Abbina oggetto e materiale", pairs: [ { left: "🥄 Cucchiaio", right: "Metallo" }, { left: "📚 Libro", right: "Carta" }, { left: "🪑 Sedia", right: "Legno" }, { left: "🧴 Bottiglia", right: "Plastica" } ] },
+    ],
+  },
+  {
+    id: "sci-stati-acqua", subject: "scienze", level: 2, title: "Solido, liquido, gas", emoji: "🧊", description: "Gli stati dell'acqua",
+    activities: [
+      { type: "intro", emoji: "🧊", title: "L'acqua cambia forma", text: "L'acqua può essere solida (ghiaccio), liquida (quella che beviamo) o gas (vapore). Con il freddo il liquido diventa ghiaccio. Con il caldo diventa vapore. E il vapore, raffreddandosi, torna acqua: così nascono le nuvole e la pioggia!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🧊", label: "Solido", note: "ghiaccio, neve" }, { emoji: "💧", label: "Liquido", note: "acqua, pioggia" }, { emoji: "♨️", label: "Gas", note: "vapore" } ] },
+      { type: "choice", question: "Se metto l'acqua nel freezer diventa...", options: ["Vapore", "Ghiaccio", "Nuvola"], answer: 1 },
+      { type: "choice", question: "Se scaldo l'acqua in pentola diventa...", options: ["Ghiaccio", "Vapore", "Neve"], answer: 1 },
+      { type: "choice", question: "Il ghiaccio al sole...", options: ["Si scioglie", "Diventa più duro", "Resta uguale"], answer: 0 },
+      { type: "choice", question: "Le nuvole sono fatte di...", options: ["Cotone", "Goccioline d'acqua", "Fumo"], answer: 1 },
+      { type: "choice", question: "Il ciclo dell'acqua: il sole scalda il mare, l'acqua sale come vapore, forma le nuvole e poi...", options: ["Sparisce", "Torna giù come pioggia", "Diventa sabbia"], answer: 1 },
+    ],
+  },
+  {
+    id: "sci-catena", subject: "scienze", level: 2, title: "Chi mangia chi", emoji: "🦊", description: "La catena alimentare",
+    activities: [
+      { type: "intro", emoji: "🦊", title: "La catena alimentare", text: "In natura tutti mangiano qualcosa: l'erba è mangiata dal coniglio, il coniglio dalla volpe. Gli animali che mangiano piante sono erbivori, quelli che mangiano carne carnivori, quelli che mangiano tutto onnivori." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🐄", label: "Erbivoro", note: "mangia piante" }, { emoji: "🦁", label: "Carnivoro", note: "mangia carne" }, { emoji: "🐻", label: "Onnivoro", note: "mangia tutto" } ] },
+      { type: "choice", emoji: "🐰", question: "Il coniglio è...", options: ["Erbivoro", "Carnivoro"], answer: 0 },
+      { type: "choice", emoji: "🐺", question: "Il lupo è...", options: ["Erbivoro", "Carnivoro"], answer: 1 },
+      { type: "choice", question: "Metti in ordine: chi viene in mezzo? 🌱 → ? → 🦊", options: ["🐰 coniglio", "🦁 leone", "🐋 balena"], answer: 0 },
+      { type: "choice", question: "Senza erba, cosa succede ai conigli?", options: ["Niente", "Non hanno cibo", "Diventano volpi"], answer: 1 },
+      { type: "match", title: "Chi mangia cosa", pairs: [ { left: "🐄 Mucca", right: "🌿 Erba" }, { left: "🐱 Gatto", right: "🐭 Topo" }, { left: "🐸 Rana", right: "🪰 Mosca" }, { left: "🐦 Uccello", right: "🐛 Bruco" } ] },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "sci-vertebrati", subject: "scienze", level: 3, title: "I vertebrati", emoji: "🐠", description: "Mammiferi, uccelli, rettili, anfibi, pesci",
+    activities: [
+      { type: "intro", emoji: "🦴", title: "Animali con la spina dorsale", text: "I vertebrati hanno lo scheletro. Sono di cinque gruppi: mammiferi (allattano i piccoli), uccelli (piume e uova), rettili (squame, sangue freddo), anfibi (vivono in acqua e sulla terra), pesci (branchie e pinne)." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🐕", label: "Mammiferi", note: "pelo, latte" }, { emoji: "🦜", label: "Uccelli", note: "piume, uova" }, { emoji: "🐍", label: "Rettili", note: "squame" },
+        { emoji: "🐸", label: "Anfibi", note: "acqua e terra" }, { emoji: "🐟", label: "Pesci", note: "branchie, pinne" } ] },
+      { type: "choice", emoji: "🐬", question: "Il delfino è un...", options: ["Pesce", "Mammifero", "Anfibio"], answer: 1, hint: "Il delfino respira aria e allatta i piccoli!" },
+      { type: "choice", emoji: "🐢", question: "La tartaruga è un...", options: ["Rettile", "Anfibio", "Mammifero"], answer: 0 },
+      { type: "choice", emoji: "🦇", question: "Il pipistrello è un...", options: ["Uccello", "Mammifero", "Rettile"], answer: 1, hint: "Vola, ma ha il pelo e allatta i piccoli." },
+      { type: "choice", emoji: "🐸", question: "La rana da piccola (girino) vive...", options: ["Nell'acqua", "Sugli alberi", "Nel deserto"], answer: 0 },
+      { type: "choice", question: "Quale animale depone le uova?", options: ["La gallina", "La mucca", "Il cane"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "🐘 Elefante", right: "Mammifero" }, { left: "🦅 Aquila", right: "Uccello" }, { left: "🦎 Lucertola", right: "Rettile" }, { left: "🦈 Squalo", right: "Pesce" } ] },
+    ],
+  },
+  {
+    id: "sci-piante-parti", subject: "scienze", level: 3, title: "Come funziona una pianta", emoji: "🌿", description: "Radici, fusto, foglie e fotosintesi",
+    activities: [
+      { type: "intro", emoji: "🌿", title: "La fabbrica verde", text: "Le radici prendono acqua e sali dalla terra. Il fusto li porta su. Le foglie, con la luce del sole, fabbricano il cibo della pianta e producono ossigeno: si chiama fotosintesi. I fiori fanno i semi e i frutti." },
+      { type: "choice", question: "Quale parte prende l'acqua dalla terra?", options: ["Le foglie", "Le radici", "I fiori"], answer: 1 },
+      { type: "choice", question: "Dove avviene la fotosintesi?", options: ["Nelle foglie", "Nelle radici", "Nel frutto"], answer: 0 },
+      { type: "choice", question: "Di cosa ha bisogno la foglia per fare la fotosintesi?", options: ["Luce del sole", "Buio", "Vento"], answer: 0 },
+      { type: "choice", question: "Cosa producono le piante che noi respiriamo?", options: ["Ossigeno", "Fumo", "Vapore"], answer: 0 },
+      { type: "choice", question: "Da cosa nasce il frutto?", options: ["Dal fiore", "Dalla radice", "Dal fusto"], answer: 0 },
+      { type: "choice", question: "Una pianta chiusa al buio per settimane...", options: ["Cresce meglio", "Soffre e ingiallisce", "Fa più fiori"], answer: 1 },
+      { type: "draw", title: "La pianta e le sue parti", text: "Disegna una pianta e scrivi accanto: radici, fusto, foglie, fiore." },
+    ],
+  },
+  {
+    id: "sci-ecosistemi", subject: "scienze", level: 3, title: "Gli ambienti", emoji: "🏜️", description: "Bosco, mare, deserto, polo",
+    activities: [
+      { type: "intro", emoji: "🌍", title: "Ogni animale al suo posto", text: "Un ambiente è un luogo con il suo clima, le sue piante e i suoi animali. Nel deserto fa caldissimo e piove poco. Al polo c'è ghiaccio. Nel bosco ci sono alberi e ombra. Gli animali sono adatti al loro ambiente." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🌲", label: "Bosco", note: "cervo, volpe, gufo" }, { emoji: "🏜️", label: "Deserto", note: "cammello, scorpione" }, { emoji: "🧊", label: "Polo", note: "orso bianco, pinguino" },
+        { emoji: "🌊", label: "Mare", note: "pesci, delfini, coralli" }, { emoji: "🌴", label: "Giungla", note: "scimmie, pappagalli" } ] },
+      { type: "choice", emoji: "🐫", question: "Perché il cammello ha le gobbe?", options: ["Per conservare grasso ed energia", "Per nuotare", "Per volare"], answer: 0 },
+      { type: "choice", emoji: "🐻‍❄️", question: "Perché l'orso polare è bianco?", options: ["Per nascondersi nella neve", "Perché è vecchio", "Per il freddo"], answer: 0 },
+      { type: "choice", question: "Quale animale NON vive nel mare?", options: ["Delfino", "Cammello", "Polpo"], answer: 1 },
+      { type: "choice", question: "Dove piove pochissimo?", options: ["Nella giungla", "Nel deserto", "Nel bosco"], answer: 1 },
+      { type: "choice", question: "Se tagliamo tutti gli alberi di un bosco, gli animali...", options: ["Perdono la casa", "Sono più felici", "Non cambia nulla"], answer: 0 },
+    ],
+  },
+  {
+    id: "sci-suolo-rocce", subject: "scienze", level: 3, title: "Il suolo", emoji: "🪨", description: "Terra, sabbia, rocce e lombrichi",
+    activities: [
+      { type: "intro", emoji: "🪨", title: "Sotto i nostri piedi", text: "Il suolo è lo strato di terra dove crescono le piante. È fatto di pezzetti di roccia, sabbia, argilla e humus, cioè foglie e resti decomposti. Dentro vivono lombrichi, formiche e tanti piccoli esseri che lo rendono fertile." },
+      { type: "choice", question: "Cos'è l'humus?", options: ["Foglie e resti decomposti", "Un tipo di sasso", "Acqua sporca"], answer: 0 },
+      { type: "choice", question: "A cosa servono i lombrichi nel terreno?", options: ["Lo rovinano", "Lo rendono soffice e fertile", "Mangiano le radici"], answer: 1 },
+      { type: "choice", question: "Quale terreno fa passare l'acqua più in fretta?", options: ["Sabbia", "Argilla", "Cemento"], answer: 0 },
+      { type: "choice", question: "Le rocce con il tempo, il vento e la pioggia...", options: ["Crescono", "Si sgretolano", "Diventano piante"], answer: 1 },
+      { type: "choice", question: "Quale di questi è un fossile?", options: ["Una conchiglia di pietra antichissima", "Una foglia verde", "Un sasso liscio"], answer: 0 },
+      { type: "choice", question: "Dove crescono meglio le piante?", options: ["Nel suolo fertile con humus", "Nella sabbia secca", "Sul cemento"], answer: 0 },
+    ],
+  },
 ];
+

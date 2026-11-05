@@ -377,4 +377,102 @@ export const mondo: Lesson[] = [
       { type: "draw", title: "Il tuo posto preferito", text: "Disegna il posto che ti piace di più: mare, montagna, città o campagna!" },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "mondo-linea-tempo", subject: "mondo", level: 2, title: "La linea del tempo", emoji: "📜", description: "Giorni, anni, decenni",
+    activities: [
+      { type: "intro", emoji: "📜", title: "Il tempo passa", text: "Il tempo si misura: un giorno ha 24 ore, una settimana 7 giorni, un mese circa 30 giorni, un anno 12 mesi. Dieci anni sono un decennio, cento anni un secolo. La linea del tempo mette in fila le cose da prima a dopo." },
+      { type: "choice", question: "Quanti mesi ha un anno?", options: ["10", "12", "7"], answer: 1 },
+      { type: "choice", question: "Dieci anni si chiamano...", options: ["Un secolo", "Un decennio", "Una settimana"], answer: 1 },
+      { type: "choice", question: "Quante ore ha un giorno?", options: ["12", "24", "60"], answer: 1 },
+      { type: "choice", question: "Se oggi è martedì, ieri era...", options: ["Lunedì", "Mercoledì", "Domenica"], answer: 0 },
+      { type: "choice", question: "Cosa è successo PRIMA?", options: ["La nascita della nonna", "La mia nascita", "Il mio primo giorno di scuola"], answer: 0 },
+      { type: "choice", question: "Cento anni si chiamano...", options: ["Un decennio", "Un secolo", "Un millennio"], answer: 1 },
+      { type: "draw", title: "La mia linea del tempo", text: "Disegna una linea e metti in ordine: quando sei nata, quando hai imparato a camminare, il primo giorno di scuola." },
+    ],
+  },
+  {
+    id: "mondo-mappa", subject: "mondo", level: 2, title: "La mappa", emoji: "🗺️", description: "Vedere dall'alto e orientarsi",
+    activities: [
+      { type: "intro", emoji: "🗺️", title: "Visto dall'alto", text: "Una mappa è un disegno di un posto visto dall'alto, come lo vede un uccello. I simboli indicano le cose: un quadratino per la casa, una linea per la strada, un alberello per il parco. La legenda spiega i simboli." },
+      { type: "choice", question: "La mappa mostra le cose...", options: ["Dall'alto", "Di lato", "Da sotto"], answer: 0 },
+      { type: "choice", question: "A cosa serve la legenda?", options: ["A spiegare i simboli", "A colorare", "A contare le strade"], answer: 0 },
+      { type: "choice", emoji: "🧭", question: "I quattro punti cardinali sono...", options: ["Nord, Sud, Est, Ovest", "Sopra, Sotto, Destra, Sinistra", "Alto, Basso, Davanti, Dietro"], answer: 0 },
+      { type: "choice", question: "Dove sorge il sole?", options: ["A Est", "A Ovest", "A Nord"], answer: 0 },
+      { type: "choice", question: "Sulla mappa, di solito il Nord è...", options: ["In alto", "In basso", "A destra"], answer: 0 },
+      { type: "draw", title: "La mappa della cameretta", text: "Disegna la tua cameretta vista dall'alto: letto, armadio, finestra, porta." },
+    ],
+  },
+  {
+    id: "mondo-paese", subject: "mondo", level: 2, title: "Il mio paese", emoji: "🏘️", description: "Quartiere, città, servizi",
+    activities: [
+      { type: "intro", emoji: "🏘️", title: "Dove viviamo", text: "Viviamo in una casa, in una via, in un quartiere, in una città. In città ci sono i servizi per tutti: la scuola, l'ospedale, la biblioteca, la posta, il parco, i vigili del fuoco." },
+      { type: "cards", title: "I servizi", cards: [
+        { emoji: "🏫", label: "Scuola", note: "si impara" }, { emoji: "🏥", label: "Ospedale", note: "si cura chi sta male" }, { emoji: "📚", label: "Biblioteca", note: "si prendono libri in prestito" },
+        { emoji: "🚒", label: "Vigili del fuoco", note: "spengono gli incendi" }, { emoji: "👮", label: "Polizia", note: "fa rispettare le regole" }, { emoji: "📮", label: "Posta", note: "si spediscono lettere" } ] },
+      { type: "choice", question: "Dove vado se sto molto male?", options: ["In biblioteca", "All'ospedale", "Alla posta"], answer: 1 },
+      { type: "choice", question: "Chi chiamo se c'è un incendio?", options: ["I vigili del fuoco", "Il postino", "La maestra"], answer: 0 },
+      { type: "choice", question: "Dove posso prendere in prestito un libro?", options: ["In biblioteca", "Al parco", "In ospedale"], answer: 0 },
+      { type: "choice", question: "Il numero di emergenza in Italia è...", options: ["112", "100", "999"], answer: 0 },
+      { type: "match", title: "Chi fa cosa", pairs: [ { left: "👩‍⚕️ Dottoressa", right: "Cura i malati" }, { left: "👨‍🏫 Maestro", right: "Insegna" }, { left: "👩‍🚒 Pompiere", right: "Spegne il fuoco" }, { left: "👨‍🍳 Cuoco", right: "Cucina" } ] },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "mondo-preistoria", subject: "mondo", level: 3, title: "La preistoria", emoji: "🦕", description: "Dinosauri e primi uomini",
+    activities: [
+      { type: "intro", emoji: "🦕", title: "Tanto tempo fa", text: "Milioni di anni fa sulla Terra vivevano i dinosauri. Poi sono scomparsi. Molto dopo sono arrivati i primi uomini: vivevano nelle caverne, cacciavano, scoprirono il fuoco e dipingevano sulle pareti delle grotte." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🦖", label: "Dinosauri", note: "milioni di anni fa" }, { emoji: "🔥", label: "Il fuoco", note: "per scaldarsi e cucinare" }, { emoji: "🪨", label: "Pietra", note: "i primi attrezzi" },
+        { emoji: "🏹", label: "Caccia", note: "per mangiare" }, { emoji: "🎨", label: "Graffiti", note: "disegni nelle grotte" }, { emoji: "🌾", label: "Agricoltura", note: "coltivare i campi" } ] },
+      { type: "choice", question: "I dinosauri e i primi uomini vivevano insieme?", options: ["Sì", "No, i dinosauri sono scomparsi molto prima"], answer: 1 },
+      { type: "choice", question: "Dove vivevano i primi uomini?", options: ["Nelle caverne", "Nei palazzi", "Nelle tende di plastica"], answer: 0 },
+      { type: "choice", question: "A cosa serviva il fuoco?", options: ["A scaldarsi e cucinare", "A giocare", "A dipingere"], answer: 0 },
+      { type: "choice", question: "Di cosa erano fatti i primi attrezzi?", options: ["Di pietra", "Di ferro", "Di plastica"], answer: 0 },
+      { type: "choice", question: "Come conosciamo la preistoria, se non c'erano libri?", options: ["Dai fossili e dai resti trovati", "Dalla televisione", "Dai dinosauri che parlano"], answer: 0 },
+      { type: "choice", question: "Cosa cambiò quando gli uomini impararono a coltivare?", options: ["Si fermarono in villaggi", "Tornarono nelle caverne", "Smisero di mangiare"], answer: 0 },
+    ],
+  },
+  {
+    id: "mondo-fonti", subject: "mondo", level: 3, title: "Le fonti storiche", emoji: "🔍", description: "Come facciamo a sapere il passato",
+    activities: [
+      { type: "intro", emoji: "🔍", title: "Le tracce del passato", text: "Lo storico è come un detective: cerca le fonti, cioè le tracce lasciate dal passato. Fonti scritte (lettere, libri), fonti materiali (oggetti, monete, edifici), fonti iconografiche (dipinti, foto), fonti orali (racconti dei nonni)." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "📜", label: "Scritte", note: "lettere, diari" }, { emoji: "🏺", label: "Materiali", note: "vasi, monete" }, { emoji: "🖼️", label: "Iconografiche", note: "dipinti, foto" }, { emoji: "👵", label: "Orali", note: "racconti" } ] },
+      { type: "choice", emoji: "🪙", question: "Una moneta antica è una fonte...", options: ["Materiale", "Scritta", "Orale"], answer: 0 },
+      { type: "choice", emoji: "📷", question: "Una vecchia fotografia è una fonte...", options: ["Orale", "Iconografica", "Materiale"], answer: 1 },
+      { type: "choice", emoji: "👴", question: "Il nonno che racconta la sua infanzia è una fonte...", options: ["Orale", "Scritta", "Materiale"], answer: 0 },
+      { type: "choice", question: "Chi studia il passato scavando nel terreno?", options: ["L'archeologo", "Il dottore", "Il cuoco"], answer: 0 },
+      { type: "choice", question: "Quale fonte racconta la MIA storia?", options: ["Le mie foto da piccola", "Un libro sui dinosauri", "Una moneta romana"], answer: 0 },
+    ],
+  },
+  {
+    id: "mondo-paesaggi-geo", subject: "mondo", level: 3, title: "Montagna, collina, pianura", emoji: "⛰️", description: "I paesaggi e i loro elementi",
+    activities: [
+      { type: "intro", emoji: "⛰️", title: "I paesaggi della Terra", text: "La montagna è alta, con cime, valli e ghiacciai. La collina è più bassa e tonda. La pianura è piatta e si coltiva. Il fiume nasce in montagna e scorre fino al mare. Il lago è acqua ferma tra le terre." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🏔️", label: "Montagna", note: "sopra i 600 metri" }, { emoji: "🌄", label: "Collina", note: "tra 200 e 600 metri" }, { emoji: "🌾", label: "Pianura", note: "piatta, sotto i 200 metri" },
+        { emoji: "🏞️", label: "Fiume", note: "acqua che scorre" }, { emoji: "🌊", label: "Mare", note: "acqua salata" }, { emoji: "🏝️", label: "Isola", note: "terra circondata dal mare" } ] },
+      { type: "choice", question: "Dove nasce un fiume?", options: ["In montagna", "Nel mare", "In città"], answer: 0 },
+      { type: "choice", question: "Qual è il paesaggio più piatto?", options: ["La pianura", "La montagna", "La collina"], answer: 0 },
+      { type: "choice", question: "Un'isola è...", options: ["Terra circondata dal mare", "Una montagna altissima", "Un lago grande"], answer: 0 },
+      { type: "choice", question: "Il punto più alto di una montagna si chiama...", options: ["Cima", "Valle", "Fondo"], answer: 0 },
+      { type: "choice", question: "Qual è la montagna più alta d'Italia?", options: ["Il Monte Bianco", "Il Vesuvio", "L'Etna"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "🏔️", right: "Montagna" }, { left: "🌾", right: "Pianura" }, { left: "🏞️", right: "Fiume" }, { left: "🏝️", right: "Isola" } ] },
+    ],
+  },
+  {
+    id: "mondo-italia", subject: "mondo", level: 3, title: "L'Italia", emoji: "🇮🇹", description: "Forma, mari, montagne e capitale",
+    activities: [
+      { type: "intro", emoji: "🇮🇹", title: "Il nostro Paese", text: "L'Italia ha la forma di uno stivale! A nord ci sono le Alpi, lungo il centro gli Appennini. È circondata dal mare: Tirreno, Adriatico, Ionio, Ligure. La capitale è Roma. Le isole grandi sono Sicilia e Sardegna. La bandiera è verde, bianca e rossa." },
+      { type: "choice", question: "Che forma ha l'Italia?", options: ["Di uno stivale", "Di una palla", "Di una stella"], answer: 0 },
+      { type: "choice", question: "Qual è la capitale d'Italia?", options: ["Milano", "Roma", "Napoli"], answer: 1 },
+      { type: "choice", question: "Le montagne a nord dell'Italia sono...", options: ["Le Alpi", "Gli Appennini", "Le Ande"], answer: 0 },
+      { type: "choice", question: "Quali sono le due isole più grandi?", options: ["Sicilia e Sardegna", "Capri e Ischia", "Elba e Giglio"], answer: 0 },
+      { type: "choice", question: "I colori della bandiera italiana sono...", options: ["Verde, bianco, rosso", "Blu, bianco, rosso", "Giallo, rosso"], answer: 0 },
+      { type: "choice", question: "Il fiume più lungo d'Italia è...", options: ["Il Po", "Il Tevere", "L'Arno"], answer: 0 },
+      { type: "draw", title: "Disegna l'Italia", text: "Disegna lo stivale e colora la bandiera: verde, bianco e rosso." },
+    ],
+  },
 ];
+

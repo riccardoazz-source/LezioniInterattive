@@ -44,7 +44,7 @@ Basato sulle Indicazioni Nazionali per la scuola primaria. Serve come scaletta p
 - Il mondo: giorni della settimana, orientamento (sopra/sotto/destra/sinistra), regole, famiglia.
 - Arte: colori primari, linee, strumenti musicali.
 
-**Livello 2 – seconda (7 anni)** *(2 lezioni-esempio presenti)*
+**Livello 2 – seconda (7 anni)** ✅ *contenuti presenti*
 - Italiano: alfabeto in ordine, doppie, digrammi (gn, gl, sc), accenti e apostrofo, frase (nome, azione), lettura di brevi storie con domande.
 - Matematica: numeri fino a 100, decine/unità, addizioni e sottrazioni in colonna, tabelline (2, 5, 10, poi tutte), problemi semplici, l'orologio (ore e mezz'ore), l'euro.
 - Scienze: parti della pianta e del corpo, materiali, acqua (stati), catena alimentare semplice.
@@ -52,7 +52,7 @@ Basato sulle Indicazioni Nazionali per la scuola primaria. Serve come scaletta p
 - Il mondo: mesi e stagioni, linea del tempo (ieri/oggi/domani), la mappa della classe e del quartiere, i punti cardinali.
 - Arte: colori secondari e caldi/freddi, ritmo musicale.
 
-**Livello 3 – terza (8 anni)**
+**Livello 3 – terza (8 anni)** ✅ *contenuti presenti*
 - Italiano: nomi/articoli/aggettivi/verbi, tempi verbali base, punteggiatura, ortografia (cu/qu, h), testo narrativo e descrittivo.
 - Matematica: numeri fino a 1000, moltiplicazioni e divisioni, frazioni semplici, misure (m, kg, l), perimetro, problemi a due passaggi.
 - Scienze: ecosistemi, classificazione animali (vertebrati), ciclo dell'acqua, il suolo.

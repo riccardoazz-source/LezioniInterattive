@@ -519,4 +519,143 @@ export const matematica: Lesson[] = [
       { type: "choice", question: "Quale numero è pari?", options: ["12", "13", "15"], answer: 0, hint: "I pari finiscono con 0, 2, 4, 6, 8." },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "mat-addizioni-colonna", subject: "matematica", level: 2, title: "Addizioni in colonna", emoji: "➕", description: "Unità sotto unità, decine sotto decine",
+    activities: [
+      { type: "intro", emoji: "🧮", title: "In colonna", text: "Per sommare numeri grandi li mettiamo in colonna: le unità sotto le unità, le decine sotto le decine. Si parte sempre dalle unità, a destra. Se le unità fanno più di 9, si porta 1 alle decine: è il riporto!" },
+      { type: "cards", title: "Guarda", cards: [
+        { emoji: "23 + 14", label: "= 37", say: "ventitré più quattordici: 3 più 4 fa 7, 2 più 1 fa 3. Trentasette" },
+        { emoji: "35 + 27", label: "= 62", say: "5 più 7 fa 12: scrivo 2 e riporto 1. 3 più 2 più 1 fa 6. Sessantadue" } ] },
+      { type: "choice", question: "23 + 14 = ?", options: ["37", "36", "47"], answer: 0 },
+      { type: "choice", question: "41 + 25 = ?", options: ["66", "56", "67"], answer: 0 },
+      { type: "choice", question: "18 + 7 = ?", options: ["24", "25", "15"], answer: 1, hint: "8 più 7 fa 15: scrivo 5 e riporto 1." },
+      { type: "choice", question: "36 + 48 = ?", options: ["74", "84", "82"], answer: 1 },
+      { type: "choice", question: "57 + 29 = ?", options: ["86", "76", "88"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-sottrazioni-colonna", subject: "matematica", level: 2, title: "Sottrazioni in colonna", emoji: "➖", description: "Anche con il prestito",
+    activities: [
+      { type: "intro", emoji: "🧮", title: "Togliere in colonna", text: "Anche per la sottrazione si parte dalle unità. Se l'unità sopra è più piccola di quella sotto, chiediamo un prestito alla decina: 10 unità in più!" },
+      { type: "cards", title: "Guarda", cards: [
+        { emoji: "48 − 23", label: "= 25", say: "8 meno 3 fa 5, 4 meno 2 fa 2. Venticinque" },
+        { emoji: "52 − 17", label: "= 35", say: "2 meno 7 non si può: prendo in prestito una decina, 12 meno 7 fa 5. 4 meno 1 fa 3. Trentacinque" } ] },
+      { type: "choice", question: "48 − 23 = ?", options: ["25", "26", "21"], answer: 0 },
+      { type: "choice", question: "75 − 31 = ?", options: ["46", "44", "54"], answer: 1 },
+      { type: "choice", question: "52 − 17 = ?", options: ["45", "35", "25"], answer: 1 },
+      { type: "choice", question: "90 − 46 = ?", options: ["44", "54", "56"], answer: 0 },
+      { type: "choice", question: "63 − 28 = ?", options: ["45", "35", "41"], answer: 1 },
+    ],
+  },
+  {
+    id: "mat-tabelline-3-4-5", subject: "matematica", level: 2, title: "Tabelline del 3, 4 e 5", emoji: "✖️", description: "Contare a salti",
+    activities: [
+      { type: "intro", emoji: "🦘", title: "Contare a salti", text: "La tabellina è contare a salti. Del 3: 3, 6, 9, 12, 15, 18, 21, 24, 27, 30. Del 4: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40. Del 5: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🍀🍀🍀", label: "3 × 3 = 9", say: "tre per tre, nove" }, { emoji: "🍀🍀🍀🍀🍀", label: "3 × 5 = 15", say: "tre per cinque, quindici" },
+        { emoji: "🐾🐾🐾🐾", label: "4 × 4 = 16", say: "quattro per quattro, sedici" }, { emoji: "🐾 × 6", label: "4 × 6 = 24", say: "quattro per sei, ventiquattro" },
+        { emoji: "🖐️🖐️", label: "5 × 2 = 10", say: "cinque per due, dieci" }, { emoji: "🖐️ × 7", label: "5 × 7 = 35", say: "cinque per sette, trentacinque" } ] },
+      { type: "choice", question: "3 × 4 = ?", options: ["12", "9", "7"], answer: 0 },
+      { type: "choice", question: "4 × 5 = ?", options: ["25", "20", "9"], answer: 1 },
+      { type: "choice", question: "5 × 6 = ?", options: ["30", "35", "11"], answer: 0 },
+      { type: "choice", question: "3 × 8 = ?", options: ["21", "24", "27"], answer: 1 },
+      { type: "choice", question: "4 × 9 = ?", options: ["36", "32", "40"], answer: 0 },
+      { type: "choice", question: "5 × 9 = ?", options: ["40", "45", "50"], answer: 1, hint: "La tabellina del 5 finisce sempre con 0 o 5." },
+    ],
+  },
+  {
+    id: "mat-orologio", subject: "matematica", level: 2, title: "L'orologio", emoji: "🕒", description: "Ore, mezz'ore e quarti",
+    activities: [
+      { type: "intro", emoji: "🕒", title: "Leggere l'ora", text: "La lancetta corta dice le ore, quella lunga i minuti. Quando la lunga è sul 12 è un'ora esatta. Sul 6 è la mezza. Sul 3 è un quarto, sul 9 sono tre quarti." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🕒", label: "3:00", say: "le tre in punto" }, { emoji: "🕞", label: "3:30", say: "le tre e mezza" },
+        { emoji: "🕘", label: "9:00", say: "le nove in punto" }, { emoji: "🕤", label: "9:30", say: "le nove e mezza" }, { emoji: "🕛", label: "12:00", say: "mezzogiorno" } ] },
+      { type: "choice", emoji: "🕕", question: "Che ore sono?", options: ["Le 6:00", "Le 12:30", "Le 5:00"], answer: 0 },
+      { type: "choice", emoji: "🕥", question: "Che ore sono?", options: ["Le 10:00", "Le 10:30", "Le 6:50"], answer: 1 },
+      { type: "choice", question: "Un'ora quanti minuti ha?", options: ["30", "60", "100"], answer: 1 },
+      { type: "choice", question: "Mezz'ora quanti minuti sono?", options: ["30", "15", "60"], answer: 0 },
+      { type: "choice", question: "Se sono le 4:00 e passa un'ora, che ore sono?", options: ["Le 5:00", "Le 4:30", "Le 3:00"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-euro", subject: "matematica", level: 2, title: "L'euro", emoji: "💶", description: "Monete, banconote e resto",
+    activities: [
+      { type: "intro", emoji: "💶", title: "Soldi veri", text: "Le monete: 1, 2, 5, 10, 20, 50 centesimi, 1 euro e 2 euro. Le banconote: 5, 10, 20, 50 euro. 100 centesimi fanno 1 euro." },
+      { type: "choice", question: "Una moneta da 2 euro più una da 1 euro: quanto fa?", options: ["3 euro", "2 euro", "21 euro"], answer: 0 },
+      { type: "choice", question: "Una banconota da 5 euro più una da 10 euro: quanto fa?", options: ["50 euro", "15 euro", "510 euro"], answer: 1 },
+      { type: "choice", question: "Il gelato costa 2 euro. Pago con 5 euro. Quanto resto?", options: ["3 euro", "7 euro", "2 euro"], answer: 0 },
+      { type: "choice", question: "Quanti centesimi fanno 1 euro?", options: ["10", "50", "100"], answer: 2 },
+      { type: "choice", question: "50 centesimi + 50 centesimi = ?", options: ["1 euro", "100 euro", "10 centesimi"], answer: 0 },
+      { type: "choice", question: "Il libro costa 12 euro. Ho 10 euro. Quanto mi manca?", options: ["2 euro", "22 euro", "1 euro"], answer: 0 },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "mat-mille", subject: "matematica", level: 3, title: "Fino a 1000", emoji: "🔢", description: "Centinaia, decine e unità",
+    activities: [
+      { type: "intro", emoji: "🏗️", title: "Le centinaia", text: "Dieci decine fanno un centinaio. Il numero 347 ha 3 centinaia, 4 decine e 7 unità. Dieci centinaia fanno mille!" },
+      { type: "choice", question: "Quante centinaia ci sono in 528?", options: ["5", "2", "8"], answer: 0 },
+      { type: "choice", question: "Quante decine ci sono in 528?", options: ["5", "2", "8"], answer: 1 },
+      { type: "choice", question: "6 centinaia, 0 decine e 4 unità: che numero è?", options: ["64", "604", "640"], answer: 1 },
+      { type: "choice", question: "Quale numero viene dopo 399?", options: ["400", "300", "398"], answer: 0 },
+      { type: "choice", question: "Quale numero è più grande?", options: ["789", "798", "879"], answer: 2 },
+      { type: "choice", question: "250 + 250 = ?", options: ["400", "500", "550"], answer: 1 },
+      { type: "choice", question: "1000 − 1 = ?", options: ["999", "909", "99"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-moltiplicazioni", subject: "matematica", level: 3, title: "Tutte le tabelline", emoji: "✖️", description: "Dal 6 al 10 e moltiplicazioni in colonna",
+    activities: [
+      { type: "intro", emoji: "✖️", title: "Le tabelline grandi", text: "Del 6: 6, 12, 18, 24, 30, 36, 42, 48, 54, 60. Del 7: 7, 14, 21, 28, 35, 42, 49, 56, 63, 70. Dell'8: 8, 16, 24, 32, 40, 48, 56, 64, 72, 80. Del 9: 9, 18, 27, 36, 45, 54, 63, 72, 81, 90. Un trucco: 10 per un numero aggiunge uno zero!" },
+      { type: "choice", question: "6 × 7 = ?", options: ["42", "48", "36"], answer: 0 },
+      { type: "choice", question: "8 × 8 = ?", options: ["56", "64", "72"], answer: 1 },
+      { type: "choice", question: "9 × 6 = ?", options: ["54", "56", "63"], answer: 0 },
+      { type: "choice", question: "7 × 9 = ?", options: ["56", "72", "63"], answer: 2 },
+      { type: "choice", question: "10 × 34 = ?", options: ["340", "304", "3400"], answer: 0 },
+      { type: "choice", question: "23 × 3 = ?", options: ["66", "69", "63"], answer: 1, hint: "3 × 3 fa 9, 2 × 3 fa 6: sessantanove." },
+      { type: "choice", question: "In una scatola ci sono 6 uova. In 4 scatole quante uova?", options: ["24", "10", "20"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-divisioni", subject: "matematica", level: 3, title: "Le divisioni", emoji: "➗", description: "Dividere in parti uguali",
+    activities: [
+      { type: "intro", emoji: "🍕", title: "Dividere", text: "Dividere vuol dire fare parti uguali. 12 caramelle divise tra 3 bambini: 4 caramelle a testa. 12 : 3 = 4. La divisione è il contrario della moltiplicazione: 4 × 3 = 12!" },
+      { type: "choice", emoji: "🍬 × 12", question: "12 : 3 = ?", options: ["4", "3", "6"], answer: 0 },
+      { type: "choice", question: "20 : 4 = ?", options: ["4", "5", "6"], answer: 1 },
+      { type: "choice", question: "18 : 2 = ?", options: ["9", "8", "16"], answer: 0 },
+      { type: "choice", question: "35 : 5 = ?", options: ["6", "8", "7"], answer: 2, hint: "5 × 7 = 35." },
+      { type: "choice", question: "Ho 24 figurine e le divido in 6 pagine uguali. Quante per pagina?", options: ["4", "6", "3"], answer: 0 },
+      { type: "choice", question: "7 : 2 = 3 con il resto di...", options: ["0", "1", "2"], answer: 1, hint: "2 × 3 = 6, e ne avanza 1." },
+      { type: "choice", question: "Quale moltiplicazione controlla 40 : 8 = 5?", options: ["5 × 8 = 40", "40 × 5 = 8", "8 + 5 = 13"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-frazioni", subject: "matematica", level: 3, title: "Le frazioni", emoji: "🍕", description: "Metà, un terzo, un quarto",
+    activities: [
+      { type: "intro", emoji: "🍕", title: "Una parte dell'intero", text: "Se taglio una pizza in 4 fette uguali, ogni fetta è un quarto: 1/4. Il numero sotto dice in quante parti ho diviso, quello sopra quante ne prendo. 2/4 della pizza sono la metà!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🍕", label: "1/2", say: "un mezzo: la metà" }, { emoji: "🍕", label: "1/3", say: "un terzo" }, { emoji: "🍕", label: "1/4", say: "un quarto" }, { emoji: "🍫", label: "3/4", say: "tre quarti" } ] },
+      { type: "choice", question: "Taglio una torta in 2 parti uguali. Ogni parte è...", options: ["1/2", "1/4", "2/1"], answer: 0 },
+      { type: "choice", question: "Una pizza in 8 fette: ne mangio 3. Che frazione ho mangiato?", options: ["3/8", "8/3", "3/5"], answer: 0 },
+      { type: "choice", question: "Quale frazione è più grande?", options: ["1/2", "1/4", "1/8"], answer: 0, hint: "Meno parti fai, più grande è ogni parte." },
+      { type: "choice", question: "La metà di 10 è...", options: ["5", "2", "20"], answer: 0 },
+      { type: "choice", question: "Un quarto di 12 è...", options: ["4", "3", "6"], answer: 1 },
+      { type: "choice", question: "2/4 è uguale a...", options: ["1/2", "1/4", "4/2"], answer: 0 },
+    ],
+  },
+  {
+    id: "mat-misure-unita", subject: "matematica", level: 3, title: "Metri, chili e litri", emoji: "📏", description: "Le misure di lunghezza, peso e capacità",
+    activities: [
+      { type: "intro", emoji: "📏", title: "Misurare", text: "La lunghezza si misura in metri (m) e centimetri (cm): 1 metro = 100 centimetri. Il peso in chilogrammi (kg) e grammi (g): 1 chilo = 1000 grammi. I liquidi in litri (l): 1 litro = 1000 millilitri." },
+      { type: "choice", question: "1 metro quanti centimetri sono?", options: ["10", "100", "1000"], answer: 1 },
+      { type: "choice", question: "1 chilogrammo quanti grammi sono?", options: ["100", "1000", "10"], answer: 1 },
+      { type: "choice", question: "Con cosa misuro l'acqua in una bottiglia?", options: ["Litri", "Metri", "Chili"], answer: 0 },
+      { type: "choice", question: "Con cosa misuro quanto sono alta?", options: ["Chili", "Centimetri", "Litri"], answer: 1 },
+      { type: "choice", question: "Una matita è lunga circa...", options: ["15 cm", "15 m", "15 kg"], answer: 0 },
+      { type: "choice", question: "Mezzo chilo quanti grammi sono?", options: ["50", "500", "5"], answer: 1 },
+      { type: "choice", question: "Il perimetro di un quadrato con il lato di 5 cm è...", options: ["20 cm", "10 cm", "25 cm"], answer: 0, hint: "Il perimetro è tutto il contorno: 5 + 5 + 5 + 5." },
+    ],
+  },
 ];
+

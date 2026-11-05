@@ -382,4 +382,121 @@ export const inglese: Lesson[] = [
       },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "en-giorni-mesi", subject: "inglese", level: 2, title: "Days and months", emoji: "📅", description: "Giorni della settimana e mesi",
+    activities: [
+      { type: "intro", emoji: "📅", title: "Days of the week", text: "I giorni in inglese iniziano con la maiuscola! Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "1️⃣", label: "Monday", say: "Monday", note: "lunedì" }, { emoji: "2️⃣", label: "Tuesday", say: "Tuesday", note: "martedì" }, { emoji: "3️⃣", label: "Wednesday", say: "Wednesday", note: "mercoledì" },
+        { emoji: "4️⃣", label: "Thursday", say: "Thursday", note: "giovedì" }, { emoji: "5️⃣", label: "Friday", say: "Friday", note: "venerdì" }, { emoji: "6️⃣", label: "Saturday", say: "Saturday", note: "sabato" }, { emoji: "7️⃣", label: "Sunday", say: "Sunday", note: "domenica" } ] },
+      { type: "choice", question: "Come si dice LUNEDÌ?", options: ["Monday", "Sunday", "Friday"], answer: 0 },
+      { type: "choice", question: "What day comes after Friday?", options: ["Thursday", "Saturday", "Monday"], answer: 1 },
+      { type: "cards", title: "Months", cards: [
+        { emoji: "❄️", label: "January", say: "January", note: "gennaio" }, { emoji: "🌸", label: "April", say: "April", note: "aprile" }, { emoji: "☀️", label: "July", say: "July", note: "luglio" }, { emoji: "🎄", label: "December", say: "December", note: "dicembre" } ] },
+      { type: "choice", question: "Come si dice DICEMBRE?", options: ["November", "December", "January"], answer: 1 },
+      { type: "match", title: "Abbina", pairs: [ { left: "Domenica", right: "Sunday" }, { left: "Mercoledì", right: "Wednesday" }, { left: "Luglio", right: "July" }, { left: "Gennaio", right: "January" } ] },
+    ],
+  },
+  {
+    id: "en-like", subject: "inglese", level: 2, title: "I like, I don't like", emoji: "😋", description: "Dire cosa mi piace",
+    activities: [
+      { type: "intro", emoji: "😋", title: "Mi piace!", text: "I LIKE vuol dire mi piace. I DON'T LIKE vuol dire non mi piace. Per chiedere: DO YOU LIKE...? E si risponde YES, I DO oppure NO, I DON'T." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🍕😋", label: "I like pizza", say: "I like pizza" }, { emoji: "🥦😖", label: "I don't like broccoli", say: "I don't like broccoli" },
+        { emoji: "🍦❓", label: "Do you like ice cream?", say: "Do you like ice cream?" }, { emoji: "👍", label: "Yes, I do", say: "Yes, I do" }, { emoji: "👎", label: "No, I don't", say: "No, I don't" } ] },
+      { type: "choice", emoji: "🍫😋", question: "Come dico 'mi piace il cioccolato'?", options: ["I like chocolate", "I don't like chocolate", "Do you like chocolate?"], answer: 0 },
+      { type: "choice", emoji: "🐍😖", question: "Come dico 'non mi piacciono i serpenti'?", options: ["I like snakes", "I don't like snakes"], answer: 1 },
+      { type: "choice", question: "Do you like apples? (risposta: sì)", options: ["Yes, I do", "No, I don't"], answer: 0 },
+      { type: "choice", question: "Come chiedo 'ti piace il gelato?'", options: ["Do you like ice cream?", "I like ice cream", "You like"], answer: 0 },
+    ],
+  },
+  {
+    id: "en-vestiti", subject: "inglese", level: 2, title: "Clothes", emoji: "👕", description: "I vestiti",
+    activities: [
+      { type: "intro", emoji: "👕", title: "Clothes", text: "I vestiti in inglese si dicono CLOTHES. Quando li indossiamo diciamo I'M WEARING: I'm wearing a red T-shirt!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "👕", label: "T-shirt", say: "T-shirt", note: "maglietta" }, { emoji: "👖", label: "Trousers", say: "Trousers", note: "pantaloni" }, { emoji: "👗", label: "Dress", say: "Dress", note: "vestito" },
+        { emoji: "👟", label: "Shoes", say: "Shoes", note: "scarpe" }, { emoji: "🧢", label: "Hat", say: "Hat", note: "cappello" }, { emoji: "🧥", label: "Jacket", say: "Jacket", note: "giacca" }, { emoji: "🧦", label: "Socks", say: "Socks", note: "calzini" }, { emoji: "🩳", label: "Shorts", say: "Shorts", note: "pantaloncini" } ] },
+      { type: "choice", emoji: "👟", question: "Come si dice SCARPE?", options: ["Socks", "Shoes", "Shorts"], answer: 1 },
+      { type: "choice", emoji: "👗", question: "Come si dice VESTITO?", options: ["Dress", "Hat", "Jacket"], answer: 0 },
+      { type: "choice", emoji: "🧢", question: "What is this?", options: ["A hat", "A sock", "A dress"], answer: 0 },
+      { type: "choice", question: "Come dico 'indosso una maglietta blu'?", options: ["I'm wearing a blue T-shirt", "I like a blue T-shirt", "Blue T-shirt I am"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "👖", right: "Trousers" }, { left: "🧦", right: "Socks" }, { left: "🧥", right: "Jacket" }, { left: "🩳", right: "Shorts" } ] },
+    ],
+  },
+  {
+    id: "en-casa", subject: "inglese", level: 2, title: "My house", emoji: "🏠", description: "Le stanze e i mobili",
+    activities: [
+      { type: "intro", emoji: "🏠", title: "My house", text: "La casa si dice HOUSE. Le stanze: kitchen (cucina), bedroom (camera), bathroom (bagno), living room (salotto), garden (giardino)." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🍳", label: "Kitchen", say: "Kitchen", note: "cucina" }, { emoji: "🛏️", label: "Bedroom", say: "Bedroom", note: "camera" }, { emoji: "🛁", label: "Bathroom", say: "Bathroom", note: "bagno" },
+        { emoji: "🛋️", label: "Living room", say: "Living room", note: "salotto" }, { emoji: "🌳", label: "Garden", say: "Garden", note: "giardino" }, { emoji: "🪑", label: "Chair", say: "Chair", note: "sedia" }, { emoji: "🚪", label: "Door", say: "Door", note: "porta" }, { emoji: "🪟", label: "Window", say: "Window", note: "finestra" } ] },
+      { type: "choice", emoji: "🛏️", question: "Dove dormo?", options: ["In the bedroom", "In the kitchen", "In the garden"], answer: 0 },
+      { type: "choice", emoji: "🍳", question: "Dove si cucina?", options: ["In the bathroom", "In the kitchen", "In the living room"], answer: 1 },
+      { type: "choice", emoji: "🪟", question: "Come si dice FINESTRA?", options: ["Door", "Window", "Chair"], answer: 1 },
+      { type: "choice", question: "'There is a table in the kitchen' vuol dire...", options: ["C'è un tavolo in cucina", "Non c'è un tavolo", "Il tavolo è rotto"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "🛁", right: "Bathroom" }, { left: "🌳", right: "Garden" }, { left: "🚪", right: "Door" }, { left: "🛋️", right: "Living room" } ] },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "en-can", subject: "inglese", level: 3, title: "I can!", emoji: "💪", description: "Cosa so fare",
+    activities: [
+      { type: "intro", emoji: "💪", title: "Can e can't", text: "I CAN vuol dire 'so fare, posso'. I CAN'T vuol dire 'non so fare'. I can swim! I can't fly. Per chiedere: Can you...?" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🏊", label: "I can swim", say: "I can swim" }, { emoji: "🚴", label: "I can ride a bike", say: "I can ride a bike" }, { emoji: "🎤", label: "I can sing", say: "I can sing" },
+        { emoji: "🦅❌", label: "I can't fly", say: "I can't fly" }, { emoji: "🏃", label: "I can run", say: "I can run" }, { emoji: "🎨", label: "I can draw", say: "I can draw" } ] },
+      { type: "choice", emoji: "🐟", question: "A fish can...", options: ["swim", "fly", "run"], answer: 0 },
+      { type: "choice", emoji: "🐦", question: "A bird can...", options: ["swim", "fly", "read"], answer: 1 },
+      { type: "choice", emoji: "🐘", question: "An elephant can't...", options: ["walk", "fly", "eat"], answer: 1 },
+      { type: "choice", question: "Come dico 'so disegnare'?", options: ["I can draw", "I can't draw", "I like draw"], answer: 0 },
+      { type: "choice", question: "Can you swim? (sì)", options: ["Yes, I can", "No, I can't", "Yes, I do"], answer: 0 },
+    ],
+  },
+  {
+    id: "en-ora-tempo", subject: "inglese", level: 3, title: "What time is it?", emoji: "⏰", description: "L'ora e il tempo atmosferico",
+    activities: [
+      { type: "intro", emoji: "⏰", title: "Time and weather", text: "What time is it? It's three o'clock! What's the weather like? It's sunny! Impariamo a dire l'ora e il tempo." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🕒", label: "It's 3 o'clock", say: "It's three o'clock" }, { emoji: "🕡", label: "It's half past 6", say: "It's half past six" },
+        { emoji: "☀️", label: "Sunny", say: "It's sunny", note: "c'è il sole" }, { emoji: "🌧️", label: "Rainy", say: "It's rainy", note: "piove" }, { emoji: "☁️", label: "Cloudy", say: "It's cloudy", note: "nuvoloso" }, { emoji: "❄️", label: "Snowy", say: "It's snowy", note: "nevica" }, { emoji: "💨", label: "Windy", say: "It's windy", note: "c'è vento" } ] },
+      { type: "choice", emoji: "🕘", question: "What time is it?", options: ["It's nine o'clock", "It's six o'clock", "It's half past nine"], answer: 0 },
+      { type: "choice", emoji: "🌧️", question: "What's the weather like?", options: ["It's sunny", "It's rainy", "It's snowy"], answer: 1 },
+      { type: "choice", emoji: "❄️", question: "What's the weather like?", options: ["It's windy", "It's snowy", "It's cloudy"], answer: 1 },
+      { type: "choice", question: "'Half past' vuol dire...", options: ["e mezza", "in punto", "meno un quarto"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "☀️", right: "Sunny" }, { left: "☁️", right: "Cloudy" }, { left: "💨", right: "Windy" }, { left: "🕛", right: "Twelve o'clock" } ] },
+    ],
+  },
+  {
+    id: "en-preposizioni", subject: "inglese", level: 3, title: "Where is it?", emoji: "📦", description: "In, on, under, next to",
+    activities: [
+      { type: "intro", emoji: "📦", title: "Dov'è?", text: "Where is the cat? The cat is ON the table (sopra), IN the box (dentro), UNDER the chair (sotto), NEXT TO the door (accanto), BEHIND the sofa (dietro)." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🐱📦", label: "In the box", say: "In the box", note: "dentro" }, { emoji: "🐱🪑", label: "On the chair", say: "On the chair", note: "sopra" }, { emoji: "🪑🐱", label: "Under the chair", say: "Under the chair", note: "sotto" },
+        { emoji: "🐱🚪", label: "Next to the door", say: "Next to the door", note: "accanto" }, { emoji: "🛋️🐱", label: "Behind the sofa", say: "Behind the sofa", note: "dietro" } ] },
+      { type: "choice", emoji: "🍎📦", question: "The apple is ___ the box.", options: ["in", "on", "under"], answer: 0 },
+      { type: "choice", emoji: "📚🪑", question: "The book is ___ the chair.", options: ["under", "on", "behind"], answer: 1 },
+      { type: "choice", emoji: "🪑🐶", question: "The dog is ___ the chair.", options: ["on", "under", "in"], answer: 1 },
+      { type: "choice", question: "'Next to' vuol dire...", options: ["accanto", "sotto", "dentro"], answer: 0 },
+      { type: "choice", question: "Where is the cat? (dietro il divano)", options: ["Behind the sofa", "On the sofa", "In the sofa"], answer: 0 },
+    ],
+  },
+  {
+    id: "en-dialogo", subject: "inglese", level: 3, title: "A little dialogue", emoji: "💬", description: "Presentarsi in inglese",
+    activities: [
+      { type: "intro", emoji: "💬", title: "Let's talk!", text: "Hello! What's your name? My name is Sofia. How old are you? I'm eight years old. Where are you from? I'm from Italy. Nice to meet you!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "👋", label: "What's your name?", say: "What's your name?", note: "Come ti chiami?" }, { emoji: "🙋", label: "My name is...", say: "My name is Sofia", note: "Mi chiamo..." },
+        { emoji: "🎂", label: "How old are you?", say: "How old are you?", note: "Quanti anni hai?" }, { emoji: "8️⃣", label: "I'm eight", say: "I'm eight years old", note: "Ho otto anni" },
+        { emoji: "🌍", label: "Where are you from?", say: "Where are you from?", note: "Da dove vieni?" }, { emoji: "🇮🇹", label: "I'm from Italy", say: "I'm from Italy", note: "Vengo dall'Italia" }, { emoji: "🤝", label: "Nice to meet you", say: "Nice to meet you", note: "Piacere!" } ] },
+      { type: "choice", question: "Come chiedo 'quanti anni hai?'", options: ["How old are you?", "What's your name?", "Where are you from?"], answer: 0 },
+      { type: "choice", question: "'Where are you from?' Rispondo...", options: ["I'm from Italy", "I'm eight", "My name is Luca"], answer: 0 },
+      { type: "choice", question: "'What's your name?' Rispondo...", options: ["My name is Anna", "I'm from Rome", "Nice to meet you"], answer: 0 },
+      { type: "choice", question: "'Nice to meet you' vuol dire...", options: ["Piacere di conoscerti", "Arrivederci", "Come stai?"], answer: 0 },
+      { type: "choice", question: "Come dico 'ho sette anni'?", options: ["I'm seven years old", "I have seven", "Seven I am old"], answer: 0 },
+      { type: "match", title: "Domanda e risposta", pairs: [ { left: "What's your name?", right: "My name is Sofia" }, { left: "How old are you?", right: "I'm eight" }, { left: "Where are you from?", right: "I'm from Italy" }, { left: "How are you?", right: "I'm fine, thank you" } ] },
+    ],
+  },
 ];
+

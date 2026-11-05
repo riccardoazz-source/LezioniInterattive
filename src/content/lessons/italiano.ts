@@ -494,4 +494,109 @@ export const italiano: Lesson[] = [
       { type: "choice", emoji: "🐰", question: "Come si scrive?", options: ["CONILIO", "CONIGLIO"], answer: 1 },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "it-digrammi", subject: "italiano", level: 2, title: "GN, GL, SC", emoji: "🐑", description: "I suoni difficili",
+    activities: [
+      { type: "intro", emoji: "🐑", title: "Suoni speciali", text: "Alcune lettere insieme fanno un suono nuovo: GN come gnomo, GL come foglia, SC come scivolo. Impariamo a riconoscerli!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🧙", label: "GNomo", say: "gnomo" }, { emoji: "🐑", label: "aGNello", say: "agnello" }, { emoji: "🍃", label: "foGLia", say: "foglia" },
+        { emoji: "🧄", label: "aGLio", say: "aglio" }, { emoji: "🛝", label: "SCivolo", say: "scivolo" }, { emoji: "🐟", label: "peSCe", say: "pesce" } ] },
+      { type: "choice", emoji: "🍃", question: "Come si scrive?", options: ["FOLIA", "FOGLIA", "FOGNA"], answer: 1 },
+      { type: "choice", emoji: "🐑", question: "Come si scrive?", options: ["AGNELLO", "ANIELLO", "AGLELLO"], answer: 0 },
+      { type: "choice", emoji: "🐟", question: "Come si scrive?", options: ["PESSE", "PESCE", "PEGNE"], answer: 1 },
+      { type: "choice", emoji: "🛁", question: "Quale parola ha il suono GN?", options: ["Bagno", "Bottiglia", "Scuola"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "GN", right: "🧙 gnomo" }, { left: "GL", right: "🧄 aglio" }, { left: "SC", right: "🛝 scivolo" } ] },
+    ],
+  },
+  {
+    id: "it-accento-apostrofo", subject: "italiano", level: 2, title: "Accento e apostrofo", emoji: "✍️", description: "È o e? L'ape o la ape?",
+    activities: [
+      { type: "intro", emoji: "✍️", title: "Due segni piccoli ma importanti", text: "L'accento si mette sopra la vocale finale quando la voce ci appoggia: città, perché, è. L'apostrofo toglie una vocale: lo albero diventa l'albero." },
+      { type: "choice", question: "Quale frase è giusta?", options: ["Il sole e caldo.", "Il sole è caldo."], answer: 1, hint: "È con l'accento vuol dire 'esiste, si trova'." },
+      { type: "choice", question: "Quale frase è giusta?", options: ["Mangio pane e burro.", "Mangio pane è burro."], answer: 0, hint: "La e senza accento unisce due parole." },
+      { type: "choice", question: "Come si scrive?", options: ["lo albero", "l'albero"], answer: 1 },
+      { type: "choice", question: "Come si scrive?", options: ["un'amica", "un amica"], answer: 0, hint: "Amica è femminile: un' con apostrofo." },
+      { type: "choice", question: "Come si scrive?", options: ["un amico", "un'amico"], answer: 0, hint: "Amico è maschile: niente apostrofo." },
+      { type: "choice", question: "Quale parola vuole l'accento?", options: ["citta", "casa", "tavolo"], answer: 0 },
+    ],
+  },
+  {
+    id: "it-nomi", subject: "italiano", level: 2, title: "I nomi", emoji: "🏷️", description: "Persone, animali, cose",
+    activities: [
+      { type: "intro", emoji: "🏷️", title: "Che cos'è un nome", text: "I nomi sono le parole che indicano persone, animali e cose. Possono essere maschili o femminili, singolari o plurali. I nomi propri, come Sofia o Roma, vogliono la lettera maiuscola." },
+      { type: "choice", question: "Quale di queste parole è un nome di persona?", options: ["Maestra", "Correre", "Verde"], answer: 0 },
+      { type: "choice", question: "Quale di queste parole è un nome di animale?", options: ["Veloce", "Giraffa", "Saltare"], answer: 1 },
+      { type: "choice", question: "Quale di queste parole è un nome di cosa?", options: ["Bicicletta", "Dormire", "Bello"], answer: 0 },
+      { type: "choice", question: "Quale nome vuole la maiuscola?", options: ["gatto", "sofia", "tavolo"], answer: 1, hint: "I nomi propri di persona si scrivono con la lettera grande." },
+      { type: "choice", question: "Il nome GATTO è...", options: ["Maschile", "Femminile"], answer: 0 },
+      { type: "choice", question: "Il nome CASE è...", options: ["Singolare", "Plurale"], answer: 1 },
+      { type: "match", title: "Abbina il tipo di nome", pairs: [ { left: "Nonna", right: "Persona" }, { left: "Delfino", right: "Animale" }, { left: "Matita", right: "Cosa" }, { left: "Milano", right: "Nome proprio" } ] },
+    ],
+  },
+  {
+    id: "it-storia-breve", subject: "italiano", level: 2, title: "Leggo una storia", emoji: "📖", description: "Comprensione del testo",
+    activities: [
+      { type: "intro", emoji: "📖", title: "Il gattino Pippo", text: "Pippo è un gattino grigio che vive in una casa con il giardino. Una mattina vede una farfalla gialla e la insegue tra i fiori. Salta, corre, ma la farfalla vola via. Allora Pippo si stende al sole e si addormenta." },
+      { type: "choice", question: "Di che colore è Pippo?", options: ["Grigio", "Giallo", "Nero"], answer: 0 },
+      { type: "choice", question: "Cosa vede Pippo una mattina?", options: ["Un cane", "Una farfalla", "Un topo"], answer: 1 },
+      { type: "choice", question: "Dove insegue la farfalla?", options: ["Tra i fiori", "In cucina", "Sul tetto"], answer: 0 },
+      { type: "choice", question: "Cosa fa Pippo alla fine?", options: ["Mangia", "Miagola", "Si addormenta al sole"], answer: 2 },
+      { type: "choice", question: "Pippo prende la farfalla?", options: ["Sì", "No"], answer: 1 },
+      { type: "draw", title: "Disegna la storia", text: "Disegna Pippo che insegue la farfalla tra i fiori." },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "it-articoli-aggettivi", subject: "italiano", level: 3, title: "Articoli e aggettivi", emoji: "🔎", description: "Il, la, un, una e le parole che descrivono",
+    activities: [
+      { type: "intro", emoji: "🔎", title: "Articoli e aggettivi", text: "L'articolo sta davanti al nome: il cane, la casa, un libro, una mela. L'aggettivo dice com'è il nome: il cane GRANDE, la casa ROSSA." },
+      { type: "choice", question: "Quale articolo va bene? ___ bambina", options: ["Il", "La", "Lo"], answer: 1 },
+      { type: "choice", question: "Quale articolo va bene? ___ zaino", options: ["Lo", "Il", "La"], answer: 0, hint: "Davanti a Z si usa LO." },
+      { type: "choice", question: "Quale articolo va bene? ___ amici", options: ["I", "Gli", "Le"], answer: 1, hint: "Davanti a vocale, al plurale maschile, si usa GLI." },
+      { type: "choice", question: "Nella frase 'Il gatto nero dorme', l'aggettivo è...", options: ["gatto", "nero", "dorme"], answer: 1 },
+      { type: "choice", question: "Quale aggettivo descrive il ghiaccio?", options: ["Freddo", "Caldo", "Morbido"], answer: 0 },
+      { type: "choice", question: "Quale frase è corretta?", options: ["Le fiori sono belle", "I fiori sono belli"], answer: 1 },
+      { type: "match", title: "Abbina articolo e nome", pairs: [ { left: "Il", right: "treno" }, { left: "La", right: "luna" }, { left: "Lo", right: "specchio" }, { left: "Gli", right: "alberi" } ] },
+    ],
+  },
+  {
+    id: "it-verbi-tempi", subject: "italiano", level: 3, title: "I verbi: ieri, oggi, domani", emoji: "⏰", description: "Passato, presente e futuro",
+    activities: [
+      { type: "intro", emoji: "⏰", title: "Il verbo cambia con il tempo", text: "Il verbo dice cosa si fa e quando. Ieri ho mangiato (passato), oggi mangio (presente), domani mangerò (futuro)." },
+      { type: "choice", question: "'Ieri sono andata al parco.' Il verbo è al...", options: ["Passato", "Presente", "Futuro"], answer: 0 },
+      { type: "choice", question: "'Domani andremo al mare.' Il verbo è al...", options: ["Passato", "Presente", "Futuro"], answer: 2 },
+      { type: "choice", question: "'Adesso leggo un libro.' Il verbo è al...", options: ["Passato", "Presente", "Futuro"], answer: 1 },
+      { type: "choice", question: "Completa: Ieri io ___ una torta.", options: ["mangio", "ho mangiato", "mangerò"], answer: 1 },
+      { type: "choice", question: "Completa: Domani noi ___ a scuola.", options: ["andremo", "siamo andati", "andiamo"], answer: 0 },
+      { type: "choice", question: "Nella frase 'La maestra spiega la lezione', il verbo è...", options: ["maestra", "spiega", "lezione"], answer: 1 },
+      { type: "match", title: "Abbina", pairs: [ { left: "Ieri", right: "ho giocato" }, { left: "Oggi", right: "gioco" }, { left: "Domani", right: "giocherò" } ] },
+    ],
+  },
+  {
+    id: "it-punteggiatura", subject: "italiano", level: 3, title: "La punteggiatura", emoji: "❓", description: "Punto, virgola, domanda, esclamazione",
+    activities: [
+      { type: "intro", emoji: "❗", title: "I segni che fanno respirare la frase", text: "Il punto chiude la frase. La virgola fa una piccola pausa. Il punto interrogativo fa una domanda. Il punto esclamativo mostra sorpresa o gioia!" },
+      { type: "choice", question: "Quale segno va alla fine? 'Come ti chiami'", options: ["?", "!", "."], answer: 0 },
+      { type: "choice", question: "Quale segno va alla fine? 'Che bella sorpresa'", options: [".", "!", ","], answer: 1 },
+      { type: "choice", question: "Quale segno va alla fine? 'Il cane dorme nella cuccia'", options: ["?", "!", "."], answer: 2 },
+      { type: "choice", question: "Dove va la virgola? 'Ho comprato mele pere e banane'", options: ["Ho comprato mele, pere e banane", "Ho comprato, mele pere e banane"], answer: 0, hint: "La virgola separa le cose di un elenco." },
+      { type: "choice", question: "Dopo il punto la parola inizia con...", options: ["La lettera minuscola", "La lettera maiuscola"], answer: 1 },
+      { type: "choice", question: "Quale frase è una domanda?", options: ["Vieni al parco?", "Vieni al parco!", "Vieni al parco."], answer: 0 },
+    ],
+  },
+  {
+    id: "it-descrizione", subject: "italiano", level: 3, title: "Descrivere", emoji: "🖼️", description: "Come si descrive una persona o un posto",
+    activities: [
+      { type: "intro", emoji: "🖼️", title: "Descrivere con i cinque sensi", text: "Per descrivere bene usiamo gli aggettivi e i sensi: com'è, che colore ha, che rumore fa, che profumo sente. Una descrizione fa vedere le cose a chi legge!" },
+      { type: "intro", emoji: "🏖️", title: "La spiaggia", text: "La spiaggia è lunga e dorata. La sabbia è calda sotto i piedi. Il mare è azzurro e fa un rumore dolce. Nell'aria c'è profumo di sale e di crema solare." },
+      { type: "choice", question: "Com'è la sabbia?", options: ["Calda", "Fredda", "Bagnata"], answer: 0 },
+      { type: "choice", question: "Quale senso usa 'profumo di sale'?", options: ["Vista", "Olfatto", "Udito"], answer: 1 },
+      { type: "choice", question: "Quale senso usa 'il mare fa un rumore dolce'?", options: ["Udito", "Gusto", "Tatto"], answer: 0 },
+      { type: "choice", question: "Quale aggettivo descrive meglio un leone?", options: ["Timido", "Coraggioso", "Piccolo"], answer: 1 },
+      { type: "choice", question: "Per descrivere la mia cameretta posso dire...", options: ["Domani vado a scuola", "È piccola, con le pareti azzurre e un letto morbido", "Mi piace il gelato"], answer: 1 },
+      { type: "draw", title: "Descrivi con il disegno", text: "Disegna la tua cameretta con tutti i particolari: colori, oggetti, finestre." },
+    ],
+  },
 ];
+

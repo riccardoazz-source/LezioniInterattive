@@ -223,4 +223,85 @@ export const arte: Lesson[] = [
       { type: "draw", title: "La tua decorazione", text: "Disegna una cornice con un ritmo di colori e forme che si ripete!" },
     ],
   },
+  // ===================== LIVELLO 2 (7 anni) =====================
+  {
+    id: "arte-secondari", subject: "arte", level: 2, title: "Colori secondari e complementari", emoji: "🎨", description: "Il cerchio dei colori",
+    activities: [
+      { type: "intro", emoji: "🎨", title: "Il cerchio dei colori", text: "Mescolando due primari nasce un secondario: arancione, verde, viola. Ogni colore ha il suo opposto nel cerchio, il complementare: rosso e verde, blu e arancione, giallo e viola. Messi vicini si fanno brillare a vicenda!" },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🔴🟢", label: "Rosso e verde", say: "rosso e verde sono complementari" }, { emoji: "🔵🟠", label: "Blu e arancione", say: "blu e arancione sono complementari" }, { emoji: "🟡🟣", label: "Giallo e viola", say: "giallo e viola sono complementari" } ] },
+      { type: "choice", question: "Il complementare del rosso è...", options: ["Verde", "Blu", "Giallo"], answer: 0 },
+      { type: "choice", question: "Il complementare del blu è...", options: ["Viola", "Arancione", "Verde"], answer: 1 },
+      { type: "choice", question: "Quali sono i colori secondari?", options: ["Arancione, verde, viola", "Rosso, giallo, blu", "Nero, bianco, grigio"], answer: 0 },
+      { type: "choice", question: "Se aggiungo bianco al rosso ottengo...", options: ["Rosa", "Marrone", "Arancione"], answer: 0 },
+      { type: "choice", question: "Se aggiungo nero a un colore diventa...", options: ["Più scuro", "Più chiaro", "Trasparente"], answer: 0 },
+      { type: "draw", title: "Complementari", text: "Disegna un fiore arancione con le foglie blu, e guarda come brillano insieme!" },
+    ],
+  },
+  {
+    id: "arte-ritratto", subject: "arte", level: 2, title: "Il ritratto", emoji: "🧑‍🎨", description: "Disegnare un viso con le proporzioni",
+    activities: [
+      { type: "intro", emoji: "🧑‍🎨", title: "Un viso a regola d'arte", text: "Il viso è un ovale. Gli occhi stanno a metà dell'altezza, non in alto! Il naso a metà tra gli occhi e il mento. La bocca a metà tra il naso e il mento. Le orecchie sono all'altezza degli occhi." },
+      { type: "choice", question: "Dove stanno gli occhi nel viso?", options: ["A metà dell'altezza", "In alto, vicino ai capelli", "In basso"], answer: 0 },
+      { type: "choice", question: "Le orecchie sono all'altezza...", options: ["Degli occhi", "Della bocca", "Dei capelli"], answer: 0 },
+      { type: "choice", question: "Che forma ha un viso?", options: ["Ovale", "Quadrata", "Triangolare"], answer: 0 },
+      { type: "trace", title: "L'ovale del viso", glyph: "0", say: "Ricalca l'ovale del viso, poi aggiungi occhi, naso e bocca al posto giusto" },
+      { type: "draw", title: "Il tuo autoritratto", text: "Disegna il tuo viso rispettando le proporzioni: occhi a metà, naso, bocca, orecchie, capelli." },
+    ],
+  },
+  {
+    id: "arte-ritmo-musica", subject: "arte", level: 2, title: "Il ritmo nella musica", emoji: "🥁", description: "Battere il tempo",
+    activities: [
+      { type: "intro", emoji: "🥁", title: "Il ritmo", text: "Il ritmo è il battito regolare della musica, come il cuore. Possiamo batterlo con le mani: TA TA TA TA. Le note lunghe durano di più: TAAA. Quelle corte sono veloci: ti-ti." },
+      { type: "cards", title: "Batti le mani", cards: [
+        { emoji: "👏", label: "TA", say: "ta", note: "un battito" }, { emoji: "👏👏", label: "ti-ti", say: "ti ti", note: "due veloci" }, { emoji: "👏〰️", label: "TAAA", say: "taaa", note: "lungo" }, { emoji: "🤫", label: "Pausa", say: "pausa", note: "silenzio" } ] },
+      { type: "choice", question: "'TA ti-ti TA ti-ti': quante volte batto le mani?", options: ["6", "4", "2"], answer: 0 },
+      { type: "choice", question: "Una nota lunga si dice...", options: ["TAAA", "ti", "pausa"], answer: 0 },
+      { type: "choice", question: "Cosa vuol dire pausa?", options: ["Silenzio", "Battere forte", "Cantare"], answer: 0 },
+      { type: "choice", emoji: "🐢", question: "Una musica lenta ha un ritmo...", options: ["Lento", "Veloce"], answer: 0 },
+      { type: "choice", emoji: "🐇", question: "Per ballare serve una musica...", options: ["Veloce e ritmata", "Lentissima"], answer: 0 },
+    ],
+  },
+  // ===================== LIVELLO 3 (8 anni) =====================
+  {
+    id: "arte-artisti", subject: "arte", level: 3, title: "Grandi artisti", emoji: "🖼️", description: "Van Gogh, Monet, Picasso, Kandinskij",
+    activities: [
+      { type: "intro", emoji: "🖼️", title: "Quattro pittori famosi", text: "Van Gogh dipingeva con pennellate spesse e vorticose: la Notte stellata! Monet dipingeva la luce con tocchi leggeri: le Ninfee. Picasso scomponeva i visi in forme geometriche. Kandinskij dipingeva solo forme e colori, senza oggetti: l'arte astratta." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🌌", label: "Van Gogh", note: "pennellate vorticose" }, { emoji: "🪷", label: "Monet", note: "la luce, le ninfee" }, { emoji: "🧩", label: "Picasso", note: "visi geometrici" }, { emoji: "🔵🔺", label: "Kandinskij", note: "forme e colori" } ] },
+      { type: "choice", question: "Chi ha dipinto la Notte stellata?", options: ["Van Gogh", "Picasso", "Monet"], answer: 0 },
+      { type: "choice", question: "L'arte astratta...", options: ["Non rappresenta oggetti reali", "Copia le fotografie", "Usa solo il nero"], answer: 0 },
+      { type: "choice", question: "Chi dipingeva le ninfee sullo stagno?", options: ["Monet", "Kandinskij", "Van Gogh"], answer: 0 },
+      { type: "choice", question: "Picasso disegnava i visi...", options: ["Con forme geometriche", "Come fotografie", "Solo di profilo"], answer: 0 },
+      { type: "draw", title: "Come Van Gogh", text: "Disegna un cielo di notte con pennellate a spirale, come la Notte stellata." },
+      { type: "draw", title: "Come Kandinskij", text: "Disegna solo cerchi, triangoli e linee colorate, senza oggetti veri." },
+    ],
+  },
+  {
+    id: "arte-prospettiva", subject: "arte", level: 3, title: "Vicino e lontano", emoji: "🛣️", description: "Prospettiva e piani",
+    activities: [
+      { type: "intro", emoji: "🛣️", title: "Dare profondità al disegno", text: "Le cose vicine si disegnano grandi e in basso; le cose lontane piccole e in alto. Una strada che va lontano diventa sempre più stretta, fino a un punto all'orizzonte. I colori lontani sono più chiari e sbiaditi." },
+      { type: "choice", question: "Una casa lontana si disegna...", options: ["Piccola e in alto", "Grande e in basso"], answer: 0 },
+      { type: "choice", question: "La linea dove il cielo tocca la terra si chiama...", options: ["Orizzonte", "Confine", "Bordo"], answer: 0 },
+      { type: "choice", question: "Una strada che va lontano diventa...", options: ["Più stretta", "Più larga", "Uguale"], answer: 0 },
+      { type: "choice", question: "Le montagne lontane hanno colori...", options: ["Più chiari e azzurrini", "Più scuri e forti"], answer: 0 },
+      { type: "choice", question: "In un disegno, il 'primo piano' è...", options: ["La parte più vicina", "La parte più lontana", "Il cielo"], answer: 0 },
+      { type: "draw", title: "Una strada verso l'orizzonte", text: "Disegna una strada che si restringe fino all'orizzonte, con alberi grandi vicini e piccoli lontani." },
+    ],
+  },
+  {
+    id: "arte-strumenti-orchestra", subject: "arte", level: 3, title: "L'orchestra", emoji: "🎻", description: "Le famiglie degli strumenti",
+    activities: [
+      { type: "intro", emoji: "🎻", title: "Le famiglie degli strumenti", text: "Nell'orchestra gli strumenti sono in famiglie: gli archi (violino, violoncello, contrabbasso) si suonano con l'archetto; i fiati (flauto, clarinetto, tromba) soffiando; le percussioni (tamburo, piatti, xilofono) battendo. Il direttore li guida con la bacchetta." },
+      { type: "cards", title: "Tocca e ascolta", cards: [
+        { emoji: "🎻", label: "Archi", note: "violino, violoncello" }, { emoji: "🎺", label: "Fiati", note: "flauto, tromba, clarinetto" }, { emoji: "🥁", label: "Percussioni", note: "tamburo, piatti" }, { emoji: "🎹", label: "Tastiere", note: "pianoforte" }, { emoji: "🪄", label: "Direttore", note: "guida l'orchestra" } ] },
+      { type: "choice", emoji: "🎻", question: "Il violino è uno strumento...", options: ["Ad arco", "A fiato", "A percussione"], answer: 0 },
+      { type: "choice", emoji: "🎺", question: "La tromba è uno strumento...", options: ["A percussione", "A fiato", "Ad arco"], answer: 1 },
+      { type: "choice", emoji: "🥁", question: "Il tamburo è uno strumento...", options: ["A percussione", "A fiato", "Ad arco"], answer: 0 },
+      { type: "choice", question: "Chi guida l'orchestra?", options: ["Il direttore", "Il violinista", "Il pubblico"], answer: 0 },
+      { type: "choice", question: "Quale strumento ha i tasti bianchi e neri?", options: ["Il pianoforte", "Il violino", "Il flauto"], answer: 0 },
+      { type: "match", title: "Abbina", pairs: [ { left: "🎻 Violoncello", right: "Archi" }, { left: "🪈 Flauto", right: "Fiati" }, { left: "🥁 Piatti", right: "Percussioni" }, { left: "🎹 Pianoforte", right: "Tastiere" } ] },
+    ],
+  },
 ];
+
