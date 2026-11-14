@@ -6,6 +6,8 @@ import type { BrushKind, Stroke } from "@/lib/storage/types";
 import { buildLineMask, floodFill } from "@/lib/floodfill";
 import { BRUSHES, DrawingCanvas, PEN_WIDTHS, renderStrokes, type Tool } from "./DrawingCanvas";
 import { PalettePicker } from "./PalettePicker";
+import { RotatableStage, useAvailableHeight } from "./RotatableStage";
+import { readRotation, saveRotation, toLocal } from "@/lib/rotate";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
 const MAX_SIDE = 1400;
@@ -20,6 +22,8 @@ interface Props {
   onStrokes: (s: Stroke[]) => void;
   onThumbnail?: (dataUrl: string) => void;
   fingerAllowed?: boolean;
+  /** chiave per ricordare la rotazione del foglio (es. id della versione) */
+  rotationKey?: string;
 }
 
 /**
@@ -28,7 +32,14 @@ interface Props {
  * pennarello, acquerello, pennello) → le LINEE del disegno in "multiply",
  * così restano sempre nere anche colorandoci sopra.
  */
-export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrokes, onThumbnail, fingerAllowed }: Props) {
+export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrokes, onThumbnail, fingerAllowed, rotationKey }: Props) {
+  const maxHeight = useAvailableHeight(215);
+  const [rotation, setRotation] = useState(() => (typeof window === "undefined" || !rotationKey ? 0 : readRotation(rotationKey)));
+  const turn = () => {
+    const next = (rotation + 90) % 360;
+    setRotation(next);
+    if (rotationKey) saveRotation(rotationKey, next);
+  };
   const [color, setColor] = useState("#ef476f");
   const [mode, setMode] = useState<Mode>("fill");
   const [widthIdx, setWidthIdx] = useState(1);
@@ -143,9 +154,9 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
 
   const onTap = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (mode !== "fill" || !dims) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * dims.w;
-    const y = ((e.clientY - rect.top) / rect.height) * dims.h;
+    const local = toLocal(e.currentTarget, e.clientX, e.clientY, rotation);
+    const x = (local.x / local.w) * dims.w;
+    const y = (local.y / local.h) * dims.h;
     const paint = paintRef.current;
     const mask = maskRef.current;
     if (!paint || !mask) return;
@@ -199,6 +210,7 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
         >
           <span className="rounded-full bg-foreground" style={{ width: width + 3, height: width + 3 }} />
         </button>
+        <ToolBtn label="🔄" aria="Gira il foglio" onClick={turn} />
         <ToolBtn label="↩️" aria="Annulla" disabled={empty} onClick={undo} />
         <ToolBtn label="🗑️" aria="Ricomincia" disabled={empty} onClick={clearAll} />
       </div>
@@ -211,11 +223,8 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
         }}
       />
       {error && <p className="text-center font-bold text-danger">{error}</p>}
-      <div className="flex w-full justify-center">
-        <div
-          className="relative overflow-hidden rounded-2xl bg-white shadow-inner"
-          style={{ width: "100%", maxWidth: dims ? `calc((100dvh - 215px) * ${dims.w / dims.h})` : undefined, aspectRatio: dims ? `${dims.w} / ${dims.h}` : "1 / 1" }}
-        >
+      <RotatableStage rotation={rotation} aspect={dims ? dims.w / dims.h : 1} maxHeight={maxHeight}>
+        <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white shadow-inner">
           {!dims && !error && <p className="absolute inset-0 flex items-center justify-center text-muted">Carico il disegno…</p>}
           <canvas
             ref={displayRef}
@@ -237,6 +246,7 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
               fill
               logicalW={dims.w}
               logicalH={dims.h}
+              rotation={rotation}
               className={`rounded-2xl ${mode === "fill" ? "pointer-events-none" : ""}`}
             />
           )}
@@ -244,7 +254,7 @@ export function ImageColoringBoard({ src, paintOps, strokes, onPaintOps, onStrok
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt="" draggable={false} className="pointer-events-none absolute inset-0 h-full w-full select-none" style={{ mixBlendMode: "multiply" }} />
         </div>
-      </div>
+      </RotatableStage>
     </div>
   );
 }

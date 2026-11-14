@@ -8,6 +8,9 @@ import { newPage, type Stroke } from "@/lib/storage";
 import { useSettings } from "@/lib/settings";
 import { BRUSHES, PEN_COLORS, PEN_WIDTHS, type Tool } from "@/components/draw/DrawingCanvas";
 import { NotebookSheet } from "@/components/notes/NotebookSheet";
+import { RotatableStage, useAvailableHeight } from "@/components/draw/RotatableStage";
+import { readRotation, saveRotation } from "@/lib/rotate";
+import { PAGE_H, PAGE_W } from "@/lib/storage";
 import { IconBtn } from "@/components/notes/NoteEditor";
 
 /** Disegno libero: un foglio bianco a tutta pagina per la Pencil. */
@@ -17,7 +20,6 @@ export function FreeDrawingEditor({ id }: { id: string }) {
   const [drawing, setDrawing] = useState<SavedDrawing | null>(null);
   const [tool, setTool] = useState<Tool>({ color: PEN_COLORS[0].value, width: PEN_WIDTHS[1], erase: false });
   const [saved, setSaved] = useState<"idle" | "saving" | "saved">("idle");
-  const [maxHeight, setMaxHeight] = useState(800);
   const [showTitle, setShowTitle] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [confirmDelete, deleteDialog] = useConfirmDelete();
@@ -34,12 +36,13 @@ export function FreeDrawingEditor({ id }: { id: string }) {
     };
   }, [id]);
 
-  useEffect(() => {
-    const calc = () => setMaxHeight(Math.max(420, window.innerHeight - 190));
-    calc();
-    window.addEventListener("resize", calc);
-    return () => window.removeEventListener("resize", calc);
-  }, []);
+  const maxHeight = useAvailableHeight(190);
+  const [rotation, setRotation] = useState(() => (typeof window === "undefined" ? 0 : readRotation(id)));
+  const turn = () => {
+    const next = (rotation + 90) % 360;
+    setRotation(next);
+    saveRotation(id, next);
+  };
 
   const persist = useCallback((d: SavedDrawing) => {
     setSaved("saving");
@@ -85,6 +88,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
         <IconBtn label="↩️" aria="Annulla" disabled={drawing.strokes.length === 0} onClick={() => patch({ strokes: drawing.strokes.slice(0, -1) })} />
         <IconBtn label="🗑️" aria="Cancella tutto" disabled={drawing.strokes.length === 0} onClick={async () => (await confirmDelete("Cancellare tutto il foglio?")) && patch({ strokes: [] })} />
         <span className="mx-1 h-8 w-px bg-gray-300" />
+        <IconBtn label="🔄" aria="Gira il foglio" onClick={turn} />
         <IconBtn label="🏷️" aria="Nome del disegno" active={showTitle} onClick={() => setShowTitle((v) => !v)} />
         <span className="text-xs text-muted">{saved === "saving" ? "Salvo…" : saved === "saved" ? "✓ Salvato" : ""}</span>
       </div>
@@ -111,6 +115,7 @@ export function FreeDrawingEditor({ id }: { id: string }) {
           </button>
         </div>
       )}
+      <RotatableStage rotation={rotation} aspect={PAGE_W / PAGE_H} maxHeight={maxHeight}>
       <NotebookSheet
         page={page}
         mode="pen"
@@ -121,9 +126,11 @@ export function FreeDrawingEditor({ id }: { id: string }) {
         onImages={() => {}}
         selectedImage={null}
         onSelectImage={() => {}}
-        maxHeight={maxHeight}
+        maxHeight={100000}
         lined={false}
+        rotation={rotation}
       />
+      </RotatableStage>
     </div>
   );
 }

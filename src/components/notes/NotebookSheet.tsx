@@ -21,6 +21,8 @@ interface Props {
   maxHeight: number;
   /** carta a righe (quaderno) oppure foglio bianco (disegno) */
   lined?: boolean;
+  /** rotazione del foglio (gradi), se girato da un contenitore */
+  rotation?: number;
 }
 
 const LINE = 56; // interlinea in unità logiche
@@ -33,7 +35,7 @@ const FONT = 38;
  * Tutto è in coordinate logiche PAGE_W × PAGE_H, quindi la pagina appare
  * identica su iPhone, iPad e PC.
  */
-export function NotebookSheet({ page, mode, tool, fingerAllowed, readOnly, onStrokes, onText, onImages, selectedImage, onSelectImage, maxHeight, lined = true }: Props) {
+export function NotebookSheet({ page, mode, tool, fingerAllowed, readOnly, onStrokes, onText, onImages, selectedImage, onSelectImage, maxHeight, lined = true, rotation = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
   const drag = useRef<{ id: string; startX: number; startY: number; ox: number; oy: number } | null>(null);
@@ -41,7 +43,7 @@ export function NotebookSheet({ page, mode, tool, fingerAllowed, readOnly, onStr
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const ro = new ResizeObserver(() => setScale(el.getBoundingClientRect().width / PAGE_W));
+    const ro = new ResizeObserver(() => setScale(el.offsetWidth / PAGE_W));
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
@@ -130,6 +132,7 @@ export function NotebookSheet({ page, mode, tool, fingerAllowed, readOnly, onStr
           fill
           logicalW={PAGE_W}
           logicalH={PAGE_H}
+          rotation={rotation}
           className={`rounded-xl ${mode === "pen" && !readOnly ? "" : "pointer-events-none"}`}
         />
       </div>

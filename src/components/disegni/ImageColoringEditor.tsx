@@ -127,6 +127,7 @@ export function ImageColoringEditor({ workId }: { workId: string }) {
             onStrokes={(strokes: Stroke[]) => patch({ strokes })}
             onThumbnail={onThumbnail}
             fingerAllowed={settings.fingerDraw}
+            rotationKey={workId}
           />
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="text-sm text-muted">

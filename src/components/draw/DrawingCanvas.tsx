@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BOARD_H, BOARD_W, type BrushKind, type Stroke, type StrokePoint } from "@/lib/storage/types";
+import { toLocal } from "@/lib/rotate";
 
 /**
  * Lavagna per Apple Pencil, dito e mouse.
@@ -69,6 +70,8 @@ interface CanvasProps {
   /** dimensione logica (default: lavagna 1000 × 700) */
   logicalW?: number;
   logicalH?: number;
+  /** rotazione del foglio (gradi) applicata da un contenitore con CSS */
+  rotation?: number;
 }
 
 function strokeWidth(stroke: Stroke, p: number, pen: boolean, t = 0.5): number {
@@ -212,6 +215,7 @@ export function DrawingCanvas({
   fill = false,
   logicalW = BOARD_W,
   logicalH = BOARD_H,
+  rotation = 0,
 }: CanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -237,7 +241,8 @@ export function DrawingCanvas({
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
     const resize = () => {
-      const rect = container.getBoundingClientRect();
+      // misure "dritte" (non toccate da un'eventuale rotazione CSS)
+      const rect = { width: container.clientWidth, height: container.clientHeight };
       const dpr = window.devicePixelRatio || 1;
       for (const c of [canvas, scratchRef.current]) {
         if (!c) continue;
@@ -273,14 +278,17 @@ export function DrawingCanvas({
     };
   }, []);
 
-  const toPoint = useCallback((e: PointerEvent | React.PointerEvent, pen: boolean): StrokePoint => {
-    const rect = canvasRef.current!.getBoundingClientRect();
-    const s = scaleRef.current;
-    const x = (e.clientX - rect.left) / s;
-    const y = (e.clientY - rect.top) / s;
-    const p = pen && e.pressure > 0 ? e.pressure : 0.5;
-    return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, p: Math.round(p * 100) / 100 };
-  }, []);
+  const toPoint = useCallback(
+    (e: PointerEvent | React.PointerEvent, pen: boolean): StrokePoint => {
+      const local = toLocal(canvasRef.current!, e.clientX, e.clientY, rotation);
+      const s = scaleRef.current;
+      const x = local.x / s;
+      const y = local.y / s;
+      const p = pen && e.pressure > 0 ? e.pressure : 0.5;
+      return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, p: Math.round(p * 100) / 100 };
+    },
+    [rotation],
+  );
 
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (readOnly || activeRef.current) return;
