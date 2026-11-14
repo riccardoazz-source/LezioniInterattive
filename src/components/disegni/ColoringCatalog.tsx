@@ -7,6 +7,7 @@ import { IMAGE_PAGES } from "@/content/coloring-images";
 import { listCustomPages, listDrawings, removeCustomPage, removeDrawing, saveCustomPage, type CustomPage, type SavedDrawing } from "@/lib/storage/drawings";
 import { compressImage } from "@/lib/image";
 import { uid } from "@/lib/random";
+import { useRemoteVersion } from "@/lib/sync/engine";
 import { Button } from "@/components/ui/Button";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
 
@@ -32,6 +33,7 @@ export function ColoringCatalog() {
   const fileInput = useRef<HTMLInputElement>(null);
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
+  const remote = useRemoteVersion();
   useEffect(() => {
     listDrawings().then((all) => {
       const map: Record<string, SavedDrawing[]> = {};
@@ -39,7 +41,7 @@ export function ColoringCatalog() {
       setSaved(map);
     });
     listCustomPages().then(setCustom);
-  }, []);
+  }, [remote]);
 
   const importFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;

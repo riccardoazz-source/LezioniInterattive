@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { touchKv } from "./sync/outbox";
 
 /** Palette di colori per colorare: predefinite + personalizzate (salvate nel dispositivo). */
 export interface Palette {
@@ -42,7 +43,7 @@ const KEY = "li:palettes";
 const EVENT = "li:palettes-changed";
 let cache: Palette[] | null = null;
 
-function readCustom(): Palette[] {
+export function readCustom(): Palette[] {
   if (typeof window === "undefined") return [];
   if (cache) return cache;
   try {
@@ -54,7 +55,7 @@ function readCustom(): Palette[] {
   return cache;
 }
 
-function writeCustom(list: Palette[]) {
+function store(list: Palette[]) {
   cache = list;
   try {
     window.localStorage.setItem(KEY, JSON.stringify(list));
@@ -62,6 +63,16 @@ function writeCustom(list: Palette[]) {
     /* ignora */
   }
   window.dispatchEvent(new Event(EVENT));
+}
+
+function writeCustom(list: Palette[]) {
+  store(list);
+  touchKv("palettes");
+}
+
+/** Palette arrivate dal server. */
+export function applyRemotePalettes(list: Palette[]) {
+  store(Array.isArray(list) ? list : []);
 }
 
 function subscribe(cb: () => void) {

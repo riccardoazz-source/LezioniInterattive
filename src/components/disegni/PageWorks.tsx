@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { IMAGE_PAGE_MAP } from "@/content/coloring-images";
 import { getCustomPage, listWorksForPage, removeDrawing, type SavedDrawing } from "@/lib/storage/drawings";
 import { uid } from "@/lib/random";
+import { useRemoteVersion } from "@/lib/sync/engine";
 import { AppHeader } from "@/components/ui/AppHeader";
 import { Button } from "@/components/ui/Button";
 import { useConfirmDelete } from "@/components/ui/ConfirmDelete";
@@ -22,6 +23,7 @@ export function PageWorks({ pageId }: { pageId: string }) {
 
   const startNew = () => router.replace(`/disegni/lavoro/${uid()}?new=1&page=${encodeURIComponent(pageId)}`);
 
+  const remote = useRemoteVersion();
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -41,7 +43,7 @@ export function PageWorks({ pageId }: { pageId: string }) {
     return () => {
       cancelled = true;
     };
-  }, [pageId, router]);
+  }, [pageId, router, remote]);
 
   const remove = async (w: SavedDrawing) => {
     if (!(await confirmDelete("Eliminare questa versione colorata?"))) return;

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { SUBJECT_MAP } from "@/content/subjects";
 import { getNotesRepository, noteText, type Note } from "@/lib/storage";
 import { uid } from "@/lib/random";
+import { useRemoteVersion } from "@/lib/sync/engine";
 import { Button } from "@/components/ui/Button";
 import { PAGE_H, PAGE_W } from "@/lib/storage";
 
@@ -16,12 +17,13 @@ export function NotesList() {
   const router = useRouter();
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
+  const remote = useRemoteVersion();
   useEffect(() => {
     getNotesRepository()
       .list()
       .then(setNotes)
       .catch((e: Error) => setError(e.message));
-  }, []);
+  }, [remote]);
 
   const create = () => router.push(`/note/${uid()}?new=1`);
 

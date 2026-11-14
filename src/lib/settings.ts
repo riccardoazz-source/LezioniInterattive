@@ -3,6 +3,7 @@
 import { useCallback, useSyncExternalStore } from "react";
 import type { Level } from "@/content/types";
 import { setSpeechEnabled } from "./speech";
+import { touchKv } from "./sync/outbox";
 
 export interface Settings {
   /** nome della bambina, per il saluto in home */
@@ -40,7 +41,7 @@ export function readSettings(): Settings {
   return cache;
 }
 
-export function writeSettings(s: Settings) {
+function store(s: Settings) {
   cache = s;
   setSpeechEnabled(s.tts);
   try {
@@ -49,6 +50,16 @@ export function writeSettings(s: Settings) {
     /* storage non disponibile (es. navigazione privata) */
   }
   window.dispatchEvent(new Event(EVENT));
+}
+
+export function writeSettings(s: Settings) {
+  store(s);
+  touchKv("settings");
+}
+
+/** Impostazioni arrivate dal server (senza rimandarle indietro). */
+export function applyRemoteSettings(data: Partial<Settings>) {
+  store({ ...DEFAULT_SETTINGS, ...data });
 }
 
 function subscribe(cb: () => void) {

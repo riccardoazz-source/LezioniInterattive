@@ -30,3 +30,8 @@ export function idb<T>(store: StoreName, mode: IDBTransactionMode, fn: (s: IDBOb
       }),
   );
 }
+
+export const idbGetAll = <T,>(store: StoreName) => idb<T[]>(store, "readonly", (s) => s.getAll() as IDBRequest<T[]>);
+export const idbGet = <T,>(store: StoreName, id: string) => idb<T | undefined>(store, "readonly", (s) => s.get(id) as IDBRequest<T | undefined>);
+export const idbPut = (store: StoreName, value: unknown) => idb(store, "readwrite", (s) => s.put(value)).then(() => undefined);
+export const idbDelete = (store: StoreName, id: string) => idb(store, "readwrite", (s) => s.delete(id)).then(() => undefined);

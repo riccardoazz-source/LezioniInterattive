@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import { SyncProvider } from "@/components/SyncProvider";
 
 const nunito = Nunito({
   variable: "--font-nunito",
@@ -36,7 +37,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="it" className={`${nunito.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SyncProvider />
+        {children}
+      </body>
     </html>
   );
 }

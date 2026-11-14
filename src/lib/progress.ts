@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { touchKv } from "./sync/outbox";
 
 /**
  * Progressi (stelle) salvati in locale. Quando ci sarà il server (Neon)
@@ -30,7 +31,7 @@ export function readProgress(): Progress {
   return cache;
 }
 
-function writeProgress(p: Progress) {
+function store(p: Progress) {
   cache = p;
   try {
     window.localStorage.setItem(KEY, JSON.stringify(p));
@@ -38,6 +39,38 @@ function writeProgress(p: Progress) {
     /* ignora */
   }
   window.dispatchEvent(new Event(EVENT));
+}
+
+function writeProgress(p: Progress) {
+  store(p);
+  touchKv("progress");
+}
+
+/**
+ * Stelle arrivate dal server: si uniscono a quelle locali tenendo il meglio
+ * di entrambi. Restituisce true se qui c'era qualcosa in più da rimandare.
+ */
+export function applyRemoteProgress(remote: Partial<Progress>): boolean {
+  const local = readProgress();
+  const lessons = { ...(remote.lessons ?? {}) };
+  const games = { ...(remote.games ?? {}) };
+  let localHasMore = false;
+  for (const [id, l] of Object.entries(local.lessons)) {
+    const r = lessons[id];
+    if (!r || l.stars > r.stars || l.times > r.times) {
+      lessons[id] = { stars: Math.max(l.stars, r?.stars ?? 0), times: Math.max(l.times, r?.times ?? 0), completedAt: l.completedAt > (r?.completedAt ?? "") ? l.completedAt : r!.completedAt };
+      localHasMore = true;
+    }
+  }
+  for (const [id, g] of Object.entries(local.games)) {
+    const r = games[id];
+    if (!r || g.best > r.best || g.plays > r.plays) {
+      games[id] = { best: Math.max(g.best, r?.best ?? 0), plays: Math.max(g.plays, r?.plays ?? 0), lastAt: g.lastAt > (r?.lastAt ?? "") ? g.lastAt : r!.lastAt };
+      localHasMore = true;
+    }
+  }
+  store({ lessons, games });
+  return localHasMore;
 }
 
 export function recordLesson(id: string, stars: number) {

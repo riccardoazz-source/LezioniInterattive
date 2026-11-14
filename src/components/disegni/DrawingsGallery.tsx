@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { listDrawings, removeDrawing, type SavedDrawing } from "@/lib/storage/drawings";
 import { uid } from "@/lib/random";
+import { useRemoteVersion } from "@/lib/sync/engine";
 import { Tile } from "@/components/ui/Tile";
 import { PAGE_H, PAGE_W } from "@/lib/storage";
 
@@ -14,9 +15,10 @@ export function DrawingsHome() {
   const [drawings, setDrawings] = useState<SavedDrawing[] | null>(null);
   const [confirmDelete, deleteDialog] = useConfirmDelete();
 
+  const remote = useRemoteVersion();
   useEffect(() => {
     listDrawings().then((all) => setDrawings(all.filter((d) => d.kind !== "coloring" && (d.strokes.length > 0 || (d.paintOps?.length ?? 0) > 0))));
-  }, []);
+  }, [remote]);
 
   const remove = async (d: SavedDrawing) => {
     if (!(await confirmDelete("Eliminare questo disegno?"))) return;

@@ -1,4 +1,5 @@
 import { idb, STORES } from "./idb";
+import { markDirty } from "@/lib/sync/outbox";
 import type { Stroke } from "./types";
 
 /** Un riempimento a secchiello su un'immagine: punto toccato e colore. */
@@ -39,9 +40,10 @@ export interface CustomPage {
   id: string;
   title: string;
   category: string;
-  /** immagine (data URL) */
+  /** immagine (data URL, oppure /api/blobs/... se arriva dal server) */
   dataUrl: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export async function listCustomPages(): Promise<CustomPage[]> {
@@ -54,11 +56,14 @@ export function getCustomPage(id: string): Promise<CustomPage | undefined> {
 }
 
 export async function saveCustomPage(p: CustomPage): Promise<void> {
-  await idb(STORES.pages, "readwrite", (s) => s.put(p));
+  const page = { ...p, updatedAt: new Date().toISOString() };
+  await idb(STORES.pages, "readwrite", (s) => s.put(page));
+  markDirty("pages", p.id);
 }
 
 export async function removeCustomPage(id: string): Promise<void> {
   await idb(STORES.pages, "readwrite", (s) => s.delete(id));
+  markDirty("pages", id, true);
 }
 
 export async function listDrawings(): Promise<SavedDrawing[]> {
@@ -72,8 +77,10 @@ export function getDrawing(id: string): Promise<SavedDrawing | undefined> {
 
 export async function saveDrawing(d: SavedDrawing): Promise<void> {
   await idb(STORES.drawings, "readwrite", (s) => s.put(d));
+  markDirty("drawings", d.id);
 }
 
 export async function removeDrawing(id: string): Promise<void> {
   await idb(STORES.drawings, "readwrite", (s) => s.delete(id));
+  markDirty("drawings", id, true);
 }

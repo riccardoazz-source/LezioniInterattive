@@ -6,7 +6,7 @@ import type { Level } from "@/content/types";
 import { useSettings } from "@/lib/settings";
 import { resetProgress } from "@/lib/progress";
 import { speak } from "@/lib/speech";
-import { storageBackendName } from "@/lib/storage";
+import { SyncCard } from "@/components/SyncCard";
 import { Button } from "@/components/ui/Button";
 
 export function SettingsForm() {
@@ -45,7 +45,7 @@ export function SettingsForm() {
             ))}
           </div>
           <p className="text-sm text-muted">
-            L&apos;app mostra le lezioni del livello scelto e di quelli precedenti. I giochi diventano più difficili.
+            Le lezioni si aprono su questa classe; le altre restano a portata di mano nelle schede Prima, Seconda, Terza. Anche i giochi si adattano.
           </p>
         </div>
 
@@ -64,15 +64,7 @@ export function SettingsForm() {
           value={settings.fingerDraw}
           onChange={(v) => update({ fingerDraw: v })}
         />
-
-        <div className="rounded-2xl bg-white p-4 text-sm text-muted shadow-sm">
-          <p>
-            <b>Salvataggio note:</b> {storageBackendName() === "server" ? "server (Neon)" : "su questo dispositivo"}.
-          </p>
-          <p className="mt-1">
-            Per salvare su server, configura <code>DATABASE_URL</code> e <code>NEXT_PUBLIC_DATA_BACKEND=api</code> su Vercel (vedi README).
-          </p>
-        </div>
+        <SyncCard />
 
         <Button
           variant="danger"

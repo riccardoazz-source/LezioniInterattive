@@ -1,4 +1,5 @@
 import { idb, STORES } from "./idb";
+import { markDirty } from "@/lib/sync/outbox";
 import { normalizeNote, type Note, type NotesRepository } from "./types";
 
 /**
@@ -50,11 +51,13 @@ export class LocalNotesRepository implements NotesRepository {
   async save(note: Note): Promise<Note> {
     await this.ready();
     await tx("readwrite", (s) => s.put(note));
+    markDirty("notes", note.id);
     return note;
   }
 
   async remove(id: string): Promise<void> {
     await this.ready();
     await tx("readwrite", (s) => s.delete(id));
+    markDirty("notes", id, true);
   }
 }

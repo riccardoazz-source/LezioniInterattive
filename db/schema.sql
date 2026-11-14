@@ -1,24 +1,26 @@
--- Schema per Neon (Postgres). Eseguilo una volta nella SQL Editor di Neon.
+-- Non serve più lanciare questo file: le tabelle vengono create
+-- automaticamente dall'app al primo collegamento (src/lib/db.ts).
+-- Resta qui come documentazione.
 
--- Una nota è un quaderno: `pages` contiene le pagine (testo, foto in base64, tratti della lavagna).
-create table if not exists notes (
-  id          text primary key,
-  title       text not null default '',
-  subject     text,
-  pages       jsonb not null default '[]'::jsonb,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
+create sequence if not exists app_docs_seq;
+
+-- Tutti i dati sincronizzati: quaderni, disegni, disegni importati,
+-- impostazioni, stelle e palette (collection = notes | drawings | pages | kv).
+create table if not exists app_docs (
+  collection text not null,
+  id         text not null,
+  data       jsonb,
+  updated_at timestamptz not null,
+  deleted    boolean not null default false,
+  seq        bigint not null default nextval('app_docs_seq'),
+  primary key (collection, id)
 );
+create index if not exists app_docs_seq_idx on app_docs (seq);
 
-create index if not exists notes_updated_at_idx on notes (updated_at desc);
-
--- Pronto per il futuro: progressi sincronizzati tra dispositivi.
-create table if not exists progress (
-  kind        text not null,            -- 'lesson' | 'game'
-  item_id     text not null,
-  stars       int  not null default 0,
-  best        int  not null default 0,
-  times       int  not null default 0,
-  updated_at  timestamptz not null default now(),
-  primary key (kind, item_id)
+-- Foto dei quaderni e disegni importati (salvati una volta sola).
+create table if not exists app_blobs (
+  id           text primary key,
+  content_type text not null,
+  data         bytea not null,
+  created_at   timestamptz not null default now()
 );

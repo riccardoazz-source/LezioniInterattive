@@ -6,6 +6,7 @@ import { Tile } from "@/components/ui/Tile";
 import { useSettings } from "@/lib/settings";
 import { totalStars, useProgress } from "@/lib/progress";
 import { warmUpVoices } from "@/lib/speech";
+import { SyncBadge } from "@/components/SyncCard";
 
 export function HomeScreen() {
   const [settings, , ready] = useSettings();
@@ -25,8 +26,9 @@ export function HomeScreen() {
         <Link
           href="/impostazioni"
           aria-label="Impostazioni"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-2xl shadow-sm active:scale-95"
+          className="flex h-12 items-center justify-center gap-1 rounded-full bg-white px-3 text-2xl shadow-sm active:scale-95"
         >
+          <SyncBadge />
           ⚙️
         </Link>
       </div>

@@ -34,22 +34,20 @@ Controlli: `npm run typecheck`, `npm run lint`, `npm run build`.
 2. Su [vercel.com](https://vercel.com) → **Add New Project** → importa il repository. Vercel riconosce Next.js da solo: nessuna configurazione necessaria.
 3. Deploy. Da iPhone/iPad apri l'URL in Safari → **Condividi → Aggiungi alla schermata Home**: l'app si apre a schermo intero.
 
-Senza database, note, disegni e progressi restano salvati **nel browser del dispositivo** (IndexedDB e localStorage). Funziona tutto, ma le note non si vedono da un altro dispositivo.
+Senza database i dati restano **solo sul dispositivo**: vedi sotto per attivare il server.
 
-## Aggiungere il server (Neon)
+## Server: i dati su tutti i dispositivi (Neon)
 
-Quando vuoi salvare le note su un database condiviso tra dispositivi:
+Senza server ogni dispositivo tiene i propri dati. Con il server, quaderni, disegni (anche quelli da colorare, con tutte le versioni), disegni importati, impostazioni, stelle e palette si sincronizzano da soli: cambi iPad, inserisci il codice e ritrovi tutto.
 
-1. Crea un progetto su [neon.tech](https://neon.tech) e copia la connection string (`postgresql://…?sslmode=require`).
-2. Nella **SQL Editor** di Neon esegui il contenuto di [`db/schema.sql`](db/schema.sql).
-3. Su Vercel → progetto → **Settings → Environment Variables** aggiungi:
-   - `DATABASE_URL` = la connection string
-   - `NEXT_PUBLIC_DATA_BACKEND` = `api`
-4. **Redeploy**. Verifica con `https://<tuo-dominio>/api/health` (deve rispondere `"database": "ok"`).
+1. Su Vercel → progetto → **Storage** → **Create Database** → **Neon** (piano gratuito) e collegalo al progetto. Vercel imposta da solo la variabile del database (`DATABASE_URL` o `POSTGRES_URL`). In alternativa crea il database su [neon.tech](https://neon.tech) e aggiungi a mano `DATABASE_URL`.
+2. Sempre in **Settings → Environment Variables** aggiungi `FAMILY_CODE` con un codice a tua scelta (consigliato: senza codice chiunque conosca l'indirizzo potrebbe leggere i dati).
+3. **Redeploy** (Deployments → ⋯ → Redeploy). Le tabelle si creano da sole, non c'è SQL da lanciare.
+4. Su ogni iPad/PC: **⚙️ Impostazioni → Salvataggio sul server**, inserisci il codice famiglia. Lo stato diventa "☁️ Salvato sul server" e i dati di quel dispositivo vengono caricati.
 
-Il codice è già pronto: `src/lib/storage/` contiene due implementazioni della stessa interfaccia (`LocalNotesRepository` e `ApiNotesRepository`), scelte dalla variabile `NEXT_PUBLIC_DATA_BACKEND`. Le API sono in `src/app/api/notes/`. In locale puoi usare `.env.local` (vedi `.env.example`).
+Come funziona: i dati restano sempre anche sul dispositivo (l'app funziona offline); ogni modifica parte da sola appena c'è connessione, e all'apertura dell'app si scaricano le novità. Se lo stesso quaderno viene modificato su due dispositivi vince la modifica più recente; le stelle si sommano tenendo il meglio. Le foto viaggiano a parte, una volta sola. Le note della prima versione (vecchia tabella `notes`) vengono importate automaticamente.
 
-> Nota: le note scritte prima dell'attivazione del server restano nel browser; se vuoi, copiale a mano nelle nuove note.
+Per controllare: `https://<tuo-dominio>/api/health` deve rispondere `"database":"ok"`. In Impostazioni si vedono lo stato, le modifiche ancora da inviare e la versione dell'app (lo SHA del commit), utile per capire se il deploy è aggiornato.
 
 ## Come crescono i contenuti
 
@@ -78,7 +76,7 @@ src/
     disegni/           disegno libero e da colorare
     note/              quaderni del genitore
     impostazioni/      impostazioni
-    api/               API per Neon (notes, health)
+    api/               API del server: health, sync, blobs (foto)
   content/             CONTENUTI: lezioni, materie, giochi, catalogo dei disegni (solo dati)
   components/
     lesson/            motore delle lezioni (un renderer per tipo di attività)
@@ -87,7 +85,7 @@ src/
     disegni/           galleria, disegno libero, catalogo e colorazione
     notes/             lista e editor dei quaderni
     ui/                pulsanti, header, stelle, coriandoli, cancello genitori
-  lib/                 impostazioni, progressi, voce, storage (locale/API), db
+  lib/                 impostazioni, progressi, voce, storage locale, sync (server), db
 db/schema.sql          schema Postgres per Neon
 ```
 
